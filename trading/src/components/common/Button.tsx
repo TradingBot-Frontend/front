@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import { ButtonProps } from '../../containers/common/ButtonContainer';
+import { ButtonProps } from '@containers/common/ButtonContainer';
 
 export const CommonButton: React.FC<ButtonProps> = ({ title, onClick }) => {
   return (

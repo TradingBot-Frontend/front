@@ -1,0 +1,25 @@
+{
+   "compilerOptions":{
+      "baseUrl":"./src",
+      "paths":{
+         "@components/*":[
+            "components/*"
+         ],
+         "@configs/*":[
+            "configs/*"
+         ],
+         "@containers/*":[
+            "containers/*"
+         ],
+         "@redux/*":[
+            "redux/*"
+         ],
+         "@routes/*":[
+            "routes/*"
+         ],
+         "@stories/*":[
+            "stories/*"
+         ]
+      }
+   }
+}
