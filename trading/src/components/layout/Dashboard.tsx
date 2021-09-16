@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,6 +18,7 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { CommonInputContainer } from '@containers/common/InputContainer';
 import { mainListItems } from './listLtems';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 
@@ -108,6 +109,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [search, setsearch] = useState('');
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -118,6 +120,12 @@ export default function Dashboard() {
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     console.log('click button');
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setsearch(e.target.value);
+  };
+  const handleKeyPress = () => {
+    console.log('press key: ', search);
   };
   return (
     <div className={classes.root}>
@@ -168,6 +176,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           Content page
+          <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} />
         </Container>
       </main>
     </div>
