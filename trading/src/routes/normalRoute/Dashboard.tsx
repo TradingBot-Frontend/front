@@ -19,14 +19,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MyRouter from '@routes/index';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import CoinMarket from '@routes/normalRoute/CoinMarket';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 import { MainListItems } from '@components/layout/listLtems';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
-import TradingBot from './TradingBot';
-import Simulation from './Simulation';
-import Portfolio from './Portfolio';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -183,11 +178,7 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Route path="/coin-market" exact component={CoinMarket} />
-          <Route path="/trading-bot" exact component={TradingBot} />
-          <Route path="/simulation" exact component={Simulation} />
-          <Route path="/portfolio" exact component={Portfolio} />
-          {/* <MyRouter /> */}
+          <MyRouter />
           {/* <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} /> */}
         </Container>
       </main>
