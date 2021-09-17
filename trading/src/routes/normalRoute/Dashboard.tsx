@@ -18,8 +18,9 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MyRouter from '@routes/index';
 import { CommonInputContainer } from '@containers/common/InputContainer';
-import { mainListItems } from './listLtems';
+import { MainListItems } from '@components/layout/listLtems';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 
 const drawerWidth = 240;
@@ -170,13 +171,15 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>
+          <MainListItems />
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          Content page
-          <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} />
+          <MyRouter />
+          {/* <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} /> */}
         </Container>
       </main>
     </div>
