@@ -27,6 +27,7 @@ const styles = (theme: Theme) =>
     },
     tableRow: {
       cursor: 'pointer',
+      border: 0,
     },
     tableRowHover: {
       '&:hover': {
@@ -190,7 +191,7 @@ export default function ReactVirtualizedTable() {
         rowGetter={({ index }) => rows[index]}
         columns={[
           {
-            width: 200,
+            width: 120,
             label: '암호화폐명',
             dataKey: 'name',
           },
