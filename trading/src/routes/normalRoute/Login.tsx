@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -10,26 +11,59 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import SignUp from '../../components/Auth/SignUp';
 
-export default function Login(): JSX.Element {
-  const [open, setOpen] = React.useState(false);
+const useStyles = makeStyles((theme) => ({
+  realRoot: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100vw',
+    height: '100vh',
+  },
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: '#fafafa',
+    // backgroundColor: '#A2A5A2',
+  },
+  formBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  appBar: {},
+  appBarTitle: {
+    flexGrow: 1,
+    fontFamily: 'Btro_core',
+  },
+  card: {},
+}));
 
+export default function Login(): JSX.Element {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
   const handleClickSignUp = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    <Container>
+    <div className={classes.root}>
       <Box sx={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center' }}>
         <Grid container alignItems="center">
           <Grid item xs={12}>
             <Container component="main" maxWidth="xs">
-              <Card sx={{ minWidth: 275 }}>
+              <Card sx={{ minWidth: 275 }} className={classes.card}>
                 <CardContent>
                   <Typography variant="h4" align="center" color="text.primary" gutterBottom>
                     TradingBot
@@ -41,6 +75,7 @@ export default function Login(): JSX.Element {
                     }}
                     noValidate
                     sx={{ mt: 1 }}
+                    // className={classes.formBox}
                   >
                     <TextField
                       margin="normal"
@@ -82,6 +117,18 @@ export default function Login(): JSX.Element {
           </Grid>
         </Grid>
       </Box>
-    </Container>
+    </div>
   );
 }
+
+//  <AppBar position="static" style={{ background: '#2E3B55' }} className={classes.appBar}>
+//   <Toolbar>
+//     <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+//       <MenuIcon />
+//     </IconButton>
+//     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className={classes.appBarTitle}>
+//       TradingBot
+//     </Typography>
+//     <Button color="inherit">Login</Button>
+//   </Toolbar>
+// </AppBar>
