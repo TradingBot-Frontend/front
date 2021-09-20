@@ -1,14 +1,17 @@
 import React from 'react';
-import './App.css';
-import MyRouter from '@routes/index';
 import Dashboard from '@routes/normalRoute/Dashboard';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import store, { history } from '@redux/store';
+import './App.css';
 
-function App() {
+function App(): JSX.Element {
   return (
-    <div className="App">
-      {/* <MyRouter /> */}
-      <Dashboard />
-    </div>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <Dashboard />
+      </ConnectedRouter>
+    </Provider>
   );
 }
 
