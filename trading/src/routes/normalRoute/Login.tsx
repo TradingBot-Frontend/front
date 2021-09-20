@@ -17,7 +17,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import SignUp from '../../components/Auth/SignUp';
+import SignUpContainer from '@containers/AuthContainer/SignUpContainer';
 
 const useStyles = makeStyles((theme) => ({
   realRoot: {
@@ -75,7 +75,6 @@ export default function Login(): JSX.Element {
     const user = { email, password };
     console.log(user);
     dispatch(loginActions.request(user));
-    // dispatch({ type: LOGIN_REQUEST, payload: user });
   };
 
   return (
@@ -131,7 +130,7 @@ export default function Login(): JSX.Element {
                   <Button size="large" onClick={handleClickSignUp}>
                     회원가입
                   </Button>
-                  <SignUp open={open} handleClose={handleClose} />
+                  <SignUpContainer open={open} handleClose={handleClose} />
                 </CardActions>
               </Card>
             </Container>

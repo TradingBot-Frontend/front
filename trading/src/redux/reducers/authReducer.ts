@@ -33,7 +33,7 @@ export const loginActions = {
 };
 
 const signupRequest = (user: any) => ({ type: SIGNUP_REQUEST, payload: user });
-const signupSuccess = (user: any) => ({ type: SIGNUP_SUCCESS, payload: user });
+const signupSuccess = (res: any) => ({ type: SIGNUP_SUCCESS, payload: res });
 const signupFailure = (error: any) => ({ type: SIGNUP_FAILURE, payload: error });
 export const signupActions = {
   request: signupRequest,
@@ -115,6 +115,12 @@ export default function authReducer(state: IAuthState = initialState, action: Au
       return {
         ...state,
         isLoading: false,
+      };
+    case SIGNUP_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        errorMsg: action.payload.msg,
       };
     default:
       return state;

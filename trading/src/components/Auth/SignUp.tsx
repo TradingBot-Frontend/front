@@ -8,13 +8,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { SignUpContainerProps } from '../../containers/AuthContainer/SignUpContainer';
 
-interface SignUpProps {
-  open: boolean;
-  handleClose: () => void;
+interface SignUpProps extends SignUpContainerProps {
+  handleChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleSignUp: () => void;
 }
 
-export default function SignUp({ open, handleClose }: SignUpProps): JSX.Element {
+export default function SignUp({ open, handleClose, handleChange, handleSignUp }: SignUpProps): JSX.Element {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -23,10 +24,29 @@ export default function SignUp({ open, handleClose }: SignUpProps): JSX.Element 
           <Box component="form">
             <Grid container alignItems="center">
               <Grid item xs={12}>
-                <TextField autoFocus fullWidth required margin="normal" id="email" label="Email Address" type="email" />
+                <TextField
+                  autoFocus
+                  fullWidth
+                  required
+                  margin="normal"
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  onChange={handleChange}
+                />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth required margin="normal" id="password" label="Password" type="password" />
+                <TextField
+                  fullWidth
+                  required
+                  margin="normal"
+                  id="password"
+                  label="Password"
+                  name="password"
+                  type="password"
+                  onChange={handleChange}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -35,17 +55,27 @@ export default function SignUp({ open, handleClose }: SignUpProps): JSX.Element 
                   margin="normal"
                   id="passwordConfirm"
                   label="PasswordConfirm"
+                  name="passwordConfirm"
                   type="password"
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth required margin="normal" id="name" label="Name" type="text" />
+                <TextField
+                  fullWidth
+                  required
+                  margin="normal"
+                  id="username"
+                  label="Name"
+                  name="username"
+                  type="text"
+                  onChange={handleChange}
+                />
               </Grid>
             </Grid>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>가입</Button>
+          <Button onClick={handleSignUp}>가입</Button>
           <Button onClick={handleClose}>취소</Button>
         </DialogActions>
       </Dialog>
