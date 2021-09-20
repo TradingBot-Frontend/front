@@ -2,8 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+// Window 타입에  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 정의해줌
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>

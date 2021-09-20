@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import { loginActions, LOGIN_REQUEST } from '@redux/reducers/authReducer';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -50,11 +52,30 @@ const useStyles = makeStyles((theme) => ({
 export default function Login(): JSX.Element {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [form, setValues] = useState({
+    email: '',
+    password: '',
+  });
+  const dispatch = useDispatch();
   const handleClickSignUp = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValues({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    const { email, password } = form;
+    const user = { email, password };
+    console.log(user);
+    dispatch(loginActions.request(user));
+    // dispatch({ type: LOGIN_REQUEST, payload: user });
   };
 
   return (
@@ -70,9 +91,7 @@ export default function Login(): JSX.Element {
                   </Typography>
                   <Box
                     component="form"
-                    onSubmit={() => {
-                      return 0;
-                    }}
+                    onSubmit={handleSubmit}
                     noValidate
                     sx={{ mt: 1 }}
                     // className={classes.formBox}
@@ -86,6 +105,7 @@ export default function Login(): JSX.Element {
                       name="email"
                       autoComplete="email"
                       autoFocus
+                      onChange={handleChange}
                     />
                     <TextField
                       margin="normal"
@@ -96,6 +116,7 @@ export default function Login(): JSX.Element {
                       type="password"
                       id="password"
                       autoComplete="current-password"
+                      onChange={handleChange}
                     />
                     <FormControlLabel
                       control={<Checkbox value="remember" color="primary" />}
