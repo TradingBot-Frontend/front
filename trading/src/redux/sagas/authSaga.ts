@@ -13,7 +13,9 @@ const loginAPI = (user: any) => {
 };
 
 interface ILoginResponse {
-  msg: string;
+  data: {
+    msg: string;
+  };
 }
 
 function* login(action: LoginAction) {
