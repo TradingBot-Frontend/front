@@ -125,7 +125,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
               //   onChange={onTextChange}
               value="dgsg"
               disabled
-
               // label="ID"
             />
           </InputWrapper>
@@ -162,7 +161,12 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
           </InputWrapper>
           <InputWrapper>
             <span className="lable">거래소</span>
-            <Select id="exchange" style={{ width: '7rem' }} defaultValue="bitsum" onChange={handleSelectChange}>
+            <Select
+              id="exchange"
+              style={{ width: '7rem' }}
+              defaultValue="bitsum"
+              onChange={handleSelectChange}
+            >
               <MenuItem value="bitsum">빗썸</MenuItem>
               <MenuItem value="upbit">업비트</MenuItem>
               <MenuItem value="binance">바이넨스</MenuItem>
