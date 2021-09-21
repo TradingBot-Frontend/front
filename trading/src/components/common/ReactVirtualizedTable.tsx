@@ -162,28 +162,31 @@ interface Data {
   money: string;
   id: number;
 }
-type Sample = [string, string, string, string];
-
-const sample: readonly Sample[] = [
-  ['비트코인', '55,000,000', '+2.5%', '151.445'],
-  ['이클', '55,000,000', '+2.5%', '151.445'],
-  ['도지코인', '55,000,000', '+2.5%', '151.445'],
-  ['비트토렌트', '55,000,000', '+2.5%', '151.445'],
-  ['페이코인', '55,000,000', '+2.5%', '151.445'],
-];
-
-function createData(id: number, name: string, currentPrice: string, rateOfChange: string, money: string): Data {
-  return { id, name, currentPrice, rateOfChange, money };
+interface arrayProps {
+  rows: Data[];
 }
+// type Sample = [string, string, string, string];
 
-const rows: Data[] = [];
+// const sample: readonly Sample[] = [
+//   ['비트코인', '55,000,000', '+2.5%', '151.445'],
+//   ['이클', '55,000,000', '+2.5%', '151.445'],
+//   ['도지코인', '55,000,000', '+2.5%', '151.445'],
+//   ['비트토렌트', '55,000,000', '+2.5%', '151.445'],
+//   ['페이코인', '55,000,000', '+2.5%', '151.445'],
+// ];
 
-for (let i = 0; i < 200; i += 1) {
-  const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  rows.push(createData(i, ...randomSelection));
-}
+// function createData(id: number, name: string, currentPrice: string, rateOfChange: string, money: string): Data {
+//   return { id, name, currentPrice, rateOfChange, money };
+// }
 
-export default function ReactVirtualizedTable() {
+// const rows: Data[] = [];
+
+// for (let i = 0; i < 200; i += 1) {
+//   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
+//   rows.push(createData(i, ...randomSelection));
+// }
+
+export const ReactVirtualizedTable: React.FC<arrayProps> = ({ rows }) => {
   return (
     <Paper style={{ height: 600, width: '100%' }}>
       <VirtualizedTable
@@ -217,4 +220,4 @@ export default function ReactVirtualizedTable() {
       />
     </Paper>
   );
-}
+};
