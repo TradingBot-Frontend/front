@@ -19,6 +19,9 @@
          ],
          "@stories/*":[
             "stories/*"
+         ],
+         "@utils/*":[
+            "utils/*"
          ]
       }
    }

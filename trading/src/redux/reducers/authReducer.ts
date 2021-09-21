@@ -1,3 +1,5 @@
+import { setAuthToken } from '@utils/axios';
+
 // action types
 export const LOGIN_REQUEST = 'auth/LOGIN_REQUEST' as const;
 export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS' as const;
@@ -82,12 +84,14 @@ export default function authReducer(state: IAuthState = initialState, action: Au
       };
     case LOGIN_SUCCESS: {
       const token = action.payload.data?.msg;
+      console.log('token', token);
       if (token) {
-        localStorage.setItem('token', token);
-        const base64: string = token.split(' ')[1];
-        const base64payload: string = base64.split('.')[1];
-        const payload: any = Buffer.from(base64payload, 'base64');
-        const decoded: any = JSON.parse(payload.toString());
+        localStorage.setItem('token', token); // localStorage에 token 저장
+        setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
+        // const base64: string = token.split(' ')[1];
+        // const base64payload: string = base64.split('.')[1];
+        // const payload: any = Buffer.from(base64payload, 'base64');
+        // const decoded: any = JSON.parse(payload.toString());
         // const {email, username} = deocded;
         return {
           ...state,
@@ -104,7 +108,8 @@ export default function authReducer(state: IAuthState = initialState, action: Au
       };
     }
     case LOGIN_FAILURE:
-      localStorage.removeItem('token');
+      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      setAuthToken(null);
       return {
         ...state,
         isAuthenticated: false,
