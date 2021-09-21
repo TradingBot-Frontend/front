@@ -4,6 +4,8 @@ import { ReactVirtualizedTable } from '@components/common/ReactVirtualizedTable'
 import Box from '@mui/material/Box';
 import { TimeLine } from '@containers/CoinMarket/TimeLineContainer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
+import { useDispatch } from 'react-redux';
+import { coinListActions } from '@redux/reducers/coinReducer';
 
 interface Data {
   name: string;
@@ -39,14 +41,15 @@ for (let i = 0; i < 200; i += 1) {
 }
 
 const CoinMarket = () => {
-  const [search, setsearch] = useState('');
   const [states, setStates] = useState<any>({
     coinContent: [],
     filterCoinContent: [],
     keyword: '',
   });
   const { coinContent, filterCoinContent, keyword } = states;
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(coinListActions.request('asc'));
     setStates({
       ...states,
       coinContent: rows,
@@ -54,14 +57,12 @@ const CoinMarket = () => {
     });
   }, []);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setsearch(e.target.value);
     setStates({
       ...states,
       keyword: e.target.value,
     });
   };
   const handleKeyPress = () => {
-    console.log('press key: ', search);
     if (keyword) {
       setStates({
         ...states,
