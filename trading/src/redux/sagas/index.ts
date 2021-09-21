@@ -7,5 +7,6 @@ import authSaga from './authSaga';
 // axios.defaults.baseURL = process.env.REACT_APP_BASIC_SERVER_URL;
 
 export default function* rootSaga() {
+  // 여기에 saga 추가하면 됩니다!
   yield all([fork(authSaga)]);
 }

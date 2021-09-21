@@ -1,15 +1,22 @@
 import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
-import { loginActions, LOGIN_REQUEST, LoginAction, SIGNUP_REQUEST, signupActions } from '@redux/reducers/authReducer';
+import {
+  loginActions,
+  LOGIN_REQUEST,
+  LoginAction,
+  SIGNUP_REQUEST,
+  signupActions,
+  SignupAction,
+} from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
-import { SignupAction } from '../reducers/authReducer';
+// put: action을 dispatch 한다.
+// call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
+// all: all에 제네레이터 함수를 배열로 담아서 넘기면 제네레이터 함수들이
+//      병렬적으로 실행 -> 전부 resolve 될 때까지 기다렸다가 결과를 리턴한다.
+//      (Promise.all과 같은 역할)
+// fork: 인자로 들어온 함수를 실행시킨다. 비동기적인 함수 호출일 때 사용. (순서 상관 없을 때
 
 const loginAPI = (user: any) => {
   console.log(user, '@login user');
-  // const config = {
-  //   headers: {
-  //     'Content-type': 'application/json',
-  //   },
-  // };
   return axios.post('sign-in', user);
 };
 
@@ -34,11 +41,6 @@ function* watchLogin() {
 }
 
 const signupAPI = (user: any) => {
-  // const config = {
-  //   headers: {
-  //     'Content-type': 'application/json',
-  //   },
-  // };
   return axios.post('sign-up', user);
 };
 
