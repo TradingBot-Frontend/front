@@ -22,6 +22,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.9",
     "@types/redux-saga": "^0.10.5",
+    "apexcharts": "^3.28.3",
     "axios": "^0.21.4",
     "clsx": "^1.1.1",
     "connected-react-router": "^6.9.1",
