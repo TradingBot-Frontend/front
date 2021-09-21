@@ -1,16 +1,16 @@
 import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
 import { loginActions, LOGIN_REQUEST, LoginAction, SIGNUP_REQUEST, signupActions } from '@redux/reducers/authReducer';
-import axios from 'axios';
+import axios from '@utils/axios';
 import { SignupAction } from '../reducers/authReducer';
 
 const loginAPI = (user: any) => {
   console.log(user, '@login user');
-  const config = {
-    headers: {
-      'Content-type': 'application/json',
-    },
-  };
-  return axios.post('sign-in', user, config);
+  // const config = {
+  //   headers: {
+  //     'Content-type': 'application/json',
+  //   },
+  // };
+  return axios.post('sign-in', user);
 };
 
 interface ILoginResponse {
@@ -34,12 +34,12 @@ function* watchLogin() {
 }
 
 const signupAPI = (user: any) => {
-  const config = {
-    headers: {
-      'Content-type': 'application/json',
-    },
-  };
-  return axios.post('sign-up', user, config);
+  // const config = {
+  //   headers: {
+  //     'Content-type': 'application/json',
+  //   },
+  // };
+  return axios.post('sign-up', user);
 };
 
 interface ISignUpResponse {
