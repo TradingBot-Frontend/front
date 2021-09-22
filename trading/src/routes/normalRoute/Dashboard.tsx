@@ -21,6 +21,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 import { MainListItems } from '@components/layout/listLtems';
 import ContentsRouter from '@routes/ContentsRouter';
+import { logoutActions } from '@redux/reducers/authReducer';
+import { useDispatch } from 'react-redux';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 
 const drawerWidth = 240;
@@ -111,6 +113,7 @@ export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [search, setsearch] = useState('');
+  const dispatch = useDispatch();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -127,6 +130,9 @@ export default function Dashboard() {
   };
   const handleKeyPress = () => {
     console.log('press key: ', search);
+  };
+  const handleLogout = () => {
+    dispatch(logoutActions.request());
   };
   return (
     <div className={classes.root}>
@@ -155,7 +161,7 @@ export default function Dashboard() {
           {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
-          <CommonButtonContainer title="Login" onClick={handleButtonClick} />
+          <CommonButtonContainer title="LOGOUT" onClick={handleLogout} />
         </Toolbar>
       </AppBar>
       <Drawer

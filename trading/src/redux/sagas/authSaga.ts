@@ -6,6 +6,8 @@ import {
   SIGNUP_REQUEST,
   signupActions,
   SignupAction,
+  LOGOUT_REQUEST,
+  logoutActions,
 } from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
 import { push } from 'connected-react-router';
@@ -65,6 +67,18 @@ function* watchSignup() {
   yield takeEvery(SIGNUP_REQUEST, signup);
 }
 
+function* logout() {
+  try {
+    yield put(logoutActions.success());
+  } catch (e) {
+    yield put(logoutActions.failure());
+  }
+}
+
+function* watchLogout() {
+  yield takeEvery(LOGOUT_REQUEST, logout);
+}
+
 export default function* authSaga() {
-  yield all([fork(watchLogin), fork(watchSignup)]);
+  yield all([fork(watchLogin), fork(watchSignup), fork(watchLogout)]);
 }

@@ -9,6 +9,10 @@ export const SIGNUP_REQUEST = 'auth/SIGNUP_REQUEST' as const;
 export const SIGNUP_SUCCESS = 'auth/SIGNUP_SUCCESS' as const;
 export const SIGNUP_FAILURE = 'auth/SIGNUP_FAILURE' as const;
 
+export const LOGOUT_REQUEST = 'auth/LOGOUT_REQUEST' as const;
+export const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS' as const;
+export const LOGOUT_FAILURE = 'auth/LOGOUT_FAILURE' as const;
+
 // type LoginAction =
 // | typeof LOGIN_REQUEST
 // | typeof LOGIN_SUCCESS
@@ -43,6 +47,15 @@ export const signupActions = {
   failure: signupFailure,
 };
 
+const logoutRequest = () => ({ type: LOGOUT_REQUEST, payload: null });
+const logoutSuccess = () => ({ type: LOGOUT_SUCCESS, payload: null });
+const logoutFailure = () => ({ type: LOGOUT_FAILURE, payload: null });
+export const logoutActions = {
+  request: logoutRequest,
+  success: logoutSuccess,
+  failure: logoutFailure,
+};
+
 export type LoginAction =
   | ReturnType<typeof loginRequest>
   | ReturnType<typeof loginSuccess>
@@ -51,7 +64,11 @@ export type SignupAction =
   | ReturnType<typeof signupRequest>
   | ReturnType<typeof signupSuccess>
   | ReturnType<typeof signupFailure>;
-export type AuthAction = LoginAction | SignupAction;
+export type LogoutAction =
+  | ReturnType<typeof logoutRequest>
+  | ReturnType<typeof logoutSuccess>
+  | ReturnType<typeof logoutFailure>;
+export type AuthAction = LoginAction | SignupAction | LogoutAction;
 
 interface IAuthState {
   token: string | null;
@@ -108,13 +125,15 @@ export default function authReducer(state: IAuthState = initialState, action: Au
       };
     }
     case LOGIN_FAILURE:
+    case LOGOUT_SUCCESS:
+    case LOGOUT_FAILURE:
       localStorage.removeItem('token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,
         isAuthenticated: false,
         isLoading: false,
-        errorMsg: action.payload.detail.msg,
+        errorMsg: action.payload?.detail.msg,
       };
     case SIGNUP_SUCCESS:
       alert('가입 되었습니다!');
