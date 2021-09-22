@@ -6,7 +6,7 @@ import Simulation from './normalRoute/Simulation';
 import TradingBot from './normalRoute/TradingBot';
 import Main from './normalRoute/Main';
 
-function MyRouter(): JSX.Element {
+function ContentsRouter(): JSX.Element {
   const { path } = useRouteMatch();
   return (
     <Switch>
@@ -19,4 +19,4 @@ function MyRouter(): JSX.Element {
     </Switch>
   );
 }
-export default MyRouter;
+export default ContentsRouter;
