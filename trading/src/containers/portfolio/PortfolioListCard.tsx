@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ===========================|| DASHBOARD DEFAULT - POPULAR CARD ||=========================== //
 
-const ListCard = () => {
+const PortfolioListCard = () => {
     const classes = useStyles();
 
 
@@ -168,4 +168,4 @@ const ListCard = () => {
     );
 };
 
-export default ListCard;
+export default PortfolioListCard;
