@@ -125,6 +125,7 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
               //   onChange={onTextChange}
               value="dgsg"
               disabled
+
               // label="ID"
             />
           </InputWrapper>
