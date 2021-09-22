@@ -91,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -147,11 +146,20 @@ export default function Dashboard() {
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            className={clsx(
+              classes.menuButton,
+              open && classes.menuButtonHidden,
+            )}
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
             tradingbot
           </Typography>
           <IconButton color="inherit" className={classes.loginIcon}>
@@ -182,10 +190,7 @@ export default function Dashboard() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <ContentsRouter />
-          {/* <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} /> */}
-        </Container>
+        <ContentsRouter />
       </main>
     </div>
   );
