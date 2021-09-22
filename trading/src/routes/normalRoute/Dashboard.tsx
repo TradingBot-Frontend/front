@@ -18,7 +18,6 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { CommonInputContainer } from '@containers/common/InputContainer';
 import { MainListItems } from '@components/layout/listLtems';
 import ContentsRouter from '@routes/ContentsRouter';
 import { logoutActions } from '@redux/reducers/authReducer';
