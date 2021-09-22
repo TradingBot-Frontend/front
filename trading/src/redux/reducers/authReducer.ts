@@ -117,11 +117,13 @@ export default function authReducer(state: IAuthState = initialState, action: Au
         errorMsg: action.payload.detail.msg,
       };
     case SIGNUP_SUCCESS:
+      alert('가입 되었습니다!');
       return {
         ...state,
         isLoading: false,
       };
     case SIGNUP_FAILURE:
+      alert('가입 실패했습니다!');
       return {
         ...state,
         isLoading: false,

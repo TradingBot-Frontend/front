@@ -1,21 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import CoinMarket from './normalRoute/CoinMarket';
-import Dashboard from './normalRoute/Dashboard';
 import Portfolio from './normalRoute/Portfolio';
 import Simulation from './normalRoute/Simulation';
 import TradingBot from './normalRoute/TradingBot';
 import Main from './normalRoute/Main';
 
-function MyRouter(): any {
+function MyRouter(): JSX.Element {
+  const { path } = useRouteMatch();
   return (
     <Switch>
-      <Route path="/" exact component={Main} />
-      <Route path="/coin-market" exact component={CoinMarket} />
-      <Route path="/trading-bot" exact component={TradingBot} />
-      <Route path="/simulation" exact component={Simulation} />
-      <Route path="/portfolio" exact component={Portfolio} />
-      <Redirect from="*" to="/" />
+      <Route path={`${path}/dashboard`} component={Main} />
+      <Route path={`${path}/coin-market`} component={CoinMarket} />
+      <Route path={`${path}/trading-bot`} exact component={TradingBot} />
+      <Route path={`${path}/simulation`} exact component={Simulation} />
+      <Route path={`${path}/portfolio`} exact component={Portfolio} />
+      <Redirect from="*" to={`${path}/dashboard`} />
     </Switch>
   );
 }

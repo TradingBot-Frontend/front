@@ -10,4 +10,6 @@ const createRootReducer = (history: History): Reducer =>
     auth: authReducer,
   });
 
+export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;
+
 export default createRootReducer;
