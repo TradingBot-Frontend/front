@@ -21,7 +21,7 @@ const CoinMarket = () => {
       <Button onClick={handleOpen}>private setting</Button>
       <Modal open={open} onClose={handleClose}>
         <>
-          <PrivateSetting />
+          <PrivateSetting handleClose={handleClose} />
         </>
       </Modal>
     </>

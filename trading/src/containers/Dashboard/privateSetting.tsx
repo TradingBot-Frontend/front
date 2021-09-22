@@ -14,7 +14,6 @@ const style = {
   width: 400,
   height: 650,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -33,7 +32,12 @@ const TextFields = styled(TextField)`
   .MuiOutlinedInput-input {
     padding: 0.5rem;
   }
+  input[disabled] {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
 `;
+
 const BtnWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -52,7 +56,7 @@ const FooterWrapper = styled.div`
 `;
 const Buttons = styled(Button)`
   color: #ffffff;
-  background-color: #2908e2;
+  background-color: #3072eb;
   width: 7rem;
 `;
 const ConfirmButton = styled(Button)`
@@ -69,11 +73,14 @@ const CancleButton = styled(Button)`
   width: 11rem;
   margin: 0.5rem 0rem 0rem 0.5rem;
 `;
-const PrivateSetting = () => {
+interface ISettingProps {
+  handleClose: () => void;
+}
+const PrivateSetting = ({ handleClose }: ISettingProps) => {
   const [states, setStates] = useState({
     password: '',
     pwConfirm: '',
-    exchange: '',
+    exchange: 'bitsum',
     apiKey: '',
     secretKey: '',
   });
@@ -85,7 +92,7 @@ const PrivateSetting = () => {
     e.preventDefault();
     console.log('submit:', states);
   };
-  const handleValidate = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleValidate = () => {
     setValidate(!validate);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,16 +109,14 @@ const PrivateSetting = () => {
       exchange: e.target.value,
     });
   };
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('클릭!');
-  };
-  const handleSubmitClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = () => {
+    handleClose();
     console.log('클릭!');
   };
   return (
     <Paper>
       <Box sx={style}>
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit}>
           <InputWrapper>
             <span className="lable">ID</span>
             <TextFields
@@ -120,6 +125,7 @@ const PrivateSetting = () => {
               //   onChange={onTextChange}
               value="dgsg"
               disabled
+
               // label="ID"
             />
           </InputWrapper>
@@ -180,22 +186,22 @@ const PrivateSetting = () => {
               //   value="dgsg"
             />
           </InputWrapper>
-        </form>
-        <FooterWrapper>
-          <div className="validate">
-            <Buttons onClick={handleValidate}>validate</Buttons>
-            {validate && (
-              <>
-                <CheckIcon style={{ color: 'green' }} />
-                <span className="validateString">유효한 API Key 입니다.</span>
-              </>
-            )}
-          </div>
-          <BtnWrapper>
-            <ConfirmButton type="submit">save</ConfirmButton>
-            <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-          </BtnWrapper>
-        </FooterWrapper>
+          <FooterWrapper>
+            <div className="validate">
+              <Buttons onClick={handleValidate}>validate</Buttons>
+              {validate && (
+                <>
+                  <CheckIcon style={{ color: 'green' }} />
+                  <span className="validateString">유효한 API Key 입니다.</span>
+                </>
+              )}
+            </div>
+            <BtnWrapper>
+              <ConfirmButton type="submit">save</ConfirmButton>
+              <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+            </BtnWrapper>
+          </FooterWrapper>
+        </Box>
       </Box>
     </Paper>
   );
