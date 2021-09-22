@@ -8,14 +8,24 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { Alert } from '@mui/material';
 import { SignUpContainerProps } from '../../containers/AuthContainer/SignUpContainer';
 
 interface SignUpProps extends SignUpContainerProps {
   handleChange: React.ChangeEventHandler<HTMLInputElement>;
+  handlePasswordConfirm: React.ChangeEventHandler<HTMLInputElement>;
   handleSignUp: () => void;
+  localMsg: string;
 }
 
-export default function SignUp({ open, handleClose, handleChange, handleSignUp }: SignUpProps): JSX.Element {
+export default function SignUp({
+  open,
+  handleClose,
+  handleChange,
+  handlePasswordConfirm,
+  handleSignUp,
+  localMsg,
+}: SignUpProps): JSX.Element {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -23,6 +33,9 @@ export default function SignUp({ open, handleClose, handleChange, handleSignUp }
         <DialogContent>
           <Box component="form">
             <Grid container alignItems="center">
+              <Grid item xs={12}>
+                {localMsg ? <Alert severity="warning">{localMsg}</Alert> : null}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   autoFocus
@@ -57,6 +70,7 @@ export default function SignUp({ open, handleClose, handleChange, handleSignUp }
                   label="PasswordConfirm"
                   name="passwordConfirm"
                   type="password"
+                  onChange={handlePasswordConfirm}
                 />
               </Grid>
               <Grid item xs={12}>

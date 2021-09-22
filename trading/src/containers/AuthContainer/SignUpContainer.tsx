@@ -13,7 +13,9 @@ export default function SignUpContainer({ open, handleClose }: SignUpContainerPr
   const [form, setValues] = useState({
     email: '',
     password: '',
+    passwordConfirm: '',
     username: '',
+    localMsg: '',
   });
   const dispatch = useDispatch();
 
@@ -24,15 +26,59 @@ export default function SignUpContainer({ open, handleClose }: SignUpContainerPr
     });
   };
 
+  const handlePasswordConfirm: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValues({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSignUp = () => {
-    const { email, password, username } = form;
-    const userInfo = { email, password, username };
-    dispatch(signupActions.request(userInfo));
+    const { email, password, passwordConfirm, username } = form;
+    if (email !== '' && password !== '' && passwordConfirm !== '' && username !== '' && password === passwordConfirm) {
+      setValues({
+        ...form,
+        localMsg: '',
+      });
+      const userInfo = { email, password, username };
+      dispatch(signupActions.request(userInfo));
+      handleClose();
+    } else if (password === passwordConfirm) {
+      setValues({
+        ...form,
+        localMsg: '정보를 다 채워주세요.',
+      });
+    }
   };
 
   useEffect(() => {
-    console.log('form', form);
-  }, [form]);
+    const { password, passwordConfirm } = form;
+    if (passwordConfirm === '') {
+      setValues({
+        ...form,
+        localMsg: '',
+      });
+    } else if (password !== passwordConfirm) {
+      setValues({
+        ...form,
+        localMsg: '비밀번호가 일치하지 않습니다.',
+      });
+    } else if (password === passwordConfirm) {
+      setValues({
+        ...form,
+        localMsg: '',
+      });
+    }
+  }, [form.passwordConfirm]);
 
-  return <SignUp open={open} handleClose={handleClose} handleChange={handleChange} handleSignUp={handleSignUp} />;
+  return (
+    <SignUp
+      open={open}
+      handleClose={handleClose}
+      handleChange={handleChange}
+      handlePasswordConfirm={handlePasswordConfirm}
+      handleSignUp={handleSignUp}
+      localMsg={form.localMsg}
+    />
+  );
 }
