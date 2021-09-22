@@ -7,40 +7,41 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import AndroidIcon from '@material-ui/icons/Android';
 import DescriptionIcon from '@material-ui/icons/Description';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 export const MainListItems = () => {
   const history = useHistory();
   const handleClick = (url: string) => {
-    history.push(`./${url}`);
+    history.push(`${url}`);
   };
+  const { url } = useRouteMatch();
   return (
     <div>
-      <ListItem button onClick={() => handleClick('')}>
+      <ListItem button onClick={() => handleClick(`${url}`)}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
-      <ListItem button onClick={() => handleClick('coin-market')}>
+      <ListItem button onClick={() => handleClick(`${url}/coin-market`)}>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Coin Market" />
       </ListItem>
-      <ListItem button onClick={() => handleClick('trading-bot')}>
+      <ListItem button onClick={() => handleClick(`${url}/trading-bot`)}>
         <ListItemIcon>
           <AndroidIcon />
         </ListItemIcon>
         <ListItemText primary="Trading bot" />
       </ListItem>
-      <ListItem button onClick={() => handleClick('portfolio')}>
+      <ListItem button onClick={() => handleClick(`${url}/portfolio`)}>
         <ListItemIcon>
           <DescriptionIcon />
         </ListItemIcon>
         <ListItemText primary="Portfolio" />
       </ListItem>
-      <ListItem button onClick={() => handleClick('simulation')}>
+      <ListItem button onClick={() => handleClick(`${url}/simulation`)}>
         <ListItemIcon>
           <PlayCircleOutlineIcon />
         </ListItemIcon>
