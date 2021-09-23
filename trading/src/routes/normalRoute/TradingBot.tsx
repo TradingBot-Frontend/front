@@ -5,7 +5,7 @@ import ContentWrapper from '@components/common/ContentWrapper';
 
 const TradingBot = (): JSX.Element => {
   return (
-    <ContentWrapper title="TradingBot">
+    <ContentWrapper title="TradingBot" addButton={<>add</>}>
       <div>
         &nbsp;TradingBot TradingBot Content &nbsp; TradingBot Content &nbsp;
         &nbsp;TradingBot TradingBot Content &nbsp; TradingBot Content &nbsp;
