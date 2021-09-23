@@ -1,14 +1,17 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
 interface ContentWrapperProps {
   title: string;
+  addButton?: JSX.Element;
   children: JSX.Element;
 }
 
 export default function ContentWrapper({
   title,
+  addButton,
   children,
 }: ContentWrapperProps): JSX.Element {
   return (
@@ -20,6 +23,11 @@ export default function ContentWrapper({
     >
       <Typography variant="h3" component="div">
         {title}
+        {addButton ? (
+          <IconButton aria-label="add" sx={{ marginLeft: '0.8rem' }}>
+            add
+          </IconButton>
+        ) : null}
       </Typography>
       <Box
         sx={{
