@@ -24,7 +24,13 @@ const sample: readonly Sample[] = [
   ['페이코인', '55,000,000', '+2.5%', '151.445'],
 ];
 
-function createData(id: number, name: string, currentPrice: string, rateOfChange: string, money: string): Data {
+function createData(
+  id: number,
+  name: string,
+  currentPrice: string,
+  rateOfChange: string,
+  money: string,
+): Data {
   return { id, name, currentPrice, rateOfChange, money };
 }
 
@@ -82,11 +88,22 @@ const DsbCoinList = () => {
       <Box sx={{ minWidth: 300, margin: '0rem 15rem 0rem 0rem' }}>
         <h1>Coin market</h1>
       </Box>
-      <Box component="div" sx={{ display: 'flex', flexDirection: 'row-reverse', margin: '0rem 0rem 1rem 0rem' }}>
-        <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} />
+      <Box
+        component="div"
+        sx={{
+          display: 'flex',
+          flexDirection: 'row-reverse',
+          margin: '0rem 0rem 1rem 0rem',
+        }}
+      >
+        <CommonInputContainer
+          placeholder="search"
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+        />
       </Box>
 
-      <ReactVirtualizedTable rows={filterCoinContent} />
+      <ReactVirtualizedTable rows={filterCoinContent} tableHeight={350} />
     </>
   );
 };
