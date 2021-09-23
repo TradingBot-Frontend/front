@@ -17,6 +17,7 @@ const MainWapper = styled.div`
   .buttons {
     display: flex;
     flex-direction: row-reverse;
+    margin: 0.5rem 0.5rem 0rem 0rem;
   }
 `;
 const Main = () => {
@@ -29,7 +30,10 @@ const Main = () => {
   return (
     <MainWapper>
       <div className="buttons">
-        <Button style={{ background: '#3072eb', color: 'white' }} onClick={handleOpen}>
+        <Button
+          style={{ background: '#3072eb', color: 'white' }}
+          onClick={handleOpen}
+        >
           private setting
         </Button>
       </div>
