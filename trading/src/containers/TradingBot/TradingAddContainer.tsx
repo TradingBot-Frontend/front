@@ -93,11 +93,14 @@ interface ISettingProps {
 }
 const TradingBotAdd = ({ handleClose }: ISettingProps) => {
   const [states, setStates] = useState({
-    password: '',
-    pwConfirm: '',
-    exchange: 'bitsum',
-    apiKey: '',
-    secretKey: '',
+    botName: '',
+    coinName: '',
+    movingLine: 'bitsum',
+    standard: '',
+    standardLine: '',
+    amount: '',
+    totalBuy: '',
+    earnRate: '',
   });
   const [validate, setValidate] = useState(false);
   useEffect(() => {
@@ -118,15 +121,18 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
       [id]: value,
     });
   };
-  const handleSelectChange = (e: SelectChangeEvent) => {
+  const handleSelectChange = (e: SelectChangeEvent, key: string) => {
     setStates({
       ...states,
-      exchange: e.target.value,
+      [key]: e.target.value,
     });
   };
   const handleButtonClick = () => {
     handleClose();
     console.log('클릭!');
+  };
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('스위치 on/off');
   };
   return (
     <Paper>
@@ -137,23 +143,32 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
             <InputWrapper>
               <span className="lable">트레이딩봇 이름</span>
               <SmallTextField
-                id="pwConfirm"
+                id="botName"
                 variant="outlined"
                 onChange={handleChange}
               />
             </InputWrapper>
             <InputWrapper>
               <span className="lable">암호화폐명</span>
-              <Select
-                id="exchange"
-                style={{ width: '7rem' }}
-                defaultValue="bitsum"
-                onChange={handleSelectChange}
-              >
-                <MenuItem value="bitsum">BTC</MenuItem>
-                <MenuItem value="upbit">ADA</MenuItem>
-                <MenuItem value="binance">BTT</MenuItem>
-              </Select>
+              <div className="row">
+                <Select
+                  id="coinName"
+                  style={{ width: '7rem' }}
+                  defaultValue="bitsum"
+                  onChange={(e) => handleSelectChange(e, 'coinName')}
+                >
+                  <MenuItem value="bitsum">BTC</MenuItem>
+                  <MenuItem value="upbit">ADA</MenuItem>
+                  <MenuItem value="binance">BTT</MenuItem>
+                </Select>
+                <div>
+                  <Switch
+                    // checked={true}
+                    onChange={handleSwitchChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                </div>
+              </div>
             </InputWrapper>
           </Box>
           <Divider />
@@ -162,44 +177,45 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
             <InputWrapper>
               <span className="lable">이동평균선</span>
               <Select
-                id="exchange"
+                id="movingLine"
                 style={{ width: '7rem' }}
                 defaultValue="bitsum"
-                onChange={handleSelectChange}
+                onChange={(e) => handleSelectChange(e, 'coinName')}
               >
-                <MenuItem value="bitsum">BTC</MenuItem>
-                <MenuItem value="upbit">ADA</MenuItem>
-                <MenuItem value="binance">BTT</MenuItem>
+                <MenuItem value="7ma">7MA</MenuItem>
+                <MenuItem value="60ma">60MA</MenuItem>
+                <MenuItem value="120ma">120MA</MenuItem>
               </Select>
             </InputWrapper>
             <InputWrapper>
               <span className="lable">조건</span>
               <div className="row">
-                <TextFields
+                <SmallTextField
                   size="small"
-                  id="pwConfirm"
+                  id="standard"
                   variant="outlined"
                   label="기준"
                   onChange={handleChange}
                   style={{ width: '6rem', margin: '0rem 1rem 0rem 0rem' }}
                   //   value="dgsg"
                 />
+
                 <Select
-                  id="exchange"
-                  style={{ width: '7rem', height: '2.25rem' }}
-                  defaultValue="bitsum"
-                  onChange={handleSelectChange}
+                  id="standardLine"
+                  style={{ width: '7rem', height: '2.5rem' }}
+                  defaultValue="up"
+                  onChange={(e) => handleSelectChange(e, 'standardLine')}
                 >
-                  <MenuItem value="bitsum">BTC</MenuItem>
-                  <MenuItem value="upbit">ADA</MenuItem>
-                  <MenuItem value="binance">BTT</MenuItem>
+                  <MenuItem value="up">이상</MenuItem>
+                  <MenuItem value="down">이하</MenuItem>
+                  <MenuItem value="binance">??</MenuItem>
                 </Select>
               </div>
             </InputWrapper>
             <InputWrapper>
               <span className="lable">수량</span>
-              <TextFields
-                id="pwConfirm"
+              <SmallTextField
+                id="amount"
                 variant="outlined"
                 onChange={handleChange}
                 //   value="dgsg"
@@ -208,7 +224,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
             <InputWrapper>
               <span className="lable">매수총액(현재가)</span>
               <TextFields
-                id="pwConfirm"
+                id="totalBuy"
                 variant="outlined"
                 onChange={handleChange}
                 disabled
@@ -218,18 +234,18 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
           </Box>
           <Divider />
           <Box>
-            <h3>매수설정</h3>
+            <h3>매도설정</h3>
             <InputWrapper>
               <span className="lable">수익률</span>
               <Select
-                id="exchange"
+                id="earnRate"
                 style={{ width: '7rem' }}
-                defaultValue="bitsum"
-                onChange={handleSelectChange}
+                defaultValue="ten"
+                onChange={(e) => handleSelectChange(e, 'earnRate')}
               >
-                <MenuItem value="bitsum">10%</MenuItem>
-                <MenuItem value="upbit">20%</MenuItem>
-                <MenuItem value="binance">30%</MenuItem>
+                <MenuItem value="ten">10%</MenuItem>
+                <MenuItem value="twenty">20%</MenuItem>
+                <MenuItem value="thirty">30%</MenuItem>
               </Select>
             </InputWrapper>
           </Box>
