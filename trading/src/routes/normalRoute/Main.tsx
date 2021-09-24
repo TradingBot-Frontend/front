@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { Box, Divider } from '@material-ui/core';
-import PrivateSetting from '@containers/Dashboard/privateSetting';
+import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid } from '@material-ui/core';
 
 import { MybotBoard } from '@containers/Dashboard/MybotBoard';
-import DsbCoinList from '@containers/Dashboard/DsbCoinList';
+import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 
 const MainWapper = styled.div`
   display: flex;
