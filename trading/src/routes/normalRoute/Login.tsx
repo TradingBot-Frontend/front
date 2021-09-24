@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginActions } from '@redux/reducers/authReducer';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -18,6 +18,8 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SignUpContainer from '@containers/AuthContainer/SignUpContainer';
+import { useHistory } from 'react-router';
+import { RootState } from '@redux/reducers';
 
 const useStyles = makeStyles((theme) => ({
   realRoot: {
@@ -56,7 +58,11 @@ export default function Login(): JSX.Element {
     email: '',
     password: '',
   });
+  const history = useHistory();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
   const handleClickSignUp = () => {
     setOpen(true);
   };
@@ -77,15 +83,40 @@ export default function Login(): JSX.Element {
     dispatch(loginActions.request(user));
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      dispatch(
+        loginActions.success({
+          data: {
+            msg: localStorage.getItem('token'),
+          },
+        }),
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/main/dashboard');
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className={classes.root}>
-      <Box sx={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center' }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center' }}
+      >
         <Grid container alignItems="center">
           <Grid item xs={12}>
             <Container component="main" maxWidth="xs">
               <Card sx={{ minWidth: 275 }} className={classes.card}>
                 <CardContent>
-                  <Typography variant="h4" align="center" color="text.primary" gutterBottom>
+                  <Typography
+                    variant="h4"
+                    align="center"
+                    color="text.primary"
+                    gutterBottom
+                  >
                     TradingBot
                   </Typography>
                   <Box
@@ -121,7 +152,12 @@ export default function Login(): JSX.Element {
                       control={<Checkbox value="remember" color="primary" />}
                       label="로그인 상태 유지할래요"
                     />
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 2 }}
+                    >
                       Login
                     </Button>
                   </Box>
