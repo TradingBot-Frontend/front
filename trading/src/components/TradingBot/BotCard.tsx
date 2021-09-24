@@ -5,7 +5,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ApexChart from 'react-apexcharts';
-import sb from '../../assets/images/sb.png';
+import Box from '@mui/material/Box';
+import bit from '../../assets/images/bitcoin-icon.png';
 
 interface BotCardProps {
   title: string;
@@ -46,44 +47,32 @@ export default function BotCard({ title, profit }: BotCardProps): JSX.Element {
           show: false,
         },
       },
-      //   stroke: {
-      //     curve: 'straight',
-      //   },
-      // fill: {
-      //   type: 'gradient',
-      //   gradient: {
-      //     shadeIntensity: 1,
-      //     opacityFrom: 0.7,
-      //     opacityTo: 0.9,
-      //     stops: [0, 90, 100],
-      //   },
-      // },
-      //   xaxis: {
-      //     categories: [
-      //       '01 Jan',
-      //       '02 Jan',
-      //       '03 Jan',
-      //       '04 Jan',
-      //       '05 Jan',
-      //       '06 Jan',
-      //       '07 Jan',
-      //     ],
-      //   },
     },
   });
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 380 }}>
       <CardContent>
         <Stack spacing={1}>
           <Stack spacing={2} direction="row">
-            <img src={sb} alt="coin" width="70" height="70" />
+            <img src={bit} alt="coin" width="70" height="70" />
             <Stack spacing={2}>
-              <Typography>{title}</Typography>
+              <Typography sx={{ fontWeight: 'bold', fontSize: '1.3rem' }}>
+                {title}
+              </Typography>
               <Typography>{profit}</Typography>
             </Stack>
-            <Typography variant="h2" gutterBottom>
-              On
-            </Typography>
+            <Box
+              component="div"
+              sx={{
+                flex: '1',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="h3" align="center">
+                On
+              </Typography>
+            </Box>
           </Stack>
           <ApexChart
             options={chart.options}
