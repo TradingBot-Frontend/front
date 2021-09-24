@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid } from '@material-ui/core';
+import styled from 'styled-components';
 import { ReactVirtualizedTable } from '@components/common/ReactVirtualizedTable';
+import { Container, Grid } from '@material-ui/core';
 import Box from '@mui/material/Box';
-import { TimeLine } from '@containers/CoinMarket/TimeLineContainer';
-import { CommonInputContainer } from '@containers/common/InputContainer';
 import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
+import { CommonInputContainer } from '@containers/common/InputContainer';
 
 interface Data {
   name: string;
@@ -13,11 +13,6 @@ interface Data {
   rateOfChange: string;
   money: string;
   id: number;
-}
-interface stateProps {
-  coinContent: Data[];
-  filterCoinContent: Data[];
-  keyword: string;
 }
 type Sample = [string, string, string, string];
 
@@ -45,8 +40,13 @@ for (let i = 0; i < 200; i += 1) {
   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
   rows.push(createData(i, ...randomSelection));
 }
+const DsbCoinListWrapper = styled.div`
+  width: 100%;
+  height: 20rem;
+  display: flex;
+`;
 
-const CoinMarket = () => {
+const DsbCoinList = () => {
   const [states, setStates] = useState<any>({
     coinContent: [],
     filterCoinContent: [],
@@ -84,37 +84,27 @@ const CoinMarket = () => {
     }
   };
   return (
-    <Container>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Box sx={{ width: 300, margin: '0rem 30rem 0rem 0rem' }}>
-            <h1>Coin market</h1>
-          </Box>
-          <Box
-            component="div"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row-reverse',
-              margin: '0rem 0rem 1rem 0rem',
-            }}
-          >
-            <CommonInputContainer
-              placeholder="search"
-              onChange={handleInputChange}
-              onKeyPress={handleKeyPress}
-            />
-          </Box>
+    <>
+      <Box sx={{ minWidth: 300, margin: '0rem 15rem 0rem 0rem' }}>
+        <h1>Coin market</h1>
+      </Box>
+      <Box
+        component="div"
+        sx={{
+          display: 'flex',
+          flexDirection: 'row-reverse',
+          margin: '0rem 0rem 1rem 0rem',
+        }}
+      >
+        <CommonInputContainer
+          placeholder="search"
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+        />
+      </Box>
 
-          <ReactVirtualizedTable rows={filterCoinContent} tableHeight={600} />
-        </Grid>
-        <Grid item xs={6}>
-          <Box sx={{ width: 300, margin: '0rem 30rem 0rem 0rem' }}>
-            <h1>실시간 타임라인</h1>
-          </Box>
-          <TimeLine />
-        </Grid>
-      </Grid>
-    </Container>
+      <ReactVirtualizedTable rows={filterCoinContent} tableHeight={350} />
+    </>
   );
 };
-export default CoinMarket;
+export default DsbCoinList;

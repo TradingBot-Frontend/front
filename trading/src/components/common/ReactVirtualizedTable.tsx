@@ -4,7 +4,13 @@ import { withStyles, WithStyles } from '@mui/styles';
 import { Theme, createTheme } from '@mui/material/styles';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
-import { AutoSizer, Column, Table, TableCellRenderer, TableHeaderProps } from 'react-virtualized';
+import {
+  AutoSizer,
+  Column,
+  Table,
+  TableCellRenderer,
+  TableHeaderProps,
+} from 'react-virtualized';
 
 const styles = (theme: Theme) =>
   ({
@@ -86,20 +92,31 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
         })}
         variant="body"
         style={{ height: rowHeight }}
-        align={(columnIndex != null && columns[columnIndex].numeric) || false ? 'right' : 'left'}
+        align={
+          (columnIndex != null && columns[columnIndex].numeric) || false
+            ? 'right'
+            : 'left'
+        }
       >
         {cellData}
       </TableCell>
     );
   };
 
-  headerRenderer = ({ label, columnIndex }: TableHeaderProps & { columnIndex: number }) => {
+  headerRenderer = ({
+    label,
+    columnIndex,
+  }: TableHeaderProps & { columnIndex: number }) => {
     const { headerHeight, columns, classes } = this.props;
 
     return (
       <TableCell
         component="div"
-        className={clsx(classes.tableCell, classes.flexContainer, classes.noClick)}
+        className={clsx(
+          classes.tableCell,
+          classes.flexContainer,
+          classes.noClick,
+        )}
         variant="head"
         style={{ height: headerHeight }}
         align={columns[columnIndex].numeric || false ? 'right' : 'left'}
@@ -110,7 +127,8 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
   };
 
   render() {
-    const { classes, columns, rowHeight, headerHeight, ...tableProps } = this.props;
+    const { classes, columns, rowHeight, headerHeight, ...tableProps } =
+      this.props;
     return (
       <AutoSizer>
         {({ height, width }) => (
@@ -151,7 +169,9 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
 }
 
 const defaultTheme = createTheme();
-const VirtualizedTable = withStyles(styles, { defaultTheme })(MuiVirtualizedTable);
+const VirtualizedTable = withStyles(styles, { defaultTheme })(
+  MuiVirtualizedTable,
+);
 
 // ---
 
@@ -164,6 +184,7 @@ interface Data {
 }
 interface arrayProps {
   rows: Data[];
+  tableHeight: number;
 }
 // type Sample = [string, string, string, string];
 
@@ -186,9 +207,12 @@ interface arrayProps {
 //   rows.push(createData(i, ...randomSelection));
 // }
 
-export const ReactVirtualizedTable: React.FC<arrayProps> = ({ rows }) => {
+export const ReactVirtualizedTable: React.FC<arrayProps> = ({
+  rows,
+  tableHeight,
+}) => {
   return (
-    <Paper style={{ height: 600, width: '100%' }}>
+    <Paper style={{ height: tableHeight, width: '100%' }}>
       <VirtualizedTable
         rowCount={rows.length}
         rowGetter={({ index }) => rows[index]}

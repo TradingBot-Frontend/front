@@ -7,12 +7,15 @@ interface ContentWrapperProps {
   title: string;
   addButton?: JSX.Element;
   children: JSX.Element;
+  handleOpen?: () => void;
 }
 
 export default function ContentWrapper({
   title,
   addButton,
   children,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  handleOpen = () => {},
 }: ContentWrapperProps): JSX.Element {
   return (
     <Box
@@ -24,7 +27,11 @@ export default function ContentWrapper({
       <Typography variant="h3" component="div">
         {title}
         {addButton ? (
-          <IconButton aria-label="add" sx={{ marginLeft: '0.8rem' }}>
+          <IconButton
+            aria-label="add"
+            sx={{ marginLeft: '0.8rem' }}
+            onClick={handleOpen}
+          >
             add
           </IconButton>
         ) : null}
