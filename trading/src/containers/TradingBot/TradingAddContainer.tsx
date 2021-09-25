@@ -10,7 +10,6 @@ import Switch from '@mui/material/Switch';
 import { ReadStream } from 'fs';
 
 const SmallTextField = ({ ...rest }: any) => {
-  console.log('rest', rest);
   return <TextField size="small" {...rest} />;
 };
 
@@ -95,23 +94,19 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
   const [states, setStates] = useState({
     botName: '',
     coinName: '',
-    movingLine: 'bitsum',
+    movingLine: '7ma',
     standard: '',
-    standardLine: '',
+    standardLine: 'up',
     amount: '',
     totalBuy: '',
     earnRate: '',
   });
-  const [validate, setValidate] = useState(false);
   useEffect(() => {
     console.log('states:', states);
   }, [states]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
-  };
-  const handleValidate = () => {
-    setValidate(!validate);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -179,7 +174,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
               <Select
                 id="movingLine"
                 style={{ width: '7rem' }}
-                defaultValue="bitsum"
+                defaultValue="7ma"
                 onChange={(e) => handleSelectChange(e, 'coinName')}
               >
                 <MenuItem value="7ma">7MA</MenuItem>
