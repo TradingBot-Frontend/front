@@ -5,16 +5,24 @@ import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import CheckIcon from '@mui/icons-material/Check';
+import Divider from '@material-ui/core/Divider';
+import Switch from '@mui/material/Switch';
+import { ReadStream } from 'fs';
+
+const SmallTextField = ({ ...rest }: any) => {
+  return <TextField size="small" {...rest} />;
+};
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: 650,
+  width: 600,
+  height: 900,
   bgcolor: 'background.paper',
   boxShadow: 24,
+  borderRadius: 25,
   p: 4,
 };
 
@@ -23,14 +31,19 @@ const InputWrapper = styled.div`
   margin: 0rem 0rem 2rem 0rem;
   .lable {
     display: flex;
-    width: 4rem;
+    width: 7rem;
     align-items: center;
     margin: 0rem 3rem 0rem 0rem;
+  }
+  .row {
+    display: flex;
+    flex-direction: row;
   }
 `;
 const TextFields = styled(TextField)`
   .MuiOutlinedInput-input {
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
+    /* height: 0.5rem; */
   }
   input[disabled] {
     background-color: #cccccc;
@@ -42,6 +55,7 @@ const BtnWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 4rem 0rem 0rem 0rem;
 `;
 const FooterWrapper = styled.div`
   display: flex;
@@ -78,22 +92,21 @@ interface ISettingProps {
 }
 const TradingBotAdd = ({ handleClose }: ISettingProps) => {
   const [states, setStates] = useState({
-    password: '',
-    pwConfirm: '',
-    exchange: 'bitsum',
-    apiKey: '',
-    secretKey: '',
+    botName: '',
+    coinName: '',
+    movingLine: '7ma',
+    standard: '',
+    standardLine: 'up',
+    amount: '',
+    totalBuy: '',
+    earnRate: '',
   });
-  const [validate, setValidate] = useState(false);
   useEffect(() => {
     console.log('states:', states);
   }, [states]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
-  };
-  const handleValidate = () => {
-    setValidate(!validate);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -103,104 +116,136 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
       [id]: value,
     });
   };
-  const handleSelectChange = (e: SelectChangeEvent) => {
+  const handleSelectChange = (e: SelectChangeEvent, key: string) => {
     setStates({
       ...states,
-      exchange: e.target.value,
+      [key]: e.target.value,
     });
   };
   const handleButtonClick = () => {
     handleClose();
     console.log('클릭!');
   };
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('스위치 on/off');
+  };
   return (
     <Paper>
       <Box sx={style}>
         <Box component="form" onSubmit={handleSubmit}>
-          <InputWrapper>
-            <span className="lable">ID</span>
-            <TextFields
-              id="id"
-              variant="outlined"
-              //   onChange={onTextChange}
-              value="dgsg"
-              disabled
+          <Box>
+            <h3>트레이딩봇</h3>
+            <InputWrapper>
+              <span className="lable">트레이딩봇 이름</span>
+              <SmallTextField
+                id="botName"
+                variant="outlined"
+                onChange={handleChange}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <span className="lable">암호화폐명</span>
+              <div className="row">
+                <Select
+                  id="coinName"
+                  style={{ width: '7rem' }}
+                  defaultValue="bitsum"
+                  onChange={(e) => handleSelectChange(e, 'coinName')}
+                >
+                  <MenuItem value="bitsum">BTC</MenuItem>
+                  <MenuItem value="upbit">ADA</MenuItem>
+                  <MenuItem value="binance">BTT</MenuItem>
+                </Select>
+                <div>
+                  <Switch
+                    // checked={true}
+                    onChange={handleSwitchChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                </div>
+              </div>
+            </InputWrapper>
+          </Box>
+          <Divider />
+          <Box>
+            <h3>매수설정</h3>
+            <InputWrapper>
+              <span className="lable">이동평균선</span>
+              <Select
+                id="movingLine"
+                style={{ width: '7rem' }}
+                defaultValue="7ma"
+                onChange={(e) => handleSelectChange(e, 'coinName')}
+              >
+                <MenuItem value="7ma">7MA</MenuItem>
+                <MenuItem value="60ma">60MA</MenuItem>
+                <MenuItem value="120ma">120MA</MenuItem>
+              </Select>
+            </InputWrapper>
+            <InputWrapper>
+              <span className="lable">조건</span>
+              <div className="row">
+                <SmallTextField
+                  size="small"
+                  id="standard"
+                  variant="outlined"
+                  label="기준"
+                  onChange={handleChange}
+                  style={{ width: '6rem', margin: '0rem 1rem 0rem 0rem' }}
+                  //   value="dgsg"
+                />
 
-              // label="ID"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">email</span>
-            <TextFields
-              id="email"
-              variant="outlined"
-              // onChange={onTextChange}
-              value="dgsg"
-              disabled
-              // label="ID"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">Password</span>
-            <TextFields
-              id="password"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
+                <Select
+                  id="standardLine"
+                  style={{ width: '7rem', height: '2.5rem' }}
+                  defaultValue="up"
+                  onChange={(e) => handleSelectChange(e, 'standardLine')}
+                >
+                  <MenuItem value="up">이상</MenuItem>
+                  <MenuItem value="down">이하</MenuItem>
+                  <MenuItem value="binance">??</MenuItem>
+                </Select>
+              </div>
+            </InputWrapper>
+            <InputWrapper>
+              <span className="lable">수량</span>
+              <SmallTextField
+                id="amount"
+                variant="outlined"
+                onChange={handleChange}
+                //   value="dgsg"
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <span className="lable">매수총액(현재가)</span>
+              <TextFields
+                id="totalBuy"
+                variant="outlined"
+                onChange={handleChange}
+                disabled
+                value="6.353.24원"
+              />
+            </InputWrapper>
+          </Box>
+          <Divider />
+          <Box>
+            <h3>매도설정</h3>
+            <InputWrapper>
+              <span className="lable">수익률</span>
+              <Select
+                id="earnRate"
+                style={{ width: '7rem' }}
+                defaultValue="ten"
+                onChange={(e) => handleSelectChange(e, 'earnRate')}
+              >
+                <MenuItem value="ten">10%</MenuItem>
+                <MenuItem value="twenty">20%</MenuItem>
+                <MenuItem value="thirty">30%</MenuItem>
+              </Select>
+            </InputWrapper>
+          </Box>
 
-              // label="ID"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">PW Confirm</span>
-            <TextFields
-              id="pwConfirm"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">거래소</span>
-            <Select
-              id="exchange"
-              style={{ width: '7rem' }}
-              defaultValue="bitsum"
-              onChange={handleSelectChange}
-            >
-              <MenuItem value="bitsum">빗썸</MenuItem>
-              <MenuItem value="upbit">업비트</MenuItem>
-              <MenuItem value="binance">바이넨스</MenuItem>
-            </Select>
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">API key</span>
-            <TextFields
-              id="apiKey"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">Secret Key</span>
-            <TextFields
-              id="secretKey"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-            />
-          </InputWrapper>
           <FooterWrapper>
-            <div className="validate">
-              <Buttons onClick={handleValidate}>validate</Buttons>
-              {validate && (
-                <>
-                  <CheckIcon style={{ color: 'green' }} />
-                  <span className="validateString">유효한 API Key 입니다.</span>
-                </>
-              )}
-            </div>
             <BtnWrapper>
               <ConfirmButton type="submit">save</ConfirmButton>
               <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
