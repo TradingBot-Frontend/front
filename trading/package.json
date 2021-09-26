@@ -9,9 +9,10 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.4",
-    "@mui/icons-material": "^5.0.0",
+    "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.0",
     "@mui/styles": "^5.0.1",
+    "@redux-saga/core": "^1.1.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -27,6 +28,7 @@
     "clsx": "^1.1.1",
     "connected-react-router": "^6.9.1",
     "dotenv": "^10.0.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-apexcharts": "^1.3.9",
     "react-dom": "^17.0.2",
@@ -40,7 +42,8 @@
     "redux-saga": "^1.1.3",
     "styled-components": "^5.3.1",
     "typescript": "^4.4.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "websocket": "^1.0.34"
   },
   "proxy": "https://bitsum-mock.herokuapp.com",
   "scripts": {
@@ -90,6 +93,7 @@
     "@storybook/react": "^6.3.8",
     "@types/react-virtualized": "^9.21.13",
     "@types/styled-components": "^5.1.14",
+    "@types/websocket": "^1.0.4",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "craco-alias": "^3.0.1",
