@@ -34,6 +34,13 @@ export default function BotCard({ title, profit }: BotCardProps): JSX.Element {
           },
         },
       },
+      grid: {
+        yaxis: {
+          lines: {
+            show: false, // 배경 가로선
+          },
+        },
+      },
       dataLabels: {
         enabled: false,
       },
@@ -50,7 +57,7 @@ export default function BotCard({ title, profit }: BotCardProps): JSX.Element {
     },
   });
   return (
-    <Card sx={{ minWidth: 380 }}>
+    <Card sx={{ minWidth: 300 }}>
       <CardContent>
         <Stack spacing={1}>
           <Stack spacing={2} direction="row">
