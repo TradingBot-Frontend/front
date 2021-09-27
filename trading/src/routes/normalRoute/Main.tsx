@@ -5,9 +5,10 @@ import { Box, Divider } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid } from '@material-ui/core';
-
+import { startLivePriceApp } from '@redux/reducers/LivePrices';
 import { MybotBoard } from '@containers/Dashboard/MybotBoard';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
+import { useDispatch } from 'react-redux';
 
 const MainWapper = styled.div`
   display: flex;
@@ -24,9 +25,14 @@ const Main = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('클릭!');
   };
+  useEffect(() => {
+    console.log('들어옴');
+    dispatch(startLivePriceApp());
+  }, []);
   return (
     <MainWapper>
       <div className="buttons">
