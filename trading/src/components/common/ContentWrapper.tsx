@@ -26,7 +26,7 @@ export default function ContentWrapper({
         padding: '2rem',
       }}
     >
-      <Typography variant="h3" component="div">
+      <Typography variant="h4" component="div">
         {title}
         {addButton ? (
           <IconButton
