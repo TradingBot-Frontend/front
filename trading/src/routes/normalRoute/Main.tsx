@@ -38,19 +38,13 @@ const Main = () => {
         </Button>
       </div>
       <Container>
-        <Grid item xs={6}>
-          <MybotBoard />
-        </Grid>
+        <MybotBoard />
         <Divider />
-        <Grid container justify="center">
-          <Box>
-            <DsbCoinList />
-          </Box>
-        </Grid>
-        <Modal open={open} onClose={handleClose}>
-          <PrivateSetting handleClose={handleClose} />
-        </Modal>
+        <DsbCoinList />
       </Container>
+      <Modal open={open} onClose={handleClose}>
+        <PrivateSetting handleClose={handleClose} />
+      </Modal>
     </MainWapper>
   );
 };

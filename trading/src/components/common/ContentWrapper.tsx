@@ -7,6 +7,7 @@ interface ContentWrapperProps {
   title: string;
   addButton?: JSX.Element;
   children: JSX.Element;
+  overflow?: string;
   handleOpen?: () => void;
 }
 
@@ -14,6 +15,7 @@ export default function ContentWrapper({
   title,
   addButton,
   children,
+  overflow = 'auto',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleOpen = () => {},
 }: ContentWrapperProps): JSX.Element {
@@ -41,7 +43,7 @@ export default function ContentWrapper({
           display: 'flex',
           height: '80vh',
           padding: '1rem 0rem 0rem 0rem',
-          overflow: 'auto',
+          overflow,
         }}
       >
         {children}

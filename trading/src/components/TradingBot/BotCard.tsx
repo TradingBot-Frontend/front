@@ -11,9 +11,14 @@ import bit from '../../assets/images/bitcoin-icon.png';
 interface BotCardProps {
   title: string;
   profit: string;
+  width?: number;
 }
 
-export default function BotCard({ title, profit }: BotCardProps): JSX.Element {
+export default function BotCard({
+  title,
+  profit,
+  width = 380,
+}: BotCardProps): JSX.Element {
   const [chart, setChart] = useState({
     series: [
       {
@@ -50,7 +55,7 @@ export default function BotCard({ title, profit }: BotCardProps): JSX.Element {
     },
   });
   return (
-    <Card sx={{ minWidth: 380 }}>
+    <Card sx={{ width }}>
       <CardContent>
         <Stack spacing={1}>
           <Stack spacing={2} direction="row">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactVirtualizedTable } from '@components/common/ReactVirtualizedTable';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
@@ -84,27 +84,30 @@ const DsbCoinList = () => {
     }
   };
   return (
-    <>
-      <Box sx={{ minWidth: 300, margin: '0rem 15rem 0rem 0rem' }}>
-        <h1>Coin market</h1>
-      </Box>
-      <Box
-        component="div"
-        sx={{
-          display: 'flex',
-          flexDirection: 'row-reverse',
-          margin: '0rem 0rem 1rem 0rem',
-        }}
-      >
-        <CommonInputContainer
-          placeholder="search"
-          onChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-        />
-      </Box>
-
-      <ReactVirtualizedTable rows={filterCoinContent} tableHeight={350} />
-    </>
+    // <Container sx={{ display: 'flex', justifyContent: 'center' }}>
+    <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Grid item xs={8}>
+        <Box sx={{ minWidth: 300, margin: '0rem 15rem 0rem 0rem' }}>
+          <h1>Coin market</h1>
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            margin: '0rem 0rem 1rem 0rem',
+          }}
+        >
+          <CommonInputContainer
+            placeholder="search"
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+          />
+        </Box>
+        <ReactVirtualizedTable rows={filterCoinContent} tableHeight={600} />
+      </Grid>
+    </Grid>
+    // </Container>
   );
 };
 export default DsbCoinList;
