@@ -28,7 +28,7 @@ function initWebsocket() {
       try {
         value = JSON.parse(e.data);
       } catch (error) {
-        console.error('Error parsing data:', error.data);
+        console.error('Error parsing data:', error);
       }
       console.log('value', value);
       if (value && value.type === 'ticker') {

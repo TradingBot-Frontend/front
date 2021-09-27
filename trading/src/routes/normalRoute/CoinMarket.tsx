@@ -6,7 +6,15 @@ import { TimeLine } from '@containers/CoinMarket/TimeLineContainer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
+import styled from 'styled-components';
 
+const MainWapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 90vh;
+  overflow: auto;
+`;
 interface Data {
   name: string;
   currentPrice: string;
@@ -84,37 +92,39 @@ const CoinMarket = () => {
     }
   };
   return (
-    <Container>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Box sx={{ width: 300, margin: '0rem 30rem 0rem 0rem' }}>
-            <h1>Coin market</h1>
-          </Box>
-          <Box
-            component="div"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row-reverse',
-              margin: '0rem 0rem 1rem 0rem',
-            }}
-          >
-            <CommonInputContainer
-              placeholder="search"
-              onChange={handleInputChange}
-              onKeyPress={handleKeyPress}
-            />
-          </Box>
+    <MainWapper>
+      <Container>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Box sx={{ width: 300, margin: '3rem 30rem 0rem 0rem' }}>
+              <h1>Coin market</h1>
+            </Box>
+            <Box
+              component="div"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                margin: '0rem 0rem 1rem 0rem',
+              }}
+            >
+              <CommonInputContainer
+                placeholder="search"
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+              />
+            </Box>
 
-          <ReactVirtualizedTable rows={filterCoinContent} tableHeight={600} />
+            <ReactVirtualizedTable rows={filterCoinContent} tableHeight={500} />
+          </Grid>
+          <Grid item xs={6}>
+            <Box sx={{ width: 300, margin: '3rem 30rem 0rem 0rem' }}>
+              <h1>실시간 타임라인</h1>
+            </Box>
+            <TimeLine />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Box sx={{ width: 300, margin: '0rem 30rem 0rem 0rem' }}>
-            <h1>실시간 타임라인</h1>
-          </Box>
-          <TimeLine />
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </MainWapper>
   );
 };
 export default CoinMarket;
