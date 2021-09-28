@@ -94,20 +94,23 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
   const [states, setStates] = useState({
     botName: '',
     coinName: '',
-    movingLine: '7ma',
-    standard: '',
-    standardLine: 'up',
-    amount: '',
+    bidReference: '7ma', // 이동평균선
+    bidCondition: '', // 기준
+    isBidConditionExceed: 'up', // 기준대비
+    bidQuantity: '', // 수량
     totalBuy: '',
-    earnRate: '',
+    askCondition: '', // 수익률
+    isActive: false,
   });
   useEffect(() => {
     console.log('states:', states);
   }, [states]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     console.log('id:', id, 'value:', value);
@@ -116,19 +119,23 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
       [id]: value,
     });
   };
+
   const handleSelectChange = (e: SelectChangeEvent, key: string) => {
     setStates({
       ...states,
       [key]: e.target.value,
     });
   };
+
   const handleButtonClick = () => {
     handleClose();
     console.log('클릭!');
   };
+
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('스위치 on/off');
   };
+
   return (
     <Paper>
       <Box sx={style}>
@@ -172,7 +179,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
             <InputWrapper>
               <span className="lable">이동평균선</span>
               <Select
-                id="movingLine"
+                id="bidReference"
                 style={{ width: '7rem' }}
                 defaultValue="7ma"
                 onChange={(e) => handleSelectChange(e, 'coinName')}
@@ -187,7 +194,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
               <div className="row">
                 <SmallTextField
                   size="small"
-                  id="standard"
+                  id="bidCondition"
                   variant="outlined"
                   label="기준"
                   onChange={handleChange}
@@ -196,7 +203,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
                 />
 
                 <Select
-                  id="standardLine"
+                  id="isBidConditionExceed"
                   style={{ width: '7rem', height: '2.5rem' }}
                   defaultValue="up"
                   onChange={(e) => handleSelectChange(e, 'standardLine')}
@@ -210,7 +217,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
             <InputWrapper>
               <span className="lable">수량</span>
               <SmallTextField
-                id="amount"
+                id="bidQuantity"
                 variant="outlined"
                 onChange={handleChange}
                 //   value="dgsg"
@@ -233,7 +240,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
             <InputWrapper>
               <span className="lable">수익률</span>
               <Select
-                id="earnRate"
+                id="askCondition"
                 style={{ width: '7rem' }}
                 defaultValue="ten"
                 onChange={(e) => handleSelectChange(e, 'earnRate')}
@@ -244,7 +251,6 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
               </Select>
             </InputWrapper>
           </Box>
-
           <FooterWrapper>
             <BtnWrapper>
               <ConfirmButton type="submit">save</ConfirmButton>
