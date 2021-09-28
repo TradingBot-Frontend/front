@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactVirtualizedTable } from '@components/common/ReactVirtualizedTable';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
@@ -85,10 +85,10 @@ const DsbCoinList = () => {
   };
   return (
     <>
-      <Box sx={{ minWidth: 300, margin: '0rem 15rem 0rem 0rem' }}>
+      {/* <Box sx={{ minWidth: 300, margin: '0rem 0rem 0rem 0rem' }}>
         <h1>Coin market</h1>
-      </Box>
-      <Box
+      </Box> */}
+      {/* <Box
         component="div"
         sx={{
           display: 'flex',
@@ -101,9 +101,17 @@ const DsbCoinList = () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
+      </Box> */}
+      <Typography variant="h6" gutterBottom>
+        코인 시세
+      </Typography>
+      <Box component="div" sx={{ display: 'flex', justifyContent: 'center' }}>
+        <ReactVirtualizedTable
+          rows={filterCoinContent}
+          tableHeight={440}
+          tableWidth="98%"
+        />
       </Box>
-
-      <ReactVirtualizedTable rows={filterCoinContent} tableHeight={350} />
     </>
   );
 };
