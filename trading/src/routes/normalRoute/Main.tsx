@@ -5,7 +5,7 @@ import { Box, Divider } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid } from '@material-ui/core';
-import { startLivePriceApp } from '@redux/reducers/LivePrices';
+import { startLivePriceApp } from '@redux/reducers/websocketReducer';
 import { MybotBoard } from '@containers/Dashboard/MybotBoard';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { useDispatch } from 'react-redux';
