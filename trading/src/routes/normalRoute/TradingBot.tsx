@@ -34,11 +34,7 @@ const TradingBot = (): JSX.Element => {
 
   return (
     <>
-      <ContentWrapper
-        title="TradingBot"
-        addButton={<>add</>}
-        handleOpen={handleOpen}
-      >
+      <ContentWrapper title="TradingBot" addButton handleOpen={handleOpen}>
         <Grid container spacing={1}>
           {cards.map(({ title, profit }) => (
             <Grid key={title} item xl={3} lg={4} md={6} sm={12}>

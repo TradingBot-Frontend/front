@@ -7,7 +7,7 @@ import { green } from '@mui/material/colors';
 
 interface ContentWrapperProps {
   title: string;
-  addButton?: JSX.Element;
+  addButton?: boolean;
   children: JSX.Element;
   overflow?: string;
   handleOpen?: () => void;
@@ -15,7 +15,7 @@ interface ContentWrapperProps {
 
 export default function ContentWrapper({
   title,
-  addButton,
+  addButton = false,
   children,
   overflow = 'auto',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
