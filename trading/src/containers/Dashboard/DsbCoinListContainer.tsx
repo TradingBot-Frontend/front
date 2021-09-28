@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 
+export const DsbContWrapper = styled.div``;
 interface Data {
   name: string;
   currentPrice: string;
@@ -84,7 +85,7 @@ const DsbCoinList = () => {
     }
   };
   return (
-    <>
+    <DsbContWrapper>
       {/* <Box sx={{ minWidth: 300, margin: '0rem 0rem 0rem 0rem' }}>
         <h1>Coin market</h1>
       </Box> */}
@@ -102,9 +103,10 @@ const DsbCoinList = () => {
           onKeyPress={handleKeyPress}
         />
       </Box> */}
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" component="h5">
         코인 시세
       </Typography>
+
       <Box component="div" sx={{ display: 'flex', justifyContent: 'center' }}>
         <ReactVirtualizedTable
           rows={filterCoinContent}
@@ -112,7 +114,7 @@ const DsbCoinList = () => {
           tableWidth="98%"
         />
       </Box>
-    </>
+    </DsbContWrapper>
   );
 };
 export default DsbCoinList;

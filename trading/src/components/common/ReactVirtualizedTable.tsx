@@ -15,7 +15,7 @@ import styled from 'styled-components';
 
 export const Tables = styled(Table)`
   .ReactVirtualized__Table__headerColumn {
-    background-color: #7ebdc2;
+    background-color: #ffffff;
   }
 `;
 const styles = (theme: Theme) =>

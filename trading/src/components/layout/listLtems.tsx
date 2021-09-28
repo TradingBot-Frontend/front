@@ -8,6 +8,13 @@ import AndroidIcon from '@material-ui/icons/Android';
 import DescriptionIcon from '@material-ui/icons/Description';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import styled from 'styled-components';
+
+export const List = styled(ListItem)`
+  :hover {
+    background-color: #adb6c4;
+  }
+`;
 
 export const MainListItems = () => {
   const history = useHistory();
@@ -17,36 +24,36 @@ export const MainListItems = () => {
   const { url } = useRouteMatch();
   return (
     <div>
-      <ListItem button onClick={() => handleClick(`${url}`)}>
+      <List button onClick={() => handleClick(`${url}`)}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
-      </ListItem>
-      <ListItem button onClick={() => handleClick(`${url}/coin-market`)}>
+      </List>
+      <List button onClick={() => handleClick(`${url}/coin-market`)}>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Coin Market" />
-      </ListItem>
-      <ListItem button onClick={() => handleClick(`${url}/trading-bot`)}>
+      </List>
+      <List button onClick={() => handleClick(`${url}/trading-bot`)}>
         <ListItemIcon>
           <AndroidIcon />
         </ListItemIcon>
         <ListItemText primary="Trading bot" />
-      </ListItem>
-      <ListItem button onClick={() => handleClick(`${url}/portfolio`)}>
+      </List>
+      <List button onClick={() => handleClick(`${url}/portfolio`)}>
         <ListItemIcon>
           <DescriptionIcon />
         </ListItemIcon>
         <ListItemText primary="Portfolio" />
-      </ListItem>
-      <ListItem button onClick={() => handleClick(`${url}/simulation`)}>
+      </List>
+      {/* <List button onClick={() => handleClick(`${url}/simulation`)}>
         <ListItemIcon>
           <PlayCircleOutlineIcon />
         </ListItemIcon>
         <ListItemText primary="Simulation" />
-      </ListItem>
+      </List> */}
     </div>
   );
 };
