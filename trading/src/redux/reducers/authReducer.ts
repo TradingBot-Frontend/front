@@ -13,6 +13,9 @@ export const LOGOUT_REQUEST = 'auth/LOGOUT_REQUEST' as const;
 export const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS' as const;
 export const LOGOUT_FAILURE = 'auth/LOGOUT_FAILURE' as const;
 
+export const PRIVATEKEY_REQUEST = 'auth/PRIVATEKEY_REQUEST' as const;
+export const PRIVATEKEY_SUCCESS = 'auth/PRIVATEKEY_SUCCESS' as const;
+export const PRIVATEKEY_FAILURE = 'auth/PRIVATEKEY_FAILURE' as const;
 // type LoginAction =
 // | typeof LOGIN_REQUEST
 // | typeof LOGIN_SUCCESS
@@ -30,7 +33,10 @@ export const LOGOUT_FAILURE = 'auth/LOGOUT_FAILURE' as const;
 
 // action creators
 const loginRequest = (user: any) => ({ type: LOGIN_REQUEST, payload: user });
-const loginSuccess = (loginRes: any) => ({ type: LOGIN_SUCCESS, payload: loginRes });
+const loginSuccess = (loginRes: any) => ({
+  type: LOGIN_SUCCESS,
+  payload: loginRes,
+});
 const loginFailure = (error: any) => ({ type: LOGIN_FAILURE, payload: error });
 export const loginActions = {
   request: loginRequest,
@@ -40,7 +46,10 @@ export const loginActions = {
 
 const signupRequest = (user: any) => ({ type: SIGNUP_REQUEST, payload: user });
 const signupSuccess = (res: any) => ({ type: SIGNUP_SUCCESS, payload: res });
-const signupFailure = (error: any) => ({ type: SIGNUP_FAILURE, payload: error });
+const signupFailure = (error: any) => ({
+  type: SIGNUP_FAILURE,
+  payload: error,
+});
 export const signupActions = {
   request: signupRequest,
   success: signupSuccess,
@@ -56,6 +65,25 @@ export const logoutActions = {
   failure: logoutFailure,
 };
 
+const privateKeyRequest = (form: any) => ({
+  type: PRIVATEKEY_REQUEST,
+  payload: form,
+});
+const privateKeyRequestSuccess = (res: any) => ({
+  type: PRIVATEKEY_SUCCESS,
+  payload: res,
+});
+const privateKeyRequestFailure = (error: any) => ({
+  type: PRIVATEKEY_FAILURE,
+  payload: error,
+});
+
+export const privateKeyActions = {
+  request: privateKeyRequest,
+  success: privateKeyRequestSuccess,
+  failure: privateKeyRequestFailure,
+};
+
 export type LoginAction =
   | ReturnType<typeof loginRequest>
   | ReturnType<typeof loginSuccess>
@@ -68,7 +96,15 @@ export type LogoutAction =
   | ReturnType<typeof logoutRequest>
   | ReturnType<typeof logoutSuccess>
   | ReturnType<typeof logoutFailure>;
-export type AuthAction = LoginAction | SignupAction | LogoutAction;
+export type privateKeyAction =
+  | ReturnType<typeof privateKeyRequest>
+  | ReturnType<typeof privateKeyRequestSuccess>
+  | ReturnType<typeof privateKeyRequestFailure>;
+export type AuthAction =
+  | LoginAction
+  | SignupAction
+  | LogoutAction
+  | privateKeyAction;
 
 interface IAuthState {
   token: string | null;
@@ -78,6 +114,8 @@ interface IAuthState {
   // userName: string;
   // successMsg: string;
   errorMsg: string;
+  apiKey: boolean | null;
+  secretKey: boolean | null;
 }
 
 const initialState: IAuthState = {
@@ -88,9 +126,14 @@ const initialState: IAuthState = {
   // userName: '',
   // successMsg: '',
   errorMsg: '',
+  apiKey: true,
+  secretKey: false,
 };
 
-export default function authReducer(state: IAuthState = initialState, action: AuthAction): IAuthState {
+export default function authReducer(
+  state: IAuthState = initialState,
+  action: AuthAction,
+): IAuthState {
   switch (action.type) {
     case SIGNUP_REQUEST:
     case LOGIN_REQUEST:
@@ -147,6 +190,12 @@ export default function authReducer(state: IAuthState = initialState, action: Au
         ...state,
         isLoading: false,
         errorMsg: action.payload.msg,
+      };
+    case PRIVATEKEY_REQUEST:
+      return {
+        ...state,
+        apiKey: true,
+        secretKey: true,
       };
     default:
       return state;

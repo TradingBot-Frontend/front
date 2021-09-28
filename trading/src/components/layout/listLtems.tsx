@@ -9,6 +9,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 
 export const List = styled(ListItem)`
   :hover {
@@ -16,10 +17,13 @@ export const List = styled(ListItem)`
   }
 `;
 
-export const MainListItems = () => {
+export const MainListItems = ({ handleSettingOpen }: any) => {
   const history = useHistory();
   const handleClick = (url: string) => {
     history.push(`${url}`);
+  };
+  const handleSettingClick = () => {
+    handleSettingOpen(true);
   };
   const { url } = useRouteMatch();
   return (
@@ -48,6 +52,12 @@ export const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Portfolio" />
       </List>
+      <List button onClick={handleSettingClick}>
+        <ListItemIcon>
+          <SettingsApplicationsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Privatekey Setting" />
+      </List>
       {/* <List button onClick={() => handleClick(`${url}/simulation`)}>
         <ListItemIcon>
           <PlayCircleOutlineIcon />
@@ -57,37 +67,3 @@ export const MainListItems = () => {
     </div>
   );
 };
-// export const mainListItems = (
-//   <div>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <DashboardIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Dashboard" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <ShoppingCartIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Coin Market" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AndroidIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Trading bot" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <DescriptionIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Portfolio" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <PlayCircleOutlineIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Simulation" />
-//     </ListItem>
-//   </div>
-// );
