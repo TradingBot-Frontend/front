@@ -23,19 +23,19 @@ export interface Bot {
 export type Bots = Bot[];
 
 export interface BotInfo {
-  id: string;
+  id?: string;
   uuid: string;
-  bot_name: string;
-  coin_name: string;
-  bid_reference: string;
-  bid_condition: number;
-  bid_quantity: number;
-  is_bid_condition_exceed: boolean;
-  ask_reference: string;
-  ask_condition: number;
-  ask_quantity: number;
-  is_active: boolean;
-  description: string;
+  botName: string;
+  coinName: string;
+  bidReference: string;
+  bidCondition: number;
+  bidQuantity: number;
+  isBidConditionExceed: boolean;
+  askReference?: string;
+  askCondition: number;
+  askQuantity?: number;
+  isActive: boolean;
+  description?: string;
 }
 
 const getBotsRequest = () => ({ type: GET_BOTS_REQUEST, payload: null });

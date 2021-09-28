@@ -8,6 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@mui/material/Switch';
 import { ReadStream } from 'fs';
+import { BotInfo } from '@redux/reducers/botReducer';
 
 const SmallTextField = ({ ...rest }: any) => {
   return <TextField size="small" {...rest} />;
@@ -88,22 +89,28 @@ const CancleButton = styled(Button)`
   margin: 0.5rem 0rem 0rem 0.5rem;
 `;
 interface ISettingProps {
+  botInfo?: BotInfo;
   handleClose: () => void;
 }
-const TradingBotAdd = ({ handleClose }: ISettingProps) => {
-  const [states, setStates] = useState({
+
+const TradingBotAdd = ({ botInfo, handleClose }: ISettingProps) => {
+  const [states, setStates] = useState<BotInfo>({
+    uuid: '',
     botName: '',
     coinName: '',
     bidReference: '7ma', // 이동평균선
-    bidCondition: '', // 기준
-    isBidConditionExceed: 'up', // 기준대비
-    bidQuantity: '', // 수량
-    totalBuy: '',
-    askCondition: '', // 수익률
+    bidCondition: 0, // 기준
+    bidQuantity: 0, // 수량
+    isBidConditionExceed: false, // 기준대비
+    // totalBuy: '',
+    askCondition: 0, // 수익률
     isActive: false,
   });
   useEffect(() => {
-    console.log('states:', states);
+    // console.log('states:', states);
+    if (botInfo) {
+      setStates(botInfo);
+    }
   }, [states]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
