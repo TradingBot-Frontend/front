@@ -39,6 +39,13 @@ export default function BotCard({
           },
         },
       },
+      grid: {
+        yaxis: {
+          lines: {
+            show: false, // 배경 가로선
+          },
+        },
+      },
       dataLabels: {
         enabled: false,
       },
