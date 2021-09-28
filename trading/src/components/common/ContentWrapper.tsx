@@ -2,6 +2,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { green } from '@mui/material/colors';
 
 interface ContentWrapperProps {
   title: string;
@@ -34,7 +36,8 @@ export default function ContentWrapper({
             sx={{ marginLeft: '0.8rem' }}
             onClick={handleOpen}
           >
-            add
+            <AddCircleIcon sx={{ color: green[500] }} />
+            &nbsp;Add
           </IconButton>
         ) : null}
       </Typography>
