@@ -1,3 +1,5 @@
+// actions
+
 export const startLivePriceApp = () => {
   return {
     type: 'START_LIVE_PRICE_APP',
@@ -64,11 +66,12 @@ const reducerUtils = {
 export default function websocketReducer(
   state = initialState,
   action: any,
-  key: any,
+  // key: any,
 ) {
   switch (action.type) {
     case 'SUCCESS':
-      return reducerUtils.success(state, action.payload, key);
+      return state;
+    //   return reducerUtils.success(state, action.payload, key);
     default:
       return state;
   }
