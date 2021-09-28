@@ -3,7 +3,7 @@ import { combineReducers, Reducer } from 'redux';
 import { History } from 'history';
 import authReducer from './authReducer';
 import portfolioReducer from './portfolioReducer';
-import livePrices from './LivePrices';
+import websocketReducer from './websocketReducer';
 
 const createRootReducer = (history: History): Reducer =>
   // 여기에 reducer 추가하면 됩니다!
@@ -11,7 +11,7 @@ const createRootReducer = (history: History): Reducer =>
     router: connectRouter(history),
     auth: authReducer,
     portfolio: portfolioReducer,
-    live: livePrices,
+    live: websocketReducer,
   });
 
 export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;

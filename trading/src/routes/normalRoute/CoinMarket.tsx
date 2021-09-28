@@ -114,7 +114,11 @@ const CoinMarket = () => {
               />
             </Box>
 
-            <ReactVirtualizedTable rows={filterCoinContent} tableHeight={500} />
+            <ReactVirtualizedTable
+              rows={filterCoinContent}
+              tableHeight={500}
+              tableWidth="100%"
+            />
           </Grid>
           <Grid item xs={6}>
             <Box sx={{ width: 300, margin: '3rem 30rem 0rem 0rem' }}>

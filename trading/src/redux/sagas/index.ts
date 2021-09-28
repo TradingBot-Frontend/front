@@ -4,7 +4,7 @@ import axios from 'axios';
 import authSaga from './authSaga';
 import coinSaga from './coinSaga';
 import portfolioSaga from './portfolioSaga';
-import { watchLivePricesSaga } from './LivePricesSaga';
+import { watchLivePricesSaga } from './websocketSaga';
 
 // dotenv.config();
 // axios.defaults.baseURL = process.env.REACT_APP_BASIC_SERVER_URL;

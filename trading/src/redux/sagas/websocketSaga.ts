@@ -4,20 +4,10 @@ import { call, put, take, takeEvery } from '@redux-saga/core/effects';
 function initWebsocket() {
   console.log('initWebsocket');
   return eventChannel((emitter) => {
-    const subscribe = {
-      type: 'subscribe',
-      channels: [
-        {
-          name: 'ticker',
-          product_ids: ['BTC-USD'],
-        },
-      ],
-    };
-    // websocket 구독하기
-    const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
+    // websocket 구독하기 나중에 ip 받으면 그에 따라 수정 필요
+    const ws = new WebSocket('ws://localhost:1234/ws');
     ws.onopen = () => {
       console.log('opening websocket');
-      ws.send(JSON.stringify(subscribe));
     };
     ws.onerror = (error) => {
       console.log('ERROR:', error);

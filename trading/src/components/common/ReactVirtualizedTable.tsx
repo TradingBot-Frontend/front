@@ -11,7 +11,13 @@ import {
   TableCellRenderer,
   TableHeaderProps,
 } from 'react-virtualized';
+import styled from 'styled-components';
 
+export const Tables = styled(Table)`
+  .ReactVirtualized__Table__headerColumn {
+    background-color: #ffffff;
+  }
+`;
 const styles = (theme: Theme) =>
   ({
     flexContainer: {
@@ -19,6 +25,7 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       boxSizing: 'border-box',
     },
+
     table: {
       // temporary right-to-left patch, waiting for
       // https://github.com/bvaughn/react-virtualized/issues/454
@@ -92,11 +99,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
         })}
         variant="body"
         style={{ height: rowHeight }}
-        align={
-          (columnIndex != null && columns[columnIndex].numeric) || false
-            ? 'right'
-            : 'left'
-        }
+        align="left"
       >
         {cellData}
       </TableCell>
@@ -132,7 +135,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
     return (
       <AutoSizer>
         {({ height, width }) => (
-          <Table
+          <Tables
             height={height}
             width={width}
             rowHeight={rowHeight!}
@@ -161,7 +164,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
                 />
               );
             })}
-          </Table>
+          </Tables>
         )}
       </AutoSizer>
     );
@@ -185,6 +188,7 @@ interface Data {
 interface arrayProps {
   rows: Data[];
   tableHeight: number;
+  tableWidth: string;
 }
 // type Sample = [string, string, string, string];
 
@@ -210,32 +214,33 @@ interface arrayProps {
 export const ReactVirtualizedTable: React.FC<arrayProps> = ({
   rows,
   tableHeight,
+  tableWidth,
 }) => {
   return (
-    <Paper style={{ height: tableHeight, width: '100%' }}>
+    <Paper style={{ height: tableHeight, width: tableWidth }}>
       <VirtualizedTable
         rowCount={rows.length}
         rowGetter={({ index }) => rows[index]}
         columns={[
           {
-            width: 120,
+            width: 150,
             label: '암호화폐명',
             dataKey: 'name',
           },
           {
-            width: 120,
+            width: 150,
             label: '현재가',
             dataKey: 'currentPrice',
             numeric: true,
           },
           {
-            width: 120,
+            width: 150,
             label: '변동률',
             dataKey: 'rateOfChange',
             numeric: true,
           },
           {
-            width: 120,
+            width: 150,
             label: '거래금액',
             dataKey: 'money',
             numeric: true,

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactVirtualizedTable } from '@components/common/ReactVirtualizedTable';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 
+export const DsbContWrapper = styled.div``;
 interface Data {
   name: string;
   currentPrice: string;
@@ -84,11 +85,11 @@ const DsbCoinList = () => {
     }
   };
   return (
-    <>
-      <Box sx={{ minWidth: 300, margin: '0rem 15rem 0rem 0rem' }}>
+    <DsbContWrapper>
+      {/* <Box sx={{ minWidth: 300, margin: '0rem 0rem 0rem 0rem' }}>
         <h1>Coin market</h1>
-      </Box>
-      <Box
+      </Box> */}
+      {/* <Box
         component="div"
         sx={{
           display: 'flex',
@@ -101,10 +102,19 @@ const DsbCoinList = () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-      </Box>
+      </Box> */}
+      <Typography variant="h5" component="h5">
+        코인 시세
+      </Typography>
 
-      <ReactVirtualizedTable rows={filterCoinContent} tableHeight={350} />
-    </>
+      <Box component="div" sx={{ display: 'flex', justifyContent: 'center' }}>
+        <ReactVirtualizedTable
+          rows={filterCoinContent}
+          tableHeight={440}
+          tableWidth="98%"
+        />
+      </Box>
+    </DsbContWrapper>
   );
 };
 export default DsbCoinList;
