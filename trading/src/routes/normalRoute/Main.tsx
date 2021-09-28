@@ -87,6 +87,9 @@ const Main = () => {
           </Grid>
         </Grid>
       </Container>
+      <Modal open={open} onClose={handleClose}>
+        <PrivateSetting handleClose={handleClose} />
+      </Modal>
     </MainWapper>
   );
 };

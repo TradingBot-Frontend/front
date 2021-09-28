@@ -16,19 +16,25 @@ import Container from '@material-ui/core/Container';
 // import Paper from "@material-ui/core/Paper";
 // import Link from "@material-ui/core/Link";
 import MenuIcon from '@material-ui/icons/Menu';
+import styled from 'styled-components';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { MainListItems } from '@components/layout/listLtems';
 import ContentsRouter from '@routes/ContentsRouter';
+import Modal from '@mui/material/Modal';
 import { logoutActions } from '@redux/reducers/authReducer';
-import { useDispatch } from 'react-redux';
+import { RootState } from '@redux/reducers';
+import { useDispatch, useSelector } from 'react-redux';
+import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
+import 'animate.css';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     overflow: 'hidden',
+    position: 'relative',
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -71,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
+    zIndex: 0,
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -107,18 +114,44 @@ const useStyles = makeStyles((theme) => ({
     height: 240,
   },
 }));
-
+export const Balloon = styled.div`
+  position: absolute;
+  top: 17.3rem;
+  left: 14rem;
+  z-index: 4;
+  width: 26rem;
+  height: 3rem;
+  background: #adb6c4;
+  border-radius: 15px;
+  animation: 'bounce';
+  animation-duration: 3s;
+  :after {
+    border-top: 15px solid #adb6c4;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: -13px;
+  }
+`;
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [settingOpen, setSettingOpen] = useState(false);
   const [search, setsearch] = useState('');
   const dispatch = useDispatch();
+  const apiKey = useSelector((state: RootState) => state.auth.apiKey);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleSettingOpen = () => setSettingOpen(true);
+  const handleSettingClose = () => setSettingOpen(false);
   // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -186,13 +219,23 @@ export default function Dashboard() {
         </div>
         <Divider />
         <List>
-          <MainListItems />
+          <MainListItems handleSettingOpen={handleSettingOpen} />
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <ContentsRouter />
       </main>
+      <Modal open={settingOpen} onClose={handleSettingClose}>
+        <PrivateSetting handleClose={handleSettingClose} />
+      </Modal>
+      {apiKey && (
+        <Balloon>
+          <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>
+            Private Setting에서 API Key를 등록해야만 진행이 가능합니다.
+          </div>
+        </Balloon>
+      )}
     </div>
   );
 }
