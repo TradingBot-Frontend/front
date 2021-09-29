@@ -12,7 +12,7 @@ export const postLivePriceData = (livePriceData: any) => {
     data: livePriceData,
   };
 };
-interface IState {
+export interface ICoinState {
   symbol: string;
   tickType: string;
   openPrice: string;
@@ -28,7 +28,7 @@ interface IState {
   chgAmt: string;
   timeTag: string;
 }
-const initialState: IState = {
+const initialState: ICoinState = {
   symbol: '',
   tickType: '',
   openPrice: '',

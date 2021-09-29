@@ -11,7 +11,7 @@ const createRootReducer = (history: History): Reducer =>
     router: connectRouter(history),
     auth: authReducer,
     portfolio: portfolioReducer,
-    live: websocketReducer,
+    coin: websocketReducer,
   });
 
 export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;
