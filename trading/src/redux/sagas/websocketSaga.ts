@@ -1,9 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { buffers, eventChannel } from 'redux-saga';
 import { call, put, take, takeEvery } from '@redux-saga/core/effects';
-import encoding from 'text-encoding';
 import { flush, select, delay } from 'redux-saga/effects';
-import { ICoinState, ICointState } from '@redux/reducers/websocketReducer';
+import { ICoinState } from '@redux/reducers/websocketReducer';
 
 function initWebsocket() {
   console.log('initWebsocket');
@@ -58,10 +57,9 @@ const connectSocket = (socket: any, action: any, buffer: any) => {
     socket.open = () => {
       console.log('opening websocket');
     };
-    socket.onmessage = (event) => {
-      const enc = new encoding.TextDecoder('utf-8');
+    socket.onmessage = (event: any) => {
       // const arr = new Uint8Array(evt.data);
-      const data = JSON.parse(enc.decode(event.data));
+      const data = JSON.parse(event.data);
 
       emit(data);
     };

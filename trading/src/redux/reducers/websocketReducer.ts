@@ -1,4 +1,9 @@
-// actions
+import { createConnectSocketSaga } from '@redux/sagas/websocketSaga';
+import { coinDataUtils } from '@utils/utils';
+
+const CONNECT_SOCKET = 'coin/CONNECT_SOCKET' as const;
+const CONNECT_SOCKET_SUCCESS = 'coin/CONNECT_SOCKET_SUCCESS' as const;
+const CONNECT_SOCKET_ERROR = 'coin/CONNECT_SOCKET_ERROR' as const;
 
 export const startLivePriceApp = () => {
   return {
@@ -44,6 +49,7 @@ const initialState: ICoinState = {
   chgAmt: '',
   timeTag: '',
 };
+//TODO: init 초기 함수 key 갖고 있도록 바꾸기
 const reducerUtils = {
   success: (state: any, payload: any, key: any) => {
     return {
@@ -62,6 +68,23 @@ const reducerUtils = {
     },
   }),
 };
+const requestActions = (type: any, key: any) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+  return (state: any, action: any) => {
+    switch (action.type) {
+      case SUCCESS:
+        return reducerUtils.success(state, action.payload, key);
+      case ERROR:
+        return reducerUtils.error(state, action.payload, key);
+      default:
+        return state;
+    }
+  };
+};
+export const connectSocketSaga = createConnectSocketSaga(
+  CONNECT_SOCKET,
+  coinDataUtils.update,
+);
 
 export default function websocketReducer(
   state = initialState,
@@ -72,6 +95,9 @@ export default function websocketReducer(
     case 'SUCCESS':
       return state;
     //   return reducerUtils.success(state, action.payload, key);
+    case CONNECT_SOCKET_SUCCESS:
+    case CONNECT_SOCKET_ERROR:
+      return requestActions(CONNECT_SOCKET)(state, action);
     default:
       return state;
   }
