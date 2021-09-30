@@ -166,41 +166,47 @@ const TradingBotAdd = ({
     askCondition: 0, // 수익률
     isActive: false,
   });
+
   useEffect(() => {
-    // console.log('states:', states);
+    console.log('values:', values);
+  }, [values]);
+
+  useEffect(() => {
     if (botInfo) {
-      setStates(botInfo);
+      setValues(botInfo);
     }
-  }, [states]);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit:', states);
+    console.log('values:', values);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     console.log('id:', id, 'value:', value);
-    setStates({
-      ...states,
+    setValues({
+      ...values,
       [id]: value,
     });
   };
 
   const handleSelectChange = (e: SelectChangeEvent, key: string) => {
-    setStates({
-      ...states,
+    setValues({
+      ...values,
       [key]: e.target.value,
     });
   };
 
   const handleButtonClick = () => {
     handleClose();
-    console.log('클릭!');
   };
 
-  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('스위치 on/off');
+  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({
+      ...values,
+      isActive: e.target.checked,
+    });
   };
 
   return (
@@ -214,6 +220,7 @@ const TradingBotAdd = ({
               <SmallTextField
                 id="botName"
                 variant="outlined"
+                value={values.botName}
                 onChange={handleChange}
               />
             </InputWrapper>
@@ -223,12 +230,12 @@ const TradingBotAdd = ({
                 <Select
                   id="coinName"
                   style={{ width: '7rem' }}
-                  defaultValue="bitsum"
+                  value={values.coinName || 'BTC'}
                   onChange={(e) => handleSelectChange(e, 'coinName')}
                 >
-                  <MenuItem value="bitsum">BTC</MenuItem>
-                  <MenuItem value="upbit">ADA</MenuItem>
-                  <MenuItem value="binance">BTT</MenuItem>
+                  <MenuItem value="BTC">BTC</MenuItem>
+                  <MenuItem value="ADA">ADA</MenuItem>
+                  <MenuItem value="BTT">BTT</MenuItem>
                 </Select>
                 <FormControlLabel
                   control={
@@ -268,8 +275,8 @@ const TradingBotAdd = ({
                   variant="outlined"
                   label="기준"
                   onChange={handleChange}
+                  value={values.bidCondition}
                   style={{ width: '6rem', margin: '0rem 1rem 0rem 0rem' }}
-                  //   value="dgsg"
                 />
 
                 <Select
@@ -280,7 +287,6 @@ const TradingBotAdd = ({
                 >
                   <MenuItem value="up">이상</MenuItem>
                   <MenuItem value="down">이하</MenuItem>
-                  <MenuItem value="binance">??</MenuItem>
                 </Select>
               </div>
             </InputWrapper>
@@ -289,8 +295,8 @@ const TradingBotAdd = ({
               <SmallTextField
                 id="bidQuantity"
                 variant="outlined"
+                value={values.bidQuantity}
                 onChange={handleChange}
-                //   value="dgsg"
               />
             </InputWrapper>
             <InputWrapper>
@@ -300,6 +306,7 @@ const TradingBotAdd = ({
                 variant="outlined"
                 onChange={handleChange}
                 disabled
+                // value={values.bidQuantity}
                 value="6.353.24원"
               />
             </InputWrapper>
