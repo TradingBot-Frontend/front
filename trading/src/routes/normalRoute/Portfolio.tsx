@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Container, Grid } from '@material-ui/core';
-import {makeStyles} from "@material-ui/core/styles";
 
 import ContentWrapper from '@components/common/ContentWrapper';
 import PortfolioInfoCard  from '@containers/portfolio/PortfolioInfoCard';
@@ -10,6 +9,8 @@ import PortfolioDonutChart  from '@containers/portfolio/PortfolioDonutChart';
 
 
 const Portfolio = () => {
+    const [states, setStates] = useState<any>();
+
   return (
       <ContentWrapper title="Portfolio">
        <Container>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import Chart from 'react-apexcharts'
+import Chart from 'react-apexcharts'
 
 // constructor(props: any) {
 //     super(props);
@@ -39,7 +39,7 @@ export interface IState {
 //         }]
 //     }state
 
-function PortfolioDonutChart() {
+const PortfolioDonutChart = () =>  {
   //
   // function PortfolioDonutChart({options, series}: IState) {
   //     const [state, setState] = useState<IState>({
@@ -76,7 +76,7 @@ function PortfolioDonutChart() {
 
   return (
     <div>
-      {/* <Chart options={state.options} series={state.series} type="donut"/> */}
+       <Chart options={state.options} series={state.series} type="donut"/>
     </div>
   );
 }

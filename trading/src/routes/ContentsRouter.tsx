@@ -4,14 +4,13 @@ import CoinMarket from './normalRoute/CoinMarket';
 import Portfolio from './normalRoute/Portfolio';
 import Simulation from './normalRoute/Simulation';
 import TradingBot from './normalRoute/TradingBot';
-// import Main from './normalRoute/Main';
-import NewMain from './normalRoute/NewMain';
+import Main from './normalRoute/Main';
 
 function ContentsRouter(): JSX.Element {
   const { path } = useRouteMatch();
   return (
     <Switch>
-      <Route path={`${path}/dashboard`} component={NewMain} />
+      <Route path={`${path}/dashboard`} component={Main} />
       <Route path={`${path}/coin-market`} component={CoinMarket} />
       <Route path={`${path}/trading-bot`} exact component={TradingBot} />
       <Route path={`${path}/simulation`} exact component={Simulation} />
