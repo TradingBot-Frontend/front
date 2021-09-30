@@ -16,6 +16,9 @@ const theme = createTheme({
       xl: 1840,
     },
   },
+  palette: {
+    mode: 'light',
+  },
 });
 
 function App(): JSX.Element {
