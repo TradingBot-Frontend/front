@@ -7,13 +7,49 @@ export const GET_BOT_REQUEST = 'bot/GET_BOT_REQUEST' as const;
 export const GET_BOT_SUCCESS = 'bot/GET_BOT_SUCCESS' as const;
 export const GET_BOT_FAILURE = 'bot/GET_BOT_FAILURE' as const;
 
+export const ADD_BOT_REQUEST = 'bot/ADD_BOT_REQUEST' as const;
+export const ADD_BOT_SUCCESS = 'bot/ADD_BOT_SUCCESS' as const;
+export const ADD_BOT_FAILURE = 'bot/ADD_BOT_FAILURE' as const;
+
+// export interface Bot {
+//   bot_name: string;
+//   coin_name: string;
+//   coin_ratio: string;
+//   quantity: number;
+//   refrence: string;
+//   type: string;
+// }
+
+// export interface BotInfo {
+//   id?: string;
+//   uuid: string;
+//   botName: string;
+//   coinName: string;
+//   bidReference: string;
+//   bidCondition: number;
+//   bidQuantity: number;
+//   isBidConditionExceed: boolean;
+//   askReference?: string;
+//   askCondition: number;
+//   askQuantity?: number;
+//   isActive: boolean;
+//   description?: string;
+// }
+
 export interface Bot {
-  bot_name: string;
-  coin_name: string;
-  coin_ratio: string;
-  quantity: number;
-  refrence: string;
-  type: string;
+  id?: string;
+  uuid: string;
+  botName: string;
+  coinName: string;
+  bidReference: string;
+  bidCondition: number;
+  bidQuantity: number;
+  isBidConditionExceed: boolean;
+  askReference?: string;
+  askCondition: number;
+  askQuantity?: number;
+  isActive: boolean;
+  description?: string;
 }
 
 export type Bots = Bot[];
@@ -51,6 +87,28 @@ export const getBotActions = {
   failure: getBotFailure,
 };
 
+const addBotRequest = (botInfo: Bot) => ({
+  type: ADD_BOT_REQUEST,
+  payload: botInfo,
+});
+const addBotSuccess = (msg: any) => ({
+  type: ADD_BOT_SUCCESS,
+  payload: msg,
+});
+const addBotFailure = (error: any) => ({
+  type: ADD_BOT_FAILURE,
+  payload: error,
+});
+export const addBotActions = {
+  request: addBotRequest,
+  success: addBotSuccess,
+  failure: addBotFailure,
+};
+
+// TODO: delete bot
+// TODO: get botdetail
+// TODO: update bot
+
 export type GetBotsAction =
   | ReturnType<typeof getBotsRequest>
   | ReturnType<typeof getBotsSuccess>
@@ -61,17 +119,24 @@ export type GetBotAction =
   | ReturnType<typeof getBotSuccess>
   | ReturnType<typeof getBotFailure>;
 
-type BotAction = GetBotsAction | GetBotAction;
+export type AddBotAction =
+  | ReturnType<typeof addBotRequest>
+  | ReturnType<typeof addBotSuccess>
+  | ReturnType<typeof addBotFailure>;
+
+type BotAction = GetBotsAction | GetBotAction | AddBotAction;
 
 interface IBotState {
   bots: Bots;
   bot: Bot;
+  // botInfo: BotInfo;
   isLoading: boolean;
 }
 
 const initialState: IBotState = {
   bots: [],
   bot: {} as Bot,
+  // botInfo: {} as BotInfo,
   isLoading: false,
 };
 
@@ -82,6 +147,7 @@ export default function botReducer(
   switch (action.type) {
     case GET_BOTS_REQUEST:
     case GET_BOT_REQUEST:
+    case ADD_BOT_REQUEST:
       return {
         ...state,
         isLoading: true,
@@ -104,6 +170,12 @@ export default function botReducer(
         ...state,
         isLoading: false,
         bots: action.payload,
+      };
+    case ADD_BOT_SUCCESS:
+      getBotsActions.request(); // 추가 성공하면 새로 bot 리스트를 업데이트
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;
