@@ -1,15 +1,13 @@
 import { createConnectSocketSaga } from '@redux/sagas/websocketSaga';
 import { coinDataUtils } from '@utils/utils';
 
+export const START_INIT = 'coin/START_INIT';
+
 const CONNECT_SOCKET = 'coin/CONNECT_SOCKET' as const;
 const CONNECT_SOCKET_SUCCESS = 'coin/CONNECT_SOCKET_SUCCESS' as const;
 const CONNECT_SOCKET_ERROR = 'coin/CONNECT_SOCKET_ERROR' as const;
 
-export const startLivePriceApp = () => {
-  return {
-    type: 'START_LIVE_PRICE_APP',
-  };
-};
+export const startInit = () => ({ type: START_INIT });
 
 export const postLivePriceData = (livePriceData: any) => {
   return {
@@ -33,31 +31,19 @@ export interface ICoinState {
   chgAmt: string;
   timeTag: string;
 }
-const initialState: ICoinState = {
-  symbol: '',
-  tickType: '',
-  openPrice: '',
-  closePrice: '',
-  lowPrice: '',
-  highPrice: '',
-  value: '',
-  volume: '',
-  sellVolume: '',
-  buyVolume: '',
-  prevClosePrice: '',
-  chgRate: '',
-  chgAmt: '',
-  timeTag: '',
+interface ICoinInit {
+  coinList: ICoinInit[];
+}
+const initialState: ICoinInit = {
+  coinList: [],
 };
-//TODO: init 초기 함수 key 갖고 있도록 바꾸기
+// TODO: init 초기 함수 key 갖고 있도록 바꾸기
 const reducerUtils = {
   success: (state: any, payload: any, key: any) => {
+    console.log('reducerUtils state:', state, 'payload:', payload);
     return {
       ...state,
-      [key]: {
-        data: payload,
-        error: false,
-      },
+      [key]: [...payload],
     };
   },
   error: (state: any, error: any, key: any) => ({
@@ -97,7 +83,7 @@ export default function websocketReducer(
     //   return reducerUtils.success(state, action.payload, key);
     case CONNECT_SOCKET_SUCCESS:
     case CONNECT_SOCKET_ERROR:
-      return requestActions(CONNECT_SOCKET)(state, action);
+      return requestActions(CONNECT_SOCKET, 'coinList')(state, action);
     default:
       return state;
   }

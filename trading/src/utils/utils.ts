@@ -22,8 +22,8 @@ const coinDataUtils = {
     return newData;
   },
   update: (data: any, state: any) => {
-    const originCoin = state.coin;
-    console.log('originCoin:', originCoin);
+    const targetCoin = state.coin.conList;
+    console.log('state:', targetCoin, 'data:', data);
   },
 };
 export { coinDataUtils };

@@ -5,7 +5,7 @@ import { Box, Divider } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper } from '@material-ui/core';
-import { startLivePriceApp } from '@redux/reducers/websocketReducer';
+import { startInit } from '@redux/reducers/websocketReducer';
 import { MybotBoard } from '@containers/Dashboard/MybotBoard';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { useDispatch } from 'react-redux';
@@ -52,7 +52,7 @@ const Main = () => {
   };
   useEffect(() => {
     console.log('들어옴');
-    dispatch(startLivePriceApp());
+    dispatch(startInit());
   }, []);
   return (
     <MainWapper>
