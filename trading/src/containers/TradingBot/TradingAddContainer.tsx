@@ -18,14 +18,19 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
-  height: 900,
+  width: '50%',
+  height: '90%',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  borderRadius: 25,
+  overflow: 'auto',
+  // borderRadius: 25,
   p: 4,
 };
-
+const contentStyle = {
+  width: '100%',
+  height: '100%',
+  overflow: 'auto',
+};
 const InputWrapper = styled.div`
   display: flex;
   margin: 0rem 0rem 2rem 0rem;
