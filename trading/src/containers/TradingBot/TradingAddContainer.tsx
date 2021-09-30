@@ -7,8 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@mui/material/Switch';
-import { ReadStream } from 'fs';
-import { BotInfo } from '@redux/reducers/botReducer';
+import { Bot } from '@redux/reducers/botReducer';
 
 const SmallTextField = ({ ...rest }: any) => {
   return <TextField size="small" {...rest} />;
@@ -89,12 +88,13 @@ const CancleButton = styled(Button)`
   margin: 0.5rem 0rem 0rem 0.5rem;
 `;
 interface ISettingProps {
-  botInfo?: BotInfo;
+  // botInfo?: BotInfo;
+  botInfo?: Bot;
   handleClose: () => void;
 }
 
 const TradingBotAdd = ({ botInfo, handleClose }: ISettingProps) => {
-  const [states, setStates] = useState<BotInfo>({
+  const [states, setStates] = useState<Bot>({
     uuid: '',
     botName: '',
     coinName: '',

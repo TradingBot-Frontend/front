@@ -11,18 +11,32 @@ export const ADD_BOT_REQUEST = 'bot/ADD_BOT_REQUEST' as const;
 export const ADD_BOT_SUCCESS = 'bot/ADD_BOT_SUCCESS' as const;
 export const ADD_BOT_FAILURE = 'bot/ADD_BOT_FAILURE' as const;
 
+// export interface Bot {
+//   bot_name: string;
+//   coin_name: string;
+//   coin_ratio: string;
+//   quantity: number;
+//   refrence: string;
+//   type: string;
+// }
+
+// export interface BotInfo {
+//   id?: string;
+//   uuid: string;
+//   botName: string;
+//   coinName: string;
+//   bidReference: string;
+//   bidCondition: number;
+//   bidQuantity: number;
+//   isBidConditionExceed: boolean;
+//   askReference?: string;
+//   askCondition: number;
+//   askQuantity?: number;
+//   isActive: boolean;
+//   description?: string;
+// }
+
 export interface Bot {
-  bot_name: string;
-  coin_name: string;
-  coin_ratio: string;
-  quantity: number;
-  refrence: string;
-  type: string;
-}
-
-export type Bots = Bot[];
-
-export interface BotInfo {
   id?: string;
   uuid: string;
   botName: string;
@@ -37,6 +51,8 @@ export interface BotInfo {
   isActive: boolean;
   description?: string;
 }
+
+export type Bots = Bot[];
 
 const getBotsRequest = () => ({ type: GET_BOTS_REQUEST, payload: null });
 const getBotsSuccess = (bots: Bots) => ({
@@ -71,7 +87,7 @@ export const getBotActions = {
   failure: getBotFailure,
 };
 
-const addBotRequest = (botInfo: BotInfo) => ({
+const addBotRequest = (botInfo: Bot) => ({
   type: ADD_BOT_REQUEST,
   payload: botInfo,
 });
@@ -113,14 +129,14 @@ type BotAction = GetBotsAction | GetBotAction | AddBotAction;
 interface IBotState {
   bots: Bots;
   bot: Bot;
-  botInfo: BotInfo;
+  // botInfo: BotInfo;
   isLoading: boolean;
 }
 
 const initialState: IBotState = {
   bots: [],
   bot: {} as Bot,
-  botInfo: {} as BotInfo,
+  // botInfo: {} as BotInfo,
   isLoading: false,
 };
 

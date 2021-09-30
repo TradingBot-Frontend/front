@@ -10,7 +10,9 @@ import { RootState } from '@redux/reducers';
 
 const TradingBot = (): JSX.Element => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   const bots = useSelector((state: RootState) => state.bot.bots);
@@ -38,7 +40,7 @@ const TradingBot = (): JSX.Element => {
         <Grid container spacing={1}>
           {cards.map(({ title, profit }) => (
             <Grid key={title} item xl={3} lg={4} md={6} sm={12}>
-              <BotCard title={title} profit={profit} width={380} />
+              <BotCard title={title} profit={profit} botInfo={{}} width={380} />
             </Grid>
           ))}
         </Grid>

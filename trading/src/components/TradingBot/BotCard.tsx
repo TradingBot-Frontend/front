@@ -8,17 +8,21 @@ import ApexChart from 'react-apexcharts';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
+import { Bot } from '@redux/reducers/botReducer';
 import bit from '../../assets/images/bitcoin-icon.png';
 
 interface BotCardProps {
   title: string;
   profit: string;
+  // botIfno: Bot;
+  botInfo?: any;
   width?: number;
 }
 
 export default function BotCard({
   title,
   profit,
+  botInfo,
   width = 380,
 }: BotCardProps): JSX.Element {
   const [chart, setChart] = useState({
@@ -102,7 +106,7 @@ export default function BotCard({
         </CardContent>
       </Card>
       <Modal open={open} onClose={handleClose}>
-        <TradingBotAdd handleClose={handleClose} />
+        <TradingBotAdd botInfo={botInfo} handleClose={handleClose} />
       </Modal>
     </>
   );
