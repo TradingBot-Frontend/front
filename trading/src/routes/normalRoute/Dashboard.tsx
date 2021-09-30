@@ -26,6 +26,7 @@ import { logoutActions } from '@redux/reducers/authReducer';
 import { RootState } from '@redux/reducers';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 import 'animate.css';
 
@@ -226,9 +227,9 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <ContentsRouter />
       </main>
-      <Modal open={settingOpen} onClose={handleSettingClose}>
+      <Dialog open={settingOpen} onClose={handleSettingClose}>
         <PrivateSetting handleClose={handleSettingClose} />
-      </Modal>
+      </Dialog>
       {apiKey && (
         <Balloon>
           <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>

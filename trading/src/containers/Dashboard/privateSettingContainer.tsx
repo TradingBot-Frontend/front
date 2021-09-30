@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import CheckIcon from '@mui/icons-material/Check';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 
 const style = {
   position: 'absolute',
@@ -76,7 +79,35 @@ const CancleButton = styled(Button)`
 interface ISettingProps {
   handleClose: () => void;
 }
+interface IButtonProps {
+  [k: string]: boolean;
+}
+// const InitButton = () =>{
+
+//   return(
+
+//   )
+// }
+const buttonMap = [
+  {
+    title: 'Password setting',
+    key: 'pws',
+  },
+  {
+    title: 'API setting',
+    key: 'api',
+  },
+  {
+    title: 'Back',
+    key: 'back',
+  },
+];
 const PrivateSetting = ({ handleClose }: ISettingProps) => {
+  const [button, setButton] = useState<IButtonProps>({
+    pws: false,
+    api: false,
+    back: false,
+  });
   const [states, setStates] = useState({
     password: '',
     pwConfirm: '',
@@ -113,102 +144,130 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     handleClose();
     console.log('클릭!');
   };
+  const handleSelectBtn = (key: string, value: boolean) => {
+    setButton({
+      ...button,
+      [key]: !value,
+    });
+  };
+  useEffect(() => {
+    console.log('button:', button);
+  }, [button]);
   return (
-    <Paper>
-      <Box sx={style}>
-        <Box component="form" onSubmit={handleSubmit}>
-          <InputWrapper>
-            <span className="lable">ID</span>
-            <TextFields
-              id="id"
-              variant="outlined"
-              //   onChange={onTextChange}
-              value="dgsg"
-              disabled
-
-              // label="ID"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">email</span>
-            <TextFields
-              id="email"
-              variant="outlined"
-              // onChange={onTextChange}
-              value="dgsg"
-              disabled
-              // label="ID"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">Password</span>
-            <TextFields
-              id="password"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-
-              // label="ID"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">PW Confirm</span>
-            <TextFields
-              id="pwConfirm"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">거래소</span>
-            <Select
-              id="exchange"
-              style={{ width: '7rem' }}
-              defaultValue="bitsum"
-              onChange={handleSelectChange}
+    <DialogContent>
+      <Box component="div">
+        {buttonMap.map((btn) => {
+          return (
+            <Button
+              key={btn.key}
+              onClick={() =>
+                handleSelectBtn(`${btn.key}`, button[`${btn.key}`])
+              }
             >
-              <MenuItem value="bitsum">빗썸</MenuItem>
-              <MenuItem value="upbit">업비트</MenuItem>
-              <MenuItem value="binance">바이넨스</MenuItem>
-            </Select>
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">API key</span>
-            <TextFields
-              id="apiKey"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <span className="lable">Secret Key</span>
-            <TextFields
-              id="secretKey"
-              variant="outlined"
-              onChange={handleChange}
-              //   value="dgsg"
-            />
-          </InputWrapper>
-          <FooterWrapper>
-            <div className="validate">
-              <Buttons onClick={handleValidate}>validate</Buttons>
-              {validate && (
-                <>
-                  <CheckIcon style={{ color: 'green' }} />
-                  <span className="validateString">유효한 API Key 입니다.</span>
-                </>
-              )}
-            </div>
-            <BtnWrapper>
-              <ConfirmButton type="submit">save</ConfirmButton>
-              <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-            </BtnWrapper>
-          </FooterWrapper>
-        </Box>
+              {btn.title}
+            </Button>
+          );
+        })}
       </Box>
-    </Paper>
+    </DialogContent>
   );
 };
 export default PrivateSetting;
+export {};
+// return (
+//   <Paper>
+//     <Box sx={style}>
+//       <Box component="form" onSubmit={handleSubmit}>
+//         <InputWrapper>
+//           <span className="lable">ID</span>
+//           <TextFields
+//             id="id"
+//             variant="outlined"
+//             //   onChange={onTextChange}
+//             value="dgsg"
+//             disabled
+
+//             // label="ID"
+//           />
+//         </InputWrapper>
+//         <InputWrapper>
+//           <span className="lable">email</span>
+//           <TextFields
+//             id="email"
+//             variant="outlined"
+//             // onChange={onTextChange}
+//             value="dgsg"
+//             disabled
+//             // label="ID"
+//           />
+//         </InputWrapper>
+//         <InputWrapper>
+//           <span className="lable">Password</span>
+//           <TextFields
+//             id="password"
+//             variant="outlined"
+//             onChange={handleChange}
+//             //   value="dgsg"
+
+//             // label="ID"
+//           />
+//         </InputWrapper>
+//         <InputWrapper>
+//           <span className="lable">PW Confirm</span>
+//           <TextFields
+//             id="pwConfirm"
+//             variant="outlined"
+//             onChange={handleChange}
+//             //   value="dgsg"
+//           />
+//         </InputWrapper>
+//         <InputWrapper>
+//           <span className="lable">거래소</span>
+//           <Select
+//             id="exchange"
+//             style={{ width: '7rem' }}
+//             defaultValue="bitsum"
+//             onChange={handleSelectChange}
+//           >
+//             <MenuItem value="bitsum">빗썸</MenuItem>
+//             <MenuItem value="upbit">업비트</MenuItem>
+//             <MenuItem value="binance">바이넨스</MenuItem>
+//           </Select>
+//         </InputWrapper>
+//         <InputWrapper>
+//           <span className="lable">API key</span>
+//           <TextFields
+//             id="apiKey"
+//             variant="outlined"
+//             onChange={handleChange}
+//             //   value="dgsg"
+//           />
+//         </InputWrapper>
+//         <InputWrapper>
+//           <span className="lable">Secret Key</span>
+//           <TextFields
+//             id="secretKey"
+//             variant="outlined"
+//             onChange={handleChange}
+//             //   value="dgsg"
+//           />
+//         </InputWrapper>
+//         <FooterWrapper>
+//           <div className="validate">
+//             <Buttons onClick={handleValidate}>validate</Buttons>
+//             {validate && (
+//               <>
+//                 <CheckIcon style={{ color: 'green' }} />
+//                 <span className="validateString">유효한 API Key 입니다.</span>
+//               </>
+//             )}
+//           </div>
+//           <BtnWrapper>
+//             <ConfirmButton type="submit">save</ConfirmButton>
+//             <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+//           </BtnWrapper>
+//         </FooterWrapper>
+//       </Box>
+//     </Box>
+//   </Paper>
+// );
