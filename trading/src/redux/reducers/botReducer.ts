@@ -11,6 +11,14 @@ export const ADD_BOT_REQUEST = 'bot/ADD_BOT_REQUEST' as const;
 export const ADD_BOT_SUCCESS = 'bot/ADD_BOT_SUCCESS' as const;
 export const ADD_BOT_FAILURE = 'bot/ADD_BOT_FAILURE' as const;
 
+export const UPDATE_BOT_REQUEST = 'bot/UPDATE_BOT_REQUEST' as const;
+export const UPDATE_BOT_SUCCESS = 'bot/UPDATE_BOT_SUCCESS' as const;
+export const UPDATE_BOT_FAILURE = 'bot/UPDATE_BOT_FAILURE' as const;
+
+export const DELETE_BOT_REQUEST = 'bot/DELETE_BOT_REQUEST' as const;
+export const DELETE_BOT_SUCCESS = 'bot/DELETE_BOT_SUCCESS' as const;
+export const DELETE_BOT_FAILURE = 'bot/DELETE_BOT_FAILURE' as const;
+
 // export interface Bot {
 //   bot_name: string;
 //   coin_name: string;
@@ -105,6 +113,42 @@ export const addBotActions = {
   failure: addBotFailure,
 };
 
+const updateBotRequest = (botInfo: Bot) => ({
+  type: UPDATE_BOT_REQUEST,
+  payload: botInfo,
+});
+const updateBotSuccess = (msg: string) => ({
+  type: UPDATE_BOT_SUCCESS,
+  payload: msg,
+});
+const updateBotFailure = (error: any) => ({
+  type: UPDATE_BOT_FAILURE,
+  payload: error,
+});
+export const updateBotActions = {
+  request: updateBotRequest,
+  success: updateBotSuccess,
+  failure: updateBotFailure,
+};
+
+const deleteBotRequest = (botInfo: Bot) => ({
+  type: DELETE_BOT_REQUEST,
+  payload: botInfo,
+});
+const deleteBotSuccess = (msg: string) => ({
+  type: DELETE_BOT_SUCCESS,
+  payload: msg,
+});
+const deleteBotFailure = (error: any) => ({
+  type: DELETE_BOT_FAILURE,
+  payload: error,
+});
+export const deleteBotActions = {
+  request: deleteBotRequest,
+  success: deleteBotSuccess,
+  failure: deleteBotFailure,
+};
+
 // TODO: delete bot
 // TODO: get botdetail
 // TODO: update bot
@@ -124,7 +168,22 @@ export type AddBotAction =
   | ReturnType<typeof addBotSuccess>
   | ReturnType<typeof addBotFailure>;
 
-type BotAction = GetBotsAction | GetBotAction | AddBotAction;
+export type UpdateBotAction =
+  | ReturnType<typeof updateBotRequest>
+  | ReturnType<typeof updateBotSuccess>
+  | ReturnType<typeof updateBotFailure>;
+
+export type DeleteBotAction =
+  | ReturnType<typeof deleteBotRequest>
+  | ReturnType<typeof deleteBotSuccess>
+  | ReturnType<typeof deleteBotFailure>;
+
+type BotAction =
+  | GetBotsAction
+  | GetBotAction
+  | AddBotAction
+  | UpdateBotAction
+  | DeleteBotAction;
 
 interface IBotState {
   bots: Bots;
@@ -148,6 +207,8 @@ export default function botReducer(
     case GET_BOTS_REQUEST:
     case GET_BOT_REQUEST:
     case ADD_BOT_REQUEST:
+    case UPDATE_BOT_REQUEST:
+    case DELETE_BOT_REQUEST:
       return {
         ...state,
         isLoading: true,
@@ -173,6 +234,14 @@ export default function botReducer(
       };
     case ADD_BOT_SUCCESS:
       getBotsActions.request(); // 추가 성공하면 새로 bot 리스트를 업데이트
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case UPDATE_BOT_SUCCESS:
+    case UPDATE_BOT_FAILURE:
+    case DELETE_BOT_SUCCESS:
+    case DELETE_BOT_FAILURE:
       return {
         ...state,
         isLoading: false,
