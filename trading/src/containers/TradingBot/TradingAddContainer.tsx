@@ -8,7 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Bot } from '@redux/reducers/botReducer';
+import { addBotActions, Bot } from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
 
 const SmallTextField = ({ ...rest }: any) => {
@@ -199,7 +199,18 @@ const TradingBotAdd = ({
     });
   };
 
+  const isBlank = () => {
+    return Object.values(values).some((val) => {
+      if (typeof val === 'boolean') return false;
+      return !!val;
+    });
+  };
+
   const handleButtonClick = () => {
+    if (isBlank()) {
+      // TODO: set local message
+    }
+    addBotActions.request(values);
     handleClose();
   };
 
