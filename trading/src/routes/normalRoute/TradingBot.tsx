@@ -7,6 +7,7 @@ import BotCard from '@components/TradingBot/BotCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBotsActions } from '@redux/reducers/botReducer';
 import { RootState } from '@redux/reducers';
+import BotSkeleton from '@components/TradingBot/BotSkeleton';
 
 const TradingBot = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -38,9 +39,20 @@ const TradingBot = (): JSX.Element => {
     <>
       <ContentWrapper title="TradingBot" addButton handleOpen={handleOpen}>
         <Grid container spacing={1}>
+          {/* {cards.map(({ title, profit }) => (
+            <Grid key={title} item xl={3} lg={4} md={6} sm={12}>
+              <BotSkeleton />
+            </Grid>
+          ))} */}
           {cards.map(({ title, profit }) => (
             <Grid key={title} item xl={3} lg={4} md={6} sm={12}>
-              <BotCard title={title} profit={profit} botInfo={{}} width={380} />
+              <BotCard
+                title={title}
+                profit={profit}
+                botInfo={{}}
+                width={380}
+                isLoading
+              />
             </Grid>
           ))}
         </Grid>
