@@ -46,16 +46,15 @@ export const DELETE_BOT_FAILURE = 'bot/DELETE_BOT_FAILURE' as const;
 
 export interface Bot {
   id?: string;
-  uuid: string;
   botName: string;
   coinName: string;
   bidReference: string;
   bidCondition: number;
   bidQuantity: number;
   isBidConditionExceed: boolean;
-  askReference?: string;
+  askReference: string;
   askCondition: number;
-  askQuantity?: number;
+  askQuantity: number;
   isActive: boolean;
   description?: string;
 }

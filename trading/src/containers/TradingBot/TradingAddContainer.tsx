@@ -155,16 +155,17 @@ const TradingBotAdd = ({
   handleClose,
 }: ISettingProps): JSX.Element => {
   const [values, setValues] = useState<Bot>({
-    uuid: '',
     botName: '',
     coinName: '',
     bidReference: '7ma', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
     isBidConditionExceed: false, // 기준대비
-    // totalBuy: '',
+    askReference: '',
     askCondition: 0, // 수익률
+    askQuantity: 0,
     isActive: false,
+    description: '',
   });
 
   useEffect(() => {
