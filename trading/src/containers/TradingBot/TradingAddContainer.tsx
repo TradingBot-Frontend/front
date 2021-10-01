@@ -8,6 +8,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@mui/material/Switch';
 import { ReadStream } from 'fs';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 
 const SmallTextField = ({ ...rest }: any) => {
   return <TextField size="small" {...rest} />;
@@ -136,128 +138,143 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
   };
   return (
     <Paper>
-      <Box sx={style}>
-        <Box component="form" onSubmit={handleSubmit}>
-          <Box>
-            <h3>트레이딩봇</h3>
-            <InputWrapper>
-              <span className="lable">트레이딩봇 이름</span>
-              <SmallTextField
-                id="botName"
-                variant="outlined"
-                onChange={handleChange}
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <span className="lable">암호화폐명</span>
-              <div className="row">
+      <DialogTitle
+        sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
+      >
+        trading bot
+      </DialogTitle>
+      <DialogContent
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'auto',
+        }}
+      >
+        <Box>
+          <Box component="form" onSubmit={handleSubmit}>
+            <Box sx={{ margin: '1rem 0rem 0rem 0rem' }}>
+              <InputWrapper>
+                <span className="lable">트레이딩봇 이름</span>
+                <SmallTextField
+                  id="botName"
+                  variant="outlined"
+                  onChange={handleChange}
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <span className="lable">암호화폐명</span>
+                <div className="row">
+                  <Select
+                    id="coinName"
+                    style={{ width: '7rem' }}
+                    defaultValue="bitsum"
+                    onChange={(e) => handleSelectChange(e, 'coinName')}
+                  >
+                    <MenuItem value="bitsum">BTC</MenuItem>
+                    <MenuItem value="upbit">ADA</MenuItem>
+                    <MenuItem value="binance">BTT</MenuItem>
+                  </Select>
+                  <div>
+                    <Switch
+                      // checked={true}
+                      onChange={handleSwitchChange}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  </div>
+                </div>
+              </InputWrapper>
+            </Box>
+            <Divider />
+            <Box>
+              <h3>매수설정</h3>
+              <InputWrapper>
+                <span className="lable">이동평균선</span>
                 <Select
-                  id="coinName"
+                  id="movingLine"
                   style={{ width: '7rem' }}
-                  defaultValue="bitsum"
+                  defaultValue="7ma"
                   onChange={(e) => handleSelectChange(e, 'coinName')}
                 >
-                  <MenuItem value="bitsum">BTC</MenuItem>
-                  <MenuItem value="upbit">ADA</MenuItem>
-                  <MenuItem value="binance">BTT</MenuItem>
+                  <MenuItem value="7ma">7MA</MenuItem>
+                  <MenuItem value="60ma">60MA</MenuItem>
+                  <MenuItem value="120ma">120MA</MenuItem>
                 </Select>
-                <div>
-                  <Switch
-                    // checked={true}
-                    onChange={handleSwitchChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
+              </InputWrapper>
+              <InputWrapper>
+                <span className="lable">조건</span>
+                <div className="row">
+                  <SmallTextField
+                    size="small"
+                    id="standard"
+                    variant="outlined"
+                    label="기준"
+                    onChange={handleChange}
+                    style={{ width: '6rem', margin: '0rem 1rem 0rem 0rem' }}
+                    //   value="dgsg"
                   />
+
+                  <Select
+                    id="standardLine"
+                    style={{ width: '7rem', height: '2.5rem' }}
+                    defaultValue="up"
+                    onChange={(e) => handleSelectChange(e, 'standardLine')}
+                  >
+                    <MenuItem value="up">이상</MenuItem>
+                    <MenuItem value="down">이하</MenuItem>
+                    <MenuItem value="binance">??</MenuItem>
+                  </Select>
                 </div>
-              </div>
-            </InputWrapper>
-          </Box>
-          <Divider />
-          <Box>
-            <h3>매수설정</h3>
-            <InputWrapper>
-              <span className="lable">이동평균선</span>
-              <Select
-                id="movingLine"
-                style={{ width: '7rem' }}
-                defaultValue="7ma"
-                onChange={(e) => handleSelectChange(e, 'coinName')}
-              >
-                <MenuItem value="7ma">7MA</MenuItem>
-                <MenuItem value="60ma">60MA</MenuItem>
-                <MenuItem value="120ma">120MA</MenuItem>
-              </Select>
-            </InputWrapper>
-            <InputWrapper>
-              <span className="lable">조건</span>
-              <div className="row">
+              </InputWrapper>
+              <InputWrapper>
+                <span className="lable">수량</span>
                 <SmallTextField
-                  size="small"
-                  id="standard"
+                  id="amount"
                   variant="outlined"
-                  label="기준"
                   onChange={handleChange}
-                  style={{ width: '6rem', margin: '0rem 1rem 0rem 0rem' }}
                   //   value="dgsg"
                 />
-
+              </InputWrapper>
+              <InputWrapper>
+                <span className="lable">매수총액(현재가)</span>
+                <TextFields
+                  id="totalBuy"
+                  variant="outlined"
+                  onChange={handleChange}
+                  disabled
+                  value="6.353.24원"
+                />
+              </InputWrapper>
+            </Box>
+            <Divider />
+            <Box>
+              <h3>매도설정</h3>
+              <InputWrapper>
+                <span className="lable">수익률</span>
                 <Select
-                  id="standardLine"
-                  style={{ width: '7rem', height: '2.5rem' }}
-                  defaultValue="up"
-                  onChange={(e) => handleSelectChange(e, 'standardLine')}
+                  id="earnRate"
+                  style={{ width: '7rem' }}
+                  defaultValue="ten"
+                  onChange={(e) => handleSelectChange(e, 'earnRate')}
                 >
-                  <MenuItem value="up">이상</MenuItem>
-                  <MenuItem value="down">이하</MenuItem>
-                  <MenuItem value="binance">??</MenuItem>
+                  <MenuItem value="ten">10%</MenuItem>
+                  <MenuItem value="twenty">20%</MenuItem>
+                  <MenuItem value="thirty">30%</MenuItem>
                 </Select>
-              </div>
-            </InputWrapper>
-            <InputWrapper>
-              <span className="lable">수량</span>
-              <SmallTextField
-                id="amount"
-                variant="outlined"
-                onChange={handleChange}
-                //   value="dgsg"
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <span className="lable">매수총액(현재가)</span>
-              <TextFields
-                id="totalBuy"
-                variant="outlined"
-                onChange={handleChange}
-                disabled
-                value="6.353.24원"
-              />
-            </InputWrapper>
-          </Box>
-          <Divider />
-          <Box>
-            <h3>매도설정</h3>
-            <InputWrapper>
-              <span className="lable">수익률</span>
-              <Select
-                id="earnRate"
-                style={{ width: '7rem' }}
-                defaultValue="ten"
-                onChange={(e) => handleSelectChange(e, 'earnRate')}
-              >
-                <MenuItem value="ten">10%</MenuItem>
-                <MenuItem value="twenty">20%</MenuItem>
-                <MenuItem value="thirty">30%</MenuItem>
-              </Select>
-            </InputWrapper>
-          </Box>
+              </InputWrapper>
+            </Box>
 
-          <FooterWrapper>
-            <BtnWrapper>
-              <ConfirmButton type="submit">save</ConfirmButton>
-              <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-            </BtnWrapper>
-          </FooterWrapper>
+            <FooterWrapper>
+              <BtnWrapper>
+                <ConfirmButton type="submit">save</ConfirmButton>
+                <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+              </BtnWrapper>
+            </FooterWrapper>
+          </Box>
         </Box>
-      </Box>
+      </DialogContent>
     </Paper>
   );
 };

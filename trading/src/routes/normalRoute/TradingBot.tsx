@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Grid from '@mui/material/Grid';
 import BotCard from '@components/TradingBot/BotCard';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 
 const TradingBot = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -67,9 +68,9 @@ const TradingBot = (): JSX.Element => {
           </Grid>
         </Grid>
       </ContentWrapper>
-      <Modal open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose}>
         <TradingBotAdd handleClose={handleClose} />
-      </Modal>
+      </Dialog>
     </>
   );
 };
