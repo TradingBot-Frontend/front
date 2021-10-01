@@ -6,7 +6,6 @@ import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper } from '@material-ui/core';
 import { startInit } from '@redux/reducers/websocketReducer';
-import { MybotBoard } from '@containers/Dashboard/MybotBoard';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import BotCard from '@components/TradingBot/BotCard';

@@ -6,10 +6,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
-import Switch from '@mui/material/Switch';
-import { ReadStream } from 'fs';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import Switch, { SwitchProps } from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Bot } from '@redux/reducers/botReducer';
+import { styled as muiStyled } from '@mui/material/styles';
 
 const SmallTextField = ({ ...rest }: any) => {
   return <TextField size="small" {...rest} />;
@@ -94,48 +96,126 @@ const CancleButton = styled(Button)`
   width: 11rem;
   margin: 0.5rem 0rem 0rem 0.5rem;
 `;
+
+const IOSSwitch = muiStyled((props: SwitchProps) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => {
+  return {
+    width: 42,
+    height: 26,
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+      padding: 0,
+      margin: 2,
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+        transform: 'translateX(16px)',
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          backgroundColor:
+            theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+          opacity: 1,
+          border: 0,
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+          opacity: 0.5,
+        },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+        color: '#33cf4d',
+        border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+        color:
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[600],
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: 22,
+      height: 22,
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 26 / 2,
+      backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+      opacity: 1,
+      transition: theme.transitions.create(['background-color'], {
+        duration: 500,
+      }),
+    },
+  };
+});
+
 interface ISettingProps {
+  // botInfo?: BotInfo;
+  botInfo?: Bot;
   handleClose: () => void;
 }
-const TradingBotAdd = ({ handleClose }: ISettingProps) => {
-  const [states, setStates] = useState({
+
+const TradingBotAdd = ({
+  botInfo,
+  handleClose,
+}: ISettingProps): JSX.Element => {
+  const [values, setValues] = useState<Bot>({
+    uuid: '',
     botName: '',
     coinName: '',
-    movingLine: '7ma',
-    standard: '',
-    standardLine: 'up',
-    amount: '',
-    totalBuy: '',
-    earnRate: '',
+    bidReference: '7ma', // 이동평균선
+    bidCondition: 0, // 기준
+    bidQuantity: 0, // 수량
+    isBidConditionExceed: false, // 기준대비
+    // totalBuy: '',
+    askCondition: 0, // 수익률
+    isActive: false,
   });
+
   useEffect(() => {
-    console.log('states:', states);
-  }, [states]);
+    console.log('values:', values);
+  }, [values]);
+
+  useEffect(() => {
+    if (botInfo) {
+      setValues(botInfo);
+    }
+  }, []);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit:', states);
+    console.log('values:', values);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     console.log('id:', id, 'value:', value);
-    setStates({
-      ...states,
+    setValues({
+      ...values,
       [id]: value,
     });
   };
+
   const handleSelectChange = (e: SelectChangeEvent, key: string) => {
-    setStates({
-      ...states,
+    setValues({
+      ...values,
       [key]: e.target.value,
     });
   };
+
   const handleButtonClick = () => {
     handleClose();
-    console.log('클릭!');
   };
-  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('스위치 on/off');
+
+  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({
+      ...values,
+      isActive: e.target.checked,
+    });
   };
+
   return (
     <Paper>
       <DialogTitle
@@ -161,6 +241,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
                 <SmallTextField
                   id="botName"
                   variant="outlined"
+                  value={values.botName}
                   onChange={handleChange}
                 />
               </InputWrapper>
@@ -170,20 +251,23 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
                   <Select
                     id="coinName"
                     style={{ width: '7rem' }}
-                    defaultValue="bitsum"
+                    value={values.coinName || 'BTC'}
                     onChange={(e) => handleSelectChange(e, 'coinName')}
                   >
-                    <MenuItem value="bitsum">BTC</MenuItem>
-                    <MenuItem value="upbit">ADA</MenuItem>
-                    <MenuItem value="binance">BTT</MenuItem>
+                    <MenuItem value="BTC">BTC</MenuItem>
+                    <MenuItem value="ADA">ADA</MenuItem>
+                    <MenuItem value="BTT">BTT</MenuItem>
                   </Select>
-                  <div>
-                    <Switch
-                      // checked={true}
-                      onChange={handleSwitchChange}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  </div>
+                  <FormControlLabel
+                    control={
+                      <IOSSwitch
+                        sx={{ m: 1, ml: 5 }}
+                        defaultChecked
+                        onChange={handleSwitchChange}
+                      />
+                    }
+                    label="동작"
+                  />
                 </div>
               </InputWrapper>
             </Box>
@@ -193,7 +277,7 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
               <InputWrapper>
                 <span className="lable">이동평균선</span>
                 <Select
-                  id="movingLine"
+                  id="bidReference"
                   style={{ width: '7rem' }}
                   defaultValue="7ma"
                   onChange={(e) => handleSelectChange(e, 'coinName')}
@@ -208,12 +292,12 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
                 <div className="row">
                   <SmallTextField
                     size="small"
-                    id="standard"
+                    id="bidCondition"
                     variant="outlined"
                     label="기준"
                     onChange={handleChange}
+                    value={values.bidCondition}
                     style={{ width: '6rem', margin: '0rem 1rem 0rem 0rem' }}
-                    //   value="dgsg"
                   />
 
                   <Select
@@ -224,17 +308,16 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
                   >
                     <MenuItem value="up">이상</MenuItem>
                     <MenuItem value="down">이하</MenuItem>
-                    <MenuItem value="binance">??</MenuItem>
                   </Select>
                 </div>
               </InputWrapper>
               <InputWrapper>
                 <span className="lable">수량</span>
                 <SmallTextField
-                  id="amount"
+                  id="bidQuantity"
                   variant="outlined"
+                  value={values.bidQuantity}
                   onChange={handleChange}
-                  //   value="dgsg"
                 />
               </InputWrapper>
               <InputWrapper>
@@ -254,10 +337,10 @@ const TradingBotAdd = ({ handleClose }: ISettingProps) => {
               <InputWrapper>
                 <span className="lable">수익률</span>
                 <Select
-                  id="earnRate"
+                  id="askCondition"
                   style={{ width: '7rem' }}
                   defaultValue="ten"
-                  onChange={(e) => handleSelectChange(e, 'earnRate')}
+                  onChange={(e) => handleSelectChange(e, 'askCondition')}
                 >
                   <MenuItem value="ten">10%</MenuItem>
                   <MenuItem value="twenty">20%</MenuItem>

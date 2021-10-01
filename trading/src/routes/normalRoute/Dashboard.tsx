@@ -203,7 +203,11 @@ export default function Dashboard() {
           {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
-          <CommonButtonContainer title="LOGOUT" onClick={handleLogout} />
+          <CommonButtonContainer
+            title="LOGOUT"
+            color="white"
+            onClick={handleLogout}
+          />
         </Toolbar>
       </AppBar>
       <Drawer

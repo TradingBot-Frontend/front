@@ -2,18 +2,22 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { green } from '@mui/material/colors';
 
 interface ContentWrapperProps {
   title: string;
-  addButton?: JSX.Element;
+  addButton?: boolean;
   children: JSX.Element;
+  overflow?: string;
   handleOpen?: () => void;
 }
 
 export default function ContentWrapper({
   title,
-  addButton,
+  addButton = false,
   children,
+  overflow = 'auto',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleOpen = () => {},
 }: ContentWrapperProps): JSX.Element {
@@ -24,7 +28,7 @@ export default function ContentWrapper({
         padding: '2rem',
       }}
     >
-      <Typography variant="h3" component="div">
+      <Typography variant="h4" component="div">
         {title}
         {addButton ? (
           <IconButton
@@ -32,7 +36,8 @@ export default function ContentWrapper({
             sx={{ marginLeft: '0.8rem' }}
             onClick={handleOpen}
           >
-            add
+            <AddCircleIcon sx={{ color: green[500] }} />
+            &nbsp;Add
           </IconButton>
         ) : null}
       </Typography>
@@ -41,7 +46,7 @@ export default function ContentWrapper({
           display: 'flex',
           height: '80vh',
           padding: '1rem 0rem 0rem 0rem',
-          overflow: 'auto',
+          overflow,
         }}
       >
         {children}
