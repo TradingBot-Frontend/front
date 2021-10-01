@@ -5,13 +5,15 @@ import { Box, Divider } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper } from '@material-ui/core';
-import { startLivePriceApp } from '@redux/reducers/websocketReducer';
+import { startInit } from '@redux/reducers/websocketReducer';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BotCard from '@components/TradingBot/BotCard';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
+import { RootState } from '@redux/reducers';
+import { coinDataUtils } from '@utils/utils';
 
 const MainWapper = styled.div`
   display: flex;
@@ -46,12 +48,13 @@ const Main = () => {
   const handleClose = () => setOpen(false);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const coinData = useSelector((state: RootState) => state.coin);
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('클릭!');
   };
   useEffect(() => {
     console.log('들어옴');
-    dispatch(startLivePriceApp());
+    dispatch(startInit());
   }, []);
   return (
     <MainWapper>
@@ -73,7 +76,7 @@ const Main = () => {
           <Grid item xs={12} sm={6}>
             <Box>
               <Paper className={classes.coinContainer}>
-                <DsbCoinList />
+                <DsbCoinList coindata={coinDataUtils.convertData(coinData)} />
               </Paper>
             </Box>
           </Grid>

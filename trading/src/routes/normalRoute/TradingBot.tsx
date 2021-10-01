@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Grid from '@mui/material/Grid';
 import BotCard from '@components/TradingBot/BotCard';
+import Dialog from '@mui/material/Dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBotsActions } from '@redux/reducers/botReducer';
 import { RootState } from '@redux/reducers';
@@ -45,9 +46,9 @@ const TradingBot = (): JSX.Element => {
           ))}
         </Grid>
       </ContentWrapper>
-      <Modal open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose}>
         <TradingBotAdd handleClose={handleClose} />
-      </Modal>
+      </Dialog>
     </>
   );
 };
