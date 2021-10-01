@@ -62,7 +62,7 @@ const connectSocket = (socket: any, action: any, buffer: any) => {
     socket.onmessage = (event: any) => {
       // const arr = new Uint8Array(evt.data);
       const data = JSON.parse(event.data);
-      console.log('socket onmessage: ', data);
+      // console.log('socket onmessage: ', data);
       emit(data);
     };
     socket.onerror = (error: any) => {

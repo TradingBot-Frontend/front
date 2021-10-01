@@ -8,12 +8,12 @@ import { coinListActions } from '@redux/reducers/coinReducer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 
 export const DsbContWrapper = styled.div``;
-interface Data {
+export interface Data {
   name: string;
   currentPrice: string;
   rateOfChange: string;
   money: string;
-  id: number;
+  id: string;
 }
 type Sample = [string, string, string, string];
 
@@ -26,7 +26,7 @@ const sample: readonly Sample[] = [
 ];
 
 function createData(
-  id: number,
+  id: string,
   name: string,
   currentPrice: string,
   rateOfChange: string,
@@ -39,7 +39,7 @@ const rows: Data[] = [];
 
 for (let i = 0; i < 200; i += 1) {
   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  rows.push(createData(i, ...randomSelection));
+  rows.push(createData(`${i}`, ...randomSelection));
 }
 const DsbCoinListWrapper = styled.div`
   width: 100%;
@@ -47,7 +47,7 @@ const DsbCoinListWrapper = styled.div`
   display: flex;
 `;
 
-const DsbCoinList = () => {
+const DsbCoinList = ({ coindata }: any) => {
   const [states, setStates] = useState<any>({
     coinContent: [],
     filterCoinContent: [],
@@ -56,13 +56,16 @@ const DsbCoinList = () => {
   const { coinContent, filterCoinContent, keyword } = states;
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(coinListActions.request('asc'));
+    // dispatch(coinListActions.request('asc'));
     setStates({
       ...states,
-      coinContent: rows,
-      filterCoinContent: rows,
+      coinContent: coindata,
+      filterCoinContent: coindata,
     });
   }, []);
+  useEffect(() => {
+    console.log('coinData:', coindata);
+  }, [coindata]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStates({
       ...states,

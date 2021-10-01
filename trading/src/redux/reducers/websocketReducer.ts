@@ -40,7 +40,7 @@ const initialState: ICoinInit = {
 // TODO: init 초기 함수 key 갖고 있도록 바꾸기
 const reducerUtils = {
   success: (state: any, payload: any, key: any) => {
-    console.log('reducerUtils state:', state, 'payload:', payload);
+    // console.log('reducerUtils state:', state, 'payload:', payload);
     return {
       ...state,
       [key]: [...payload],
