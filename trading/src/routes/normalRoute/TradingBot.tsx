@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ContentWrapper from '@components/common/ContentWrapper';
-import Modal from '@mui/material/Modal';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Grid from '@mui/material/Grid';
 import BotCard from '@components/TradingBot/BotCard';
