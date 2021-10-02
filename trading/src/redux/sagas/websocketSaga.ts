@@ -95,6 +95,7 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
         const state = yield select();
         if (datas.length) {
           // 이 문구 없으면 메시지를 받았든 받지 않았든 200ms 마다 항상 dispatch 작업을 해서 혼란 야기할 수 도 있음
+          // newCoinList: 기존값 data: 새로 들어온 값
           const newCoinList: any = [...state.coin.coinList];
           datas.forEach((data: ICoinState) => {
             const symbol: string = data.symbol as string;
@@ -104,7 +105,10 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
             );
             if (targetIdx !== -1) {
               // 버퍼에 있는 데이터중 시간이 가장 최근인 데이터만 남김
-              if (newCoinList[targetIdx].timeTag > data.timeTag) {
+              if (
+                newCoinList[targetIdx].timeTag.split('T')[1] <
+                data.timeTag.split('T')[1]
+              ) {
                 newCoinList[targetIdx] = data;
               }
             } else {

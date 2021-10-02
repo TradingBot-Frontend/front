@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
+import { useCallback } from 'react';
 
 export const DsbContWrapper = styled.div``;
 export interface Data {
@@ -15,38 +16,6 @@ export interface Data {
   money: string;
   id: string;
 }
-type Sample = [string, string, string, string];
-
-const sample: readonly Sample[] = [
-  ['비트코인', '55,000,000', '+2.5%', '151.445'],
-  ['이클', '55,000,000', '+2.5%', '151.445'],
-  ['도지코인', '55,000,000', '+2.5%', '151.445'],
-  ['비트토렌트', '55,000,000', '+2.5%', '151.445'],
-  ['페이코인', '55,000,000', '+2.5%', '151.445'],
-];
-
-function createData(
-  id: string,
-  name: string,
-  currentPrice: string,
-  rateOfChange: string,
-  money: string,
-): Data {
-  return { id, name, currentPrice, rateOfChange, money };
-}
-
-const rows: Data[] = [];
-
-for (let i = 0; i < 200; i += 1) {
-  const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  rows.push(createData(`${i}`, ...randomSelection));
-}
-const DsbCoinListWrapper = styled.div`
-  width: 100%;
-  height: 20rem;
-  display: flex;
-`;
-
 const DsbCoinList = ({ coindata }: any) => {
   const [states, setStates] = useState<any>({
     coinContent: [],
@@ -62,17 +31,20 @@ const DsbCoinList = ({ coindata }: any) => {
       coinContent: coindata,
       filterCoinContent: coindata,
     });
-  }, []);
+  }, [coindata]);
   useEffect(() => {
     console.log('coinData:', coindata);
   }, [coindata]);
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStates({
-      ...states,
-      keyword: e.target.value,
-    });
-  };
-  const handleKeyPress = () => {
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setStates({
+        ...states,
+        keyword: e.target.value,
+      });
+    },
+    [],
+  );
+  const handleKeyPress = useCallback(() => {
     if (keyword) {
       setStates({
         ...states,
@@ -86,7 +58,7 @@ const DsbCoinList = ({ coindata }: any) => {
         filterCoinContent: coinContent,
       });
     }
-  };
+  }, []);
   return (
     <DsbContWrapper>
       {/* <Box sx={{ minWidth: 300, margin: '0rem 0rem 0rem 0rem' }}>

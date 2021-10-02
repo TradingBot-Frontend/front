@@ -146,6 +146,9 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
             className={classes.table}
             {...tableProps}
             rowClassName={this.getRowClassName}
+            onRowClick={() => {
+              console.log('ㅎㅇㅎㅇ');
+            }}
           >
             {columns.map(({ dataKey, ...other }, index) => {
               return (
