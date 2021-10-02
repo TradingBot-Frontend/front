@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Box, Button, Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { addBotActions, Bot } from '@redux/reducers/botReducer';
+import {
+  addBotActions,
+  Bot,
+  updateBotActions,
+} from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import { useSelector } from 'react-redux';
@@ -173,15 +176,15 @@ const TradingBotAdd = ({
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
     isBidConditionExceed: false, // 기준대비
-    askReference: '',
+    askReference: 'PROFIT',
     askCondition: 0, // 수익률
     askQuantity: 0,
     isActive: false,
-    description: '',
+    description: 'default',
   });
   const [localMsg, setLocalMsg] = useState('');
-
   const coinList = useSelector((state: RootState) => state.coin.coinList);
+  const hasDefaultBotInfo = !!botInfo;
 
   useEffect(() => {
     console.log('values:', values);
@@ -193,79 +196,94 @@ const TradingBotAdd = ({
     }
   }, []);
 
-  const calculateCurrentPrice = (cl: ICoinState[]) => {
-    if (values.coinName && values.bidQuantity) {
-      // 이게 반영 잘 되나?
-      const targetCoin = cl.find((coin: ICoinState) => {
-        const [name] = coin.symbol.split('_');
-        return name === values.coinName;
-      });
-      const price = values.bidQuantity * Number(targetCoin?.openPrice || '0');
-      const converted = price.toLocaleString('ko-KR', {
-        maximumFractionDigits: 4,
-      });
-      return converted;
-    }
-    return 0;
-  };
+  useEffect(() => {
+    console.log('localMsg:', localMsg);
+  }, [localMsg]);
+
+  // TODO: validation 추가
+
+  const calculateCurrentPrice = useCallback(
+    (cl: ICoinState[]) => {
+      if (values.coinName && values.bidQuantity) {
+        // 이게 반영 잘 되나?
+        const targetCoin = cl.find((coin: ICoinState) => {
+          const [name] = coin.symbol.split('_');
+          return name === values.coinName;
+        });
+        const price = values.bidQuantity * Number(targetCoin?.openPrice || '0');
+        const converted = price.toLocaleString('ko-KR', {
+          maximumFractionDigits: 4,
+        });
+        return converted;
+      }
+      return 0;
+    },
+    [values.coinName, values.bidQuantity],
+  );
 
   const current = useMemo(() => calculateCurrentPrice(coinList), [coinList]);
 
-  // useEffect(() => {
-  //   if (values.coinName && values.bidQuantity) {
-  //     const tc = coinList.find((coin: ICoinState) => {
-  //       const [name] = coin.symbol.split('_');
-  //       return name === values.coinName;
-  //     });
-  //     setTotalBuy(values.bidQuantity * tc.openPrice);
-  //   }
-  // }, [values.coinName, values.bidQuantity, coinList]);
-
-  const isBlank = () => {
+  // TODO: 제대로 작동하는지 확인
+  const isBlank = useCallback(() => {
     return Object.values(values).some((val) => {
+      console.log('val: ', val, 'ret: ', !val);
       if (typeof val === 'boolean') return false;
-      return !!val;
+      return !val;
     });
-  };
+  }, [values]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (isBlank()) {
-      // TODO: set local message
       setLocalMsg('정보를 다 채워주세요.');
+      console.log(values);
     } else {
       setLocalMsg('');
-      addBotActions.request(values);
+      if (hasDefaultBotInfo) {
+        updateBotActions.request(values);
+        console.log('update');
+      } else {
+        addBotActions.request(values);
+        console.log('add');
+      }
       handleClose();
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    console.log('id:', id, 'value:', value);
-    setValues({
-      ...values,
-      [id]: value,
-    });
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = e.target;
+      console.log('id:', id, 'value:', value);
+      setValues({
+        ...values,
+        [id]: value,
+      });
+    },
+    [values, setValues],
+  );
 
-  const handleSelectChange = (e: SelectChangeEvent, key: string) => {
-    setValues({
-      ...values,
-      [key]: e.target.value,
-    });
-  };
+  const handleSelectChange = useCallback(
+    (e: SelectChangeEvent, key: string) => {
+      setValues({
+        ...values,
+        [key]: e.target.value,
+      });
+    },
+    [values, setValues],
+  );
 
-  const handleButtonClick = () => {
+  const handleButtonClick = useCallback(() => {
     handleClose();
-  };
+  }, [handleClose]);
 
-  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      isActive: e.target.checked,
-    });
-  };
+  const handleSwitchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({
+        ...values,
+        isActive: e.target.checked,
+      });
+    },
+    [values, setValues],
+  );
 
   return (
     <>
@@ -382,7 +400,7 @@ const TradingBotAdd = ({
           <Box>
             <h3>매도설정</h3>
             <InputWrapper>
-              <span className="lable">수익률</span>
+              {/* <span className="lable">수익률</span>
               <Select
                 id="askCondition"
                 style={{ width: '7rem' }}
@@ -392,7 +410,14 @@ const TradingBotAdd = ({
                 <MenuItem value="ten">10%</MenuItem>
                 <MenuItem value="twenty">20%</MenuItem>
                 <MenuItem value="thirty">30%</MenuItem>
-              </Select>
+              </Select> */}
+              <span className="lable">수익률</span>
+              <SmallTextField
+                id="askCondition"
+                variant="outlined"
+                value={values.askCondition}
+                onChange={handleChange}
+              />
             </InputWrapper>
             <InputWrapper>
               <span className="lable">수량</span>
@@ -406,10 +431,10 @@ const TradingBotAdd = ({
           </Box>
         </Box>
       </DialogContent>
+      {localMsg ? <Alert severity="warning">{localMsg}</Alert> : null}
       <DialogActions style={{ display: 'flex', justifyContent: 'center' }}>
-        {localMsg ? <Alert severity="warning">{localMsg}</Alert> : null}
-        <ConfirmButton type="submit">save</ConfirmButton>
-        <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+        <ConfirmButton onClick={handleSubmit}>시작</ConfirmButton>
+        <CancleButton onClick={handleButtonClick}>취소</CancleButton>
       </DialogActions>
     </>
   );
