@@ -48,7 +48,9 @@ const Main = () => {
   const handleClose = () => setOpen(false);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const coinData = useSelector((state: RootState) => state.coin);
+  const coinValue = useSelector((state: RootState) => state.coin);
+  const [coinData, setCoinData] = useState(coinValue);
+  // const coinData = useSelector((state: RootState) => state.coin);
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('클릭!');
   };
@@ -56,6 +58,11 @@ const Main = () => {
     console.log('들어옴');
     dispatch(startInit());
   }, []);
+  useEffect(() => {
+    if (coinValue?.coinList.length) {
+      setCoinData(coinDataUtils.convertData(coinValue));
+    }
+  }, [coinValue?.coinList]);
   return (
     <MainWapper>
       <Container style={{ border: '1px solid' }}>
@@ -88,7 +95,7 @@ const Main = () => {
           <Grid item xs={12} sm={6}>
             <Box>
               <Paper className={classes.coinContainer}>
-                <DsbCoinList coindata={coinDataUtils.convertData(coinData)} />
+                <DsbCoinList coindata={coinData.length ? coinData : []} />
               </Paper>
             </Box>
           </Grid>
