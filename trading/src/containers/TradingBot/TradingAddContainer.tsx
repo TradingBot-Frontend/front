@@ -168,7 +168,7 @@ const TradingBotAdd = ({
 }: ISettingProps): JSX.Element => {
   const [values, setValues] = useState<Bot>({
     botName: '',
-    coinName: '',
+    coinName: 'BTC',
     bidReference: '7ma', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
@@ -201,7 +201,10 @@ const TradingBotAdd = ({
         return name === values.coinName;
       });
       const price = values.bidQuantity * Number(targetCoin?.openPrice || '0');
-      return price;
+      const converted = price.toLocaleString('ko-KR', {
+        maximumFractionDigits: 4,
+      });
+      return converted;
     }
     return 0;
   };
