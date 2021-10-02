@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ApexChart from 'react-apexcharts';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import Dialog from '@mui/material/Dialog';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Skeleton from '@mui/material/Skeleton';
 import Avatar from '@mui/material/Avatar';
@@ -131,9 +131,9 @@ export default function BotCard({
           </Stack>
         </CardContent>
       </Card>
-      <Modal open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose}>
         <TradingBotAdd botInfo={botInfo} handleClose={handleClose} />
-      </Modal>
+      </Dialog>
     </>
   );
 }
