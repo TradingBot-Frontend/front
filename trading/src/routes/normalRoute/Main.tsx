@@ -14,6 +14,7 @@ import { green } from '@material-ui/core/colors';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
 import { RootState } from '@redux/reducers';
 import { coinDataUtils } from '@utils/utils';
+import EnhancedTable from '@components/common/CoinTable';
 
 const MainWapper = styled.div`
   display: flex;
@@ -39,7 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
   coinContainer: {
     height: '30rem',
-    margin: 'rem 0rem 0rem 0rem',
+    paddingTop: '1rem',
+    display: 'flex',
+    justifyContent: 'center',
+    // margin: '0rem 0rem 0rem 0rem',
   },
 }));
 const Main = () => {
@@ -81,18 +85,15 @@ const Main = () => {
         </Grid>
         <Grid container spacing={4} className={classes.bottomContainer}>
           <Grid item xs={12} sm={6}>
-            <Box>
-              <Paper className={classes.coinContainer}>
-                <DsbCoinList coindata={coinData.length ? coinData : []} />
-              </Paper>
-            </Box>
+            <Paper className={classes.coinContainer}>
+              <EnhancedTable coindata={coinData.length ? coinData : []} />
+              {/* <DsbCoinList coindata={coinData.length ? coinData : []} /> */}
+            </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Box>
-              <Paper className={classes.coinContainer}>
-                <PortfolioDonutChart />
-              </Paper>
-            </Box>
+            <Paper className={classes.coinContainer}>
+              <PortfolioDonutChart />
+            </Paper>
           </Grid>
         </Grid>
       </Container>
