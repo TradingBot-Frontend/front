@@ -11,7 +11,7 @@ import {getItemsActions} from "@redux/reducers/portfolioReducer";
 
 
 interface Data {
-    id: number,
+    id: string,
     timeTag: string,
     coinName: string,
     uuid: string,
@@ -23,16 +23,18 @@ interface Data {
 interface stateProps {
     orderList: Data[];
 }
-type Sample =  [number, string, string, string, number, number, boolean];
+type Sample =  [string, string, string, string, number, number, boolean];
 
 const sample: readonly Sample[] = [
-    [ 1429500318982, '2021-09-23T20:59:53', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 2800.0, 3.0, true ],
-    [ 1429500318982, '2021-09-25T00:29:17', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 2900.0, 5.0, true ],
-    [ 1429500318982, '2021-09-25T00:29:55', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 3000.0, 2.0, false ],
+    [ '1429500318982', '2021-09-23T20:59:53', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 2800.0, 3.0, true ],
+    [ '1429500318982', '2021-09-25T00:29:17', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 2900.0, 5.0, true ],
+    [ '1429500318982', '2021-09-25T00:29:55', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 3000.0, 2.0, false ],
+    [ '1429500318982', '2021-09-25T00:29:55', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 3000.0, 2.0, false ],
+    [ 'C0150000000187510124', '2021-09-25T00:29:55', 'ADA', 'ae950ef0-51a9-4df2-a4c3-8cdfea54a4a1', 3000.0, 2.0, false ],
 ];
 
 function createData(
-    id: number,
+    id: string,
     timeTag: string,
     coinName: string,
     uuid: string,
@@ -68,12 +70,12 @@ const Portfolio = () => {
   return (
       <ContentWrapper title="Portfolio">
        <Container>
-         <PortfolioInfoCard/>
+         {/* <PortfolioInfoCard/> */}
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <PortfolioDonutChart/>
           </Grid>
-          <Grid item xs={6} >
+          <Grid item xs={4} >
             <PortfolioListCard
                 rows={orderList}
             />

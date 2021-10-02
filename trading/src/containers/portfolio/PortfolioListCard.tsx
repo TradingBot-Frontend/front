@@ -3,8 +3,9 @@ import React from 'react';
 
 // material-ui
 import { makeStyles } from '@material-ui/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
-
+import { Avatar, Button, CardActions, Divider, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 // assets
 import ChevronRightOutlinedIcon from '@material-ui/icons/ChevronRightOutlined';
 import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
@@ -13,6 +14,11 @@ import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownO
 
 // style constant
 const useStyles = makeStyles((theme) => ({
+    card: {
+        // marginLeft: '20px',
+        // marginRight: '20px',
+        marginBottom: '12px'
+    },
     cardAction: {
         padding: '10px',
         paddingTop: 0,
@@ -52,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ===========================|| DASHBOARD DEFAULT - POPULAR CARD ||=========================== //
 interface Data {
-    id: number,
+    id: string,
     timeTag: string,
     coinName: string,
     uuid: string,
@@ -69,12 +75,12 @@ export const PortfolioListCard: React.FC<arrayProps> = ({
 }) => {
     const classes = useStyles();
     return (
-        <CardContent>
+        <div>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container alignContent="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="h4">리스트</Typography>
+                            <Typography variant="h4">거래내역</Typography>
                         </Grid>
                         <Grid item>
                             <MoreHorizOutlinedIcon
@@ -90,38 +96,50 @@ export const PortfolioListCard: React.FC<arrayProps> = ({
                     {
                         rows.map((e , i)=> {
                             return (
-                                <Grid key={e.id} container direction="column">
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    매수 {e.coinName}
-                                                </Typography>
-                                            </Grid>
+                                <Grid key={e.id} container direction="column"className={classes.card}>
+                                    <Card >
+                                        <CardContent>
                                             <Grid item>
                                                 <Grid container alignItems="center" justifyContent="space-between">
                                                     <Grid item>
                                                         <Typography variant="subtitle1" color="inherit">
-                                                            $1839.00
+                                                            매수 {e.coinName}
                                                         </Typography>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Grid container alignItems="center" justifyContent="space-between">
+                                                            <Grid item>
+                                                                <Typography variant="subtitle1" color="inherit">
+                                                                    {e.isBid}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        거래일시 {e.timeTag}
-                                        <Typography variant="subtitle2" className={classes.successDark}>
-                                            10% Profit
-                                        </Typography>
-                                    </Grid>
-                                    <Divider className={classes.divider} />
+                                            <Grid item>
+                                                <Typography variant="subtitle2" className={classes.successDark}>
+                                                    거래일시 {e.timeTag}
+                                                </Typography>
+                                                <Typography variant="subtitle2" className={classes.successDark}>
+                                                    주문금액 Profit
+                                                </Typography>
+                                                <Typography variant="subtitle2" className={classes.successDark}>
+                                                    거래단가 {e.price}
+                                                </Typography>
+                                                <Typography variant="subtitle2" className={classes.successDark}>
+                                                    채결수량 {e.quantity}
+                                                </Typography>
+                                            </Grid>
+                                            {/* <Divider className={classes.divider} /> */}
+                                        </CardContent>
+                                    </Card>
                                 </Grid>
                                 // <Divider  key={e.id} className={classes.divider} />
                             )
                         })
                     }
-        {/*            <Grid container direction="column">
+                    {/*            <Grid container direction="column">
                         <Grid item>
                             <Grid container alignItems="center" justifyContent="space-between">
                                 <Grid item>
@@ -208,7 +226,7 @@ export const PortfolioListCard: React.FC<arrayProps> = ({
                     <Divider className={classes.divider} /> */}
                 </Grid>
             </Grid>
-        </CardContent>
+        </div>
     );
 };
 
