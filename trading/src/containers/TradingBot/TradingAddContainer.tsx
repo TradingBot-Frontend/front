@@ -218,7 +218,7 @@ const TradingBotAdd = ({
   };
 
   return (
-    <Paper>
+    <>
       <DialogTitle
         sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
       >
@@ -236,7 +236,7 @@ const TradingBotAdd = ({
       >
         <Box>
           <Box component="form" onSubmit={handleSubmit}>
-            <Box sx={{ margin: '1rem 0rem 0rem 0rem' }}>
+            <Box sx={{ margin: '6rem 0rem 0rem 0rem' }}>
               <InputWrapper>
                 <span className="lable">트레이딩봇 이름</span>
                 <SmallTextField
@@ -349,14 +349,14 @@ const TradingBotAdd = ({
                 </Select>
               </InputWrapper>
             </Box>
-            <DialogActions>
-              <ConfirmButton type="submit">save</ConfirmButton>
-              <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-            </DialogActions>
           </Box>
         </Box>
       </DialogContent>
-    </Paper>
+      <DialogActions style={{ display: 'flex', justifyContent: 'center' }}>
+        <ConfirmButton type="submit">save</ConfirmButton>
+        <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+      </DialogActions>
+    </>
   );
 };
 export default TradingBotAdd;
