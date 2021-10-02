@@ -25,7 +25,10 @@ export default function ContentWrapper({
     <Box
       sx={{
         flex: 1,
-        padding: '2rem',
+          paddingTop: '2rem',
+          paddingBottom: '2rem',
+          paddingRight: '200px',
+          paddingLeft: '200px',
       }}
     >
       <Typography variant="h4" component="div">
