@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Box, Button, Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
@@ -193,15 +193,29 @@ const TradingBotAdd = ({
     }
   }, []);
 
-  useEffect(() => {
+  const calculateCurrentPrice = (cl: ICoinState[]) => {
     if (values.coinName && values.bidQuantity) {
-      const tc = coinList.find((coin: ICoinState) => {
+      // 이게 반영 잘 되나?
+      const targetCoin = cl.find((coin: ICoinState) => {
         const [name] = coin.symbol.split('_');
         return name === values.coinName;
       });
-      setTotalBuy(values.bidQuantity * tc.openPrice);
+      const price = Number(targetCoin?.openPrice || '0');
+      setTotalBuy(values.bidQuantity * price);
     }
-  }, [values.coinName, values.bidQuantity, coinList]);
+  };
+
+  const current = useMemo(() => calculateCurrentPrice(coinList), [coinList]);
+
+  // useEffect(() => {
+  //   if (values.coinName && values.bidQuantity) {
+  //     const tc = coinList.find((coin: ICoinState) => {
+  //       const [name] = coin.symbol.split('_');
+  //       return name === values.coinName;
+  //     });
+  //     setTotalBuy(values.bidQuantity * tc.openPrice);
+  //   }
+  // }, [values.coinName, values.bidQuantity, coinList]);
 
   const isBlank = () => {
     return Object.values(values).some((val) => {
@@ -359,7 +373,7 @@ const TradingBotAdd = ({
                   id="totalBuy"
                   variant="outlined"
                   disabled
-                  value={`${totalBuy}원`}
+                  value={`${current}원`}
                 />
               </InputWrapper>
             </Box>
