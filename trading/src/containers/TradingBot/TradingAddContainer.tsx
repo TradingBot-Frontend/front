@@ -12,6 +12,10 @@ import Switch, { SwitchProps } from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { addBotActions, Bot } from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
+import { useSelector } from 'react-redux';
+import { RootState } from '@redux/reducers';
+import { ICoinState } from '@redux/reducers/websocketReducer';
 
 const SmallTextField = ({ ...rest }: any) => {
   return <TextField size="small" {...rest} />;
@@ -64,7 +68,7 @@ const BtnWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 4rem 0rem 0rem 0rem;
+  /* margin: 4rem 0rem 0rem 0rem; */
 `;
 const FooterWrapper = styled.div`
   display: flex;
@@ -174,6 +178,10 @@ const TradingBotAdd = ({
     isActive: false,
     description: '',
   });
+  const [totalBuy, setTotalBuy] = useState(0);
+  const [localMsg, setLocalMsg] = useState('');
+
+  const coinList = useSelector((state: RootState) => state.coin.coinList);
 
   useEffect(() => {
     console.log('values:', values);
@@ -185,9 +193,33 @@ const TradingBotAdd = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (values.coinName && values.bidQuantity) {
+      const tc = coinList.find((coin: ICoinState) => {
+        const [name] = coin.symbol.split('_');
+        return name === values.coinName;
+      });
+      setTotalBuy(values.bidQuantity * tc.openPrice);
+    }
+  }, [values.coinName, values.bidQuantity, coinList]);
+
+  const isBlank = () => {
+    return Object.values(values).some((val) => {
+      if (typeof val === 'boolean') return false;
+      return !!val;
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('values:', values);
+    if (isBlank()) {
+      // TODO: set local message
+      setLocalMsg('정보를 다 채워주세요.');
+    } else {
+      setLocalMsg('');
+      addBotActions.request(values);
+      handleClose();
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -206,18 +238,7 @@ const TradingBotAdd = ({
     });
   };
 
-  const isBlank = () => {
-    return Object.values(values).some((val) => {
-      if (typeof val === 'boolean') return false;
-      return !!val;
-    });
-  };
-
   const handleButtonClick = () => {
-    if (isBlank()) {
-      // TODO: set local message
-    }
-    addBotActions.request(values);
     handleClose();
   };
 
@@ -233,7 +254,7 @@ const TradingBotAdd = ({
       <DialogTitle
         sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
       >
-        trading bot
+        TradingBot 추가
       </DialogTitle>
       <DialogContent
         sx={{
@@ -337,9 +358,8 @@ const TradingBotAdd = ({
                 <TextFields
                   id="totalBuy"
                   variant="outlined"
-                  onChange={handleChange}
                   disabled
-                  value="6.353.24원"
+                  value={`${totalBuy}원`}
                 />
               </InputWrapper>
             </Box>
@@ -359,9 +379,18 @@ const TradingBotAdd = ({
                   <MenuItem value="thirty">30%</MenuItem>
                 </Select>
               </InputWrapper>
+              <InputWrapper>
+                <span className="lable">수량</span>
+                <SmallTextField
+                  id="askQuantity"
+                  variant="outlined"
+                  value={values.askQuantity}
+                  onChange={handleChange}
+                />
+              </InputWrapper>
             </Box>
-
             <FooterWrapper>
+              {localMsg ? <Alert severity="warning">{localMsg}</Alert> : null}
               <BtnWrapper>
                 <ConfirmButton type="submit">save</ConfirmButton>
                 <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
