@@ -12,6 +12,7 @@ import Switch, { SwitchProps } from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Bot } from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
+import DialogActions from '@mui/material/DialogActions';
 
 const SmallTextField = ({ ...rest }: any) => {
   return <TextField size="small" {...rest} />;
@@ -230,7 +231,7 @@ const TradingBotAdd = ({
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          overflow: 'auto',
+          // overflow: 'auto',
         }}
       >
         <Box>
@@ -348,13 +349,10 @@ const TradingBotAdd = ({
                 </Select>
               </InputWrapper>
             </Box>
-
-            <FooterWrapper>
-              <BtnWrapper>
-                <ConfirmButton type="submit">save</ConfirmButton>
-                <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-              </BtnWrapper>
-            </FooterWrapper>
+            <DialogActions>
+              <ConfirmButton type="submit">save</ConfirmButton>
+              <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+            </DialogActions>
           </Box>
         </Box>
       </DialogContent>
