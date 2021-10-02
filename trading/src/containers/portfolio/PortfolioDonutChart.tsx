@@ -70,7 +70,7 @@ const PortfolioDonutChart = () =>  {
           },
         },
       },
-      labels: ['Apple', 'Mango', 'Orange', 'Watermelon'],
+      labels: ['ADA', 'BTC', 'Orange', 'Watermelon'],
     },
   });
 

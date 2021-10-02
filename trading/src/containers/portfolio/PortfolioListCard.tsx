@@ -51,121 +51,165 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // ===========================|| DASHBOARD DEFAULT - POPULAR CARD ||=========================== //
+interface Data {
+    id: number,
+    timeTag: string,
+    coinName: string,
+    uuid: string,
+    price: number,
+    quantity: number,
+    isBid: boolean
+}
+interface arrayProps {
+    rows: Data[];
+}
 
-const PortfolioListCard = () => {
+export const PortfolioListCard: React.FC<arrayProps> = ({
+    rows,
+}) => {
     const classes = useStyles();
-
-
     return (
-        <>
-            <CardContent>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Grid container alignContent="center" justifyContent="space-between">
-                            <Grid item>
-                                <Typography variant="h4">리스트</Typography>
-                            </Grid>
-                            <Grid item>
-                                <MoreHorizOutlinedIcon
-                                    fontSize="small"
-                                    className={classes.primaryLight}
-                                    aria-controls="menu-popular-card"
-                                    aria-haspopup="true"
-                                />
-                            </Grid>
+        <CardContent>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Grid container alignContent="center" justifyContent="space-between">
+                        <Grid item>
+                            <Typography variant="h4">리스트</Typography>
                         </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Grid container alignItems="center" justifyContent="space-between">
-                                    <Grid item>
-                                        <Typography variant="subtitle1" color="inherit">
-                                            비트코인
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    $1839.00
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Divider className={classes.divider} />
-                            <Grid item>
-                                ㅁㄴㅇㅁㄴㅇ
-                                <Typography variant="subtitle2" className={classes.successDark}>
-                                    10% Profit
-                                </Typography>
-                            </Grid>
+                        <Grid item>
+                            <MoreHorizOutlinedIcon
+                                fontSize="small"
+                                className={classes.primaryLight}
+                                aria-controls="menu-popular-card"
+                                aria-haspopup="true"
+                            />
                         </Grid>
-                        <Divider className={classes.divider} />
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Grid container alignItems="center" justifyContent="space-between">
-                                    <Grid item>
-                                        <Typography variant="subtitle1" color="inherit">
-                                            TTML
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    $100.00
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="subtitle2" className={classes.errorDark}>
-                                    10% loss
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <Divider className={classes.divider} />
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Grid container alignItems="center" justifyContent="space-between">
-                                    <Grid item>
-                                        <Typography variant="subtitle1" color="inherit">
-                                            Reliance
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Grid container alignItems="center" justifyContent="space-between">
-                                            <Grid item>
-                                                <Typography variant="subtitle1" color="inherit">
-                                                    $200.00
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Avatar variant="rounded" className={classes.avatarSuccess}>
-                                                    <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                                                </Avatar>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="subtitle2" className={classes.successDark}>
-                                    10% Profit
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <Divider className={classes.divider} />
                     </Grid>
                 </Grid>
-            </CardContent>
-        </>
+                <Grid item xs={12}>
+                    {
+                        rows.map((e , i)=> {
+                            return (
+                                <Grid key={e.id} container direction="column">
+                                    <Grid item>
+                                        <Grid container alignItems="center" justifyContent="space-between">
+                                            <Grid item>
+                                                <Typography variant="subtitle1" color="inherit">
+                                                    매수 {e.coinName}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Grid container alignItems="center" justifyContent="space-between">
+                                                    <Grid item>
+                                                        <Typography variant="subtitle1" color="inherit">
+                                                            $1839.00
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item>
+                                        거래일시 {e.timeTag}
+                                        <Typography variant="subtitle2" className={classes.successDark}>
+                                            10% Profit
+                                        </Typography>
+                                    </Grid>
+                                    <Divider className={classes.divider} />
+                                </Grid>
+                                // <Divider  key={e.id} className={classes.divider} />
+                            )
+                        })
+                    }
+        {/*            <Grid container direction="column">
+                        <Grid item>
+                            <Grid container alignItems="center" justifyContent="space-between">
+                                <Grid item>
+                                    <Typography variant="subtitle1" color="inherit">
+                                        비트코인
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Grid container alignItems="center" justifyContent="space-between">
+                                        <Grid item>
+                                            <Typography variant="subtitle1" color="inherit">
+                                                $1839.00
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Divider className={classes.divider} />
+                        <Grid item>
+                            ㅁㄴㅇㅁㄴㅇ
+                            <Typography variant="subtitle2" className={classes.successDark}>
+                                10% Profit
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Divider className={classes.divider} />
+                    <Grid container direction="column">
+                        <Grid item>
+                            <Grid container alignItems="center" justifyContent="space-between">
+                                <Grid item>
+                                    <Typography variant="subtitle1" color="inherit">
+                                        TTML
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Grid container alignItems="center" justifyContent="space-between">
+                                        <Grid item>
+                                            <Typography variant="subtitle1" color="inherit">
+                                                $100.00
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="subtitle2" className={classes.errorDark}>
+                                10% loss
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Divider className={classes.divider} />
+                    <Grid container direction="column">
+                        <Grid item>
+                            <Grid container alignItems="center" justifyContent="space-between">
+                                <Grid item>
+                                    <Typography variant="subtitle1" color="inherit">
+                                        Reliance
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Grid container alignItems="center" justifyContent="space-between">
+                                        <Grid item>
+                                            <Typography variant="subtitle1" color="inherit">
+                                                $200.00
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Avatar variant="rounded" className={classes.avatarSuccess}>
+                                                <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
+                                            </Avatar>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="subtitle2" className={classes.successDark}>
+                                10% Profit
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Divider className={classes.divider} /> */}
+                </Grid>
+            </Grid>
+        </CardContent>
     );
 };
 
-export default PortfolioListCard;
+// export default PortfolioListCard;
