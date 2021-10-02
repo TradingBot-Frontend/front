@@ -13,7 +13,7 @@ const createRootReducer = (history: History): Reducer =>
     auth: authReducer,
     bot: botReducer,
     portfolio: portfolioReducer,
-    live: websocketReducer,
+    coin: websocketReducer,
   });
 
 export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;

@@ -10,13 +10,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
+import { TextField, InputAdornment } from "@material-ui/core";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from '@mui/icons-material/Menu';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import LockIcon from '@mui/icons-material/Lock';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import SignUpContainer from '@containers/AuthContainer/SignUpContainer';
 import { useHistory } from 'react-router';
 import { RootState } from '@redux/reducers';
@@ -49,6 +53,10 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Btro_core',
   },
   card: {},
+  title: {
+    paddingTop: '10px',
+    paddingBottom: '10px'
+  }
 }));
 
 export default function Login(): JSX.Element {
@@ -61,7 +69,7 @@ export default function Login(): JSX.Element {
   const history = useHistory();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated,
+      (state: RootState) => state.auth.isAuthenticated,
   );
   const handleClickSignUp = () => {
     setOpen(true);
@@ -86,11 +94,11 @@ export default function Login(): JSX.Element {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(
-        loginActions.success({
-          data: {
-            msg: localStorage.getItem('token'),
-          },
-        }),
+          loginActions.success({
+            data: {
+              msg: localStorage.getItem('token'),
+            },
+          }),
       );
     }
   }, []);
@@ -102,31 +110,32 @@ export default function Login(): JSX.Element {
   }, [isAuthenticated]);
 
   return (
-    <div className={classes.root}>
-      <Box
-        sx={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center' }}
-      >
-        <Grid container alignItems="center">
-          <Grid item xs={12}>
-            <Container component="main" maxWidth="xs">
-              <Card sx={{ minWidth: 275 }} className={classes.card}>
-                <CardContent>
-                  <Typography
-                    variant="h4"
-                    align="center"
-                    color="text.primary"
-                    gutterBottom
-                  >
-                    TradingBot
-                  </Typography>
-                  <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1 }}
-                    // className={classes.formBox}
-                  >
-                    <TextField
+      <div className={classes.root}>
+        <Box
+            sx={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center' }}
+        >
+          <Grid container alignItems="center">
+            <Grid item xs={12}>
+              <Container component="main" maxWidth="xs">
+                <Card sx={{ minWidth: 275, borderRadius: '20PX', width: '400px' }} className={classes.card}>
+                  <CardContent>
+                    <Typography
+                        variant="h4"
+                        align="center"
+                        color="text.primary"
+                        className={classes.title}
+                        gutterBottom
+                    >
+                      TradingBot
+                    </Typography>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{ mt: 1 }}
+                        // className={classes.formBox}
+                    >
+                      {/*        <TextField
                       margin="normal"
                       required
                       fullWidth
@@ -136,8 +145,45 @@ export default function Login(): JSX.Element {
                       autoComplete="email"
                       autoFocus
                       onChange={handleChange}
-                    />
-                    <TextField
+                      InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon />
+                            </InputAdornment>
+                        ),
+                      }}
+                    /> */}
+                      <Box  sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                        <MailOutlineIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            onChange={handleChange}
+                            variant="standard"
+                        />
+                      </Box>
+                      <Box  sx={{ display: 'flex', alignItems: 'flex-end', mb: 1 }}>
+                        <LockIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            variant="standard"
+                            onChange={handleChange}
+                        />
+                      </Box>
+                      {/*               <TextField
                       margin="normal"
                       required
                       fullWidth
@@ -147,33 +193,34 @@ export default function Login(): JSX.Element {
                       id="password"
                       autoComplete="current-password"
                       onChange={handleChange}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
-                      label="로그인 상태 유지할래요"
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 2 }}
-                    >
-                      Login
+                    /> */}
+
+                      <FormControlLabel
+                          control={<Checkbox value="remember" color="primary" size="small" />}
+                          label="로그인 상태 유지"
+                      />
+                      <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          sx={{ mt: 2, backgroundColor: 'rgb(41, 76, 96)' }}
+                      >
+                        Login
+                      </Button>
+                    </Box>
+                  </CardContent>
+                  <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button size="large" onClick={handleClickSignUp}>
+                      회원가입
                     </Button>
-                  </Box>
-                </CardContent>
-                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <Button size="large" onClick={handleClickSignUp}>
-                    회원가입
-                  </Button>
-                  <SignUpContainer open={open} handleClose={handleClose} />
-                </CardActions>
-              </Card>
-            </Container>
+                    <SignUpContainer open={open} handleClose={handleClose} />
+                  </CardActions>
+                </Card>
+              </Container>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </div>
+        </Box>
+      </div>
   );
 }
 
