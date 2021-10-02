@@ -297,7 +297,14 @@ const TradingBotAdd = ({
                 >
                   <MenuItem value="BTC">BTC</MenuItem>
                   <MenuItem value="ADA">ADA</MenuItem>
-                  <MenuItem value="BTT">BTT</MenuItem>
+                  <MenuItem value="LTC">LTC</MenuItem>
+                  <MenuItem value="XRP">XRP</MenuItem>
+                  <MenuItem value="ETH">ETH</MenuItem>
+                  <MenuItem value="LINK">LINK</MenuItem>
+                  <MenuItem value="XLM">XLM</MenuItem>
+                  <MenuItem value="BCH">BCH</MenuItem>
+                  <MenuItem value="EOS">EOS</MenuItem>
+                  <MenuItem value="TRX">TRX</MenuItem>
                 </Select>
                 <FormControlLabel
                   control={
