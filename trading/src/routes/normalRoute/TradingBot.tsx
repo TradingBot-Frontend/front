@@ -8,7 +8,6 @@ import Dialog from '@mui/material/Dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBotsActions } from '@redux/reducers/botReducer';
 import { RootState } from '@redux/reducers';
-import BotSkeleton from '@components/TradingBot/BotSkeleton';
 
 const TradingBot = (): JSX.Element => {
   const [open, setOpen] = useState(false);
