@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Box, Button, Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import CheckIcon from '@mui/icons-material/Check';
 import Divider from '@material-ui/core/Divider';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Bot } from '@redux/reducers/botReducer';
+import {
+  addBotActions,
+  Bot,
+  updateBotActions,
+} from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
+import { useSelector } from 'react-redux';
+import { RootState } from '@redux/reducers';
+import { ICoinState } from '@redux/reducers/websocketReducer';
 import DialogActions from '@mui/material/DialogActions';
 
 const SmallTextField = ({ ...rest }: any) => {
@@ -65,7 +72,7 @@ const BtnWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 4rem 0rem 0rem 0rem;
+  /* margin: 4rem 0rem 0rem 0rem; */
 `;
 const FooterWrapper = styled.div`
   display: flex;
@@ -163,17 +170,21 @@ const TradingBotAdd = ({
   handleClose,
 }: ISettingProps): JSX.Element => {
   const [values, setValues] = useState<Bot>({
-    uuid: '',
     botName: '',
-    coinName: '',
+    coinName: 'BTC',
     bidReference: '7ma', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
     isBidConditionExceed: false, // 기준대비
-    // totalBuy: '',
+    askReference: 'PROFIT',
     askCondition: 0, // 수익률
+    askQuantity: 0,
     isActive: false,
+    description: 'default',
   });
+  const [localMsg, setLocalMsg] = useState('');
+  const coinList = useSelector((state: RootState) => state.coin.coinList);
+  const hasDefaultBotInfo = !!botInfo;
 
   useEffect(() => {
     console.log('values:', values);
@@ -185,44 +196,101 @@ const TradingBotAdd = ({
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('values:', values);
-  };
+  useEffect(() => {
+    console.log('localMsg:', localMsg);
+  }, [localMsg]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    console.log('id:', id, 'value:', value);
-    setValues({
-      ...values,
-      [id]: value,
+  // TODO: validation 추가
+
+  const calculateCurrentPrice = useCallback(
+    (cl: ICoinState[]) => {
+      if (values.coinName && values.bidQuantity) {
+        // 이게 반영 잘 되나?
+        const targetCoin = cl.find((coin: ICoinState) => {
+          const [name] = coin.symbol.split('_');
+          return name === values.coinName;
+        });
+        const price = values.bidQuantity * Number(targetCoin?.openPrice || '0');
+        const converted = price.toLocaleString('ko-KR', {
+          maximumFractionDigits: 4,
+        });
+        return converted;
+      }
+      return 0;
+    },
+    [values.coinName, values.bidQuantity],
+  );
+
+  const current = useMemo(() => calculateCurrentPrice(coinList), [coinList]);
+
+  // TODO: 제대로 작동하는지 확인
+  const isBlank = useCallback(() => {
+    return Object.values(values).some((val) => {
+      console.log('val: ', val, 'ret: ', !val);
+      if (typeof val === 'boolean') return false;
+      return !val;
     });
+  }, [values]);
+
+  const handleSubmit = () => {
+    if (isBlank()) {
+      setLocalMsg('정보를 다 채워주세요.');
+      console.log(values);
+    } else {
+      setLocalMsg('');
+      if (hasDefaultBotInfo) {
+        updateBotActions.request(values);
+        console.log('update');
+      } else {
+        addBotActions.request(values);
+        console.log('add');
+      }
+      handleClose();
+    }
   };
 
-  const handleSelectChange = (e: SelectChangeEvent, key: string) => {
-    setValues({
-      ...values,
-      [key]: e.target.value,
-    });
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = e.target;
+      console.log('id:', id, 'value:', value);
+      setValues({
+        ...values,
+        [id]: value,
+      });
+    },
+    [values, setValues],
+  );
 
-  const handleButtonClick = () => {
+  const handleSelectChange = useCallback(
+    (e: SelectChangeEvent, key: string) => {
+      setValues({
+        ...values,
+        [key]: e.target.value,
+      });
+    },
+    [values, setValues],
+  );
+
+  const handleButtonClick = useCallback(() => {
     handleClose();
-  };
+  }, [handleClose]);
 
-  const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      isActive: e.target.checked,
-    });
-  };
+  const handleSwitchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({
+        ...values,
+        isActive: e.target.checked,
+      });
+    },
+    [values, setValues],
+  );
 
   return (
     <>
       <DialogTitle
         sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
       >
-        trading bot
+        TradingBot 추가
       </DialogTitle>
       <DialogContent>
         <Box component="form" onSubmit={handleSubmit}>
@@ -247,7 +315,14 @@ const TradingBotAdd = ({
                 >
                   <MenuItem value="BTC">BTC</MenuItem>
                   <MenuItem value="ADA">ADA</MenuItem>
-                  <MenuItem value="BTT">BTT</MenuItem>
+                  <MenuItem value="LTC">LTC</MenuItem>
+                  <MenuItem value="XRP">XRP</MenuItem>
+                  <MenuItem value="ETH">ETH</MenuItem>
+                  <MenuItem value="LINK">LINK</MenuItem>
+                  <MenuItem value="XLM">XLM</MenuItem>
+                  <MenuItem value="BCH">BCH</MenuItem>
+                  <MenuItem value="EOS">EOS</MenuItem>
+                  <MenuItem value="TRX">TRX</MenuItem>
                 </Select>
                 <FormControlLabel
                   control={
@@ -316,9 +391,8 @@ const TradingBotAdd = ({
               <TextFields
                 id="totalBuy"
                 variant="outlined"
-                onChange={handleChange}
                 disabled
-                value="6.353.24원"
+                value={`${current}원`}
               />
             </InputWrapper>
           </Box>
@@ -326,7 +400,7 @@ const TradingBotAdd = ({
           <Box>
             <h3>매도설정</h3>
             <InputWrapper>
-              <span className="lable">수익률</span>
+              {/* <span className="lable">수익률</span>
               <Select
                 id="askCondition"
                 style={{ width: '7rem' }}
@@ -336,14 +410,31 @@ const TradingBotAdd = ({
                 <MenuItem value="ten">10%</MenuItem>
                 <MenuItem value="twenty">20%</MenuItem>
                 <MenuItem value="thirty">30%</MenuItem>
-              </Select>
+              </Select> */}
+              <span className="lable">수익률</span>
+              <SmallTextField
+                id="askCondition"
+                variant="outlined"
+                value={values.askCondition}
+                onChange={handleChange}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <span className="lable">수량</span>
+              <SmallTextField
+                id="askQuantity"
+                variant="outlined"
+                value={values.askQuantity}
+                onChange={handleChange}
+              />
             </InputWrapper>
           </Box>
         </Box>
       </DialogContent>
+      {localMsg ? <Alert severity="warning">{localMsg}</Alert> : null}
       <DialogActions style={{ display: 'flex', justifyContent: 'center' }}>
-        <ConfirmButton type="submit">save</ConfirmButton>
-        <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+        <ConfirmButton onClick={handleSubmit}>시작</ConfirmButton>
+        <CancleButton onClick={handleButtonClick}>취소</CancleButton>
       </DialogActions>
     </>
   );
