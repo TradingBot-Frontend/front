@@ -10,6 +10,7 @@ import {
   logoutActions,
 } from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
+import { AxiosResponse } from 'axios';
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
 // all: all에 제네레이터 함수를 배열로 담아서 넘기면 제네레이터 함수들이
@@ -19,20 +20,22 @@ import axios from '@utils/axios';
 
 const loginAPI = (user: any) => {
   console.log(user, '@login user');
-  return axios.post('sign-in', user);
+  return axios.post('user-service/login', user);
 };
 
-interface ILoginResponse {
-  data: {
-    msg: string;
-  };
-}
+// interface ILoginResponse e {
+//   data: {
+//     msg: string;
+//   };
+// }
 
 function* login(action: LoginAction) {
   try {
-    const res: ILoginResponse = yield call(loginAPI, action.payload);
+    const res: AxiosResponse = yield call(loginAPI, action.payload);
     console.log(res);
-    yield put(loginActions.success(res));
+    const token = res.headers?.authorization;
+    console.log(token);
+    yield put(loginActions.success(token));
   } catch (e) {
     yield put(loginActions.failure(e));
   }
@@ -43,7 +46,8 @@ function* watchLogin() {
 }
 
 const signupAPI = (user: any) => {
-  return axios.post('sign-up', user);
+  console.log('@signupAPIuser, user: ', user);
+  return axios.post('user-service/users', user);
 };
 
 interface ISignUpResponse {

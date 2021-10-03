@@ -110,8 +110,9 @@ interface IAuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  // eamil: string;
-  // userName: string;
+  eamil: string;
+  name: string;
+  pwd: string;
   // successMsg: string;
   errorMsg: string;
   apiKey: boolean | null;
@@ -122,8 +123,9 @@ const initialState: IAuthState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  // eamil: '',
-  // userName: '',
+  eamil: '',
+  name: '',
+  pwd: '',
   // successMsg: '',
   errorMsg: '',
   apiKey: true,
@@ -143,7 +145,7 @@ export default function authReducer(
         isLoading: true,
       };
     case LOGIN_SUCCESS: {
-      const token = action.payload.data?.msg;
+      const token = action.payload;
       console.log('token', token);
       if (token) {
         localStorage.setItem('token', token); // localStorage에 token 저장
@@ -176,7 +178,7 @@ export default function authReducer(
         ...state,
         isAuthenticated: false,
         isLoading: false,
-        errorMsg: action.payload?.detail.msg,
+        errorMsg: action.payload,
       };
     case SIGNUP_SUCCESS:
       alert('가입 되었습니다!');
@@ -189,7 +191,7 @@ export default function authReducer(
       return {
         ...state,
         isLoading: false,
-        errorMsg: action.payload.msg,
+        errorMsg: action.payload.message,
       };
     case PRIVATEKEY_REQUEST:
       return {
