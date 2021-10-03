@@ -16,6 +16,11 @@ export const LOGOUT_FAILURE = 'auth/LOGOUT_FAILURE' as const;
 export const PRIVATEKEY_REQUEST = 'auth/PRIVATEKEY_REQUEST' as const;
 export const PRIVATEKEY_SUCCESS = 'auth/PRIVATEKEY_SUCCESS' as const;
 export const PRIVATEKEY_FAILURE = 'auth/PRIVATEKEY_FAILURE' as const;
+
+export const USERS_REQUEST = 'auth/USERS_REQUEST' as const;
+export const USERS_SUCCESS = 'auth/USERS_SUCCESS' as const;
+export const USERS_FAILURE = 'auth/USERS_FAILURE' as const;
+
 // type LoginAction =
 // | typeof LOGIN_REQUEST
 // | typeof LOGIN_SUCCESS
@@ -65,6 +70,15 @@ export const logoutActions = {
   failure: logoutFailure,
 };
 
+const usersRequest = () => ({ type: USERS_REQUEST, payload: null });
+const usersSuccess = () => ({ type: USERS_SUCCESS, payload: null });
+const usersFailure = (error: any) => ({ type: USERS_FAILURE, payload: error });
+export const usersActions = {
+  request: usersRequest,
+  success: usersSuccess,
+  failure: usersFailure,
+};
+
 const privateKeyRequest = (form: any) => ({
   type: PRIVATEKEY_REQUEST,
   payload: form,
@@ -100,11 +114,16 @@ export type privateKeyAction =
   | ReturnType<typeof privateKeyRequest>
   | ReturnType<typeof privateKeyRequestSuccess>
   | ReturnType<typeof privateKeyRequestFailure>;
+export type UsersAction =
+  | ReturnType<typeof usersRequest>
+  | ReturnType<typeof usersSuccess>
+  | ReturnType<typeof usersFailure>;
 export type AuthAction =
   | LoginAction
   | SignupAction
   | LogoutAction
-  | privateKeyAction;
+  | privateKeyAction
+  | UsersAction;
 
 interface IAuthState {
   token: string | null;
@@ -139,6 +158,7 @@ export default function authReducer(
   switch (action.type) {
     case SIGNUP_REQUEST:
     case LOGIN_REQUEST:
+    case USERS_REQUEST:
       return {
         ...state,
         errorMsg: '',
@@ -174,6 +194,7 @@ export default function authReducer(
     case LOGOUT_FAILURE:
       localStorage.removeItem('token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
+      alert('로그인 실패!');
       return {
         ...state,
         isAuthenticated: false,

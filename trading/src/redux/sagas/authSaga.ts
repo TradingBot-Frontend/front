@@ -8,6 +8,9 @@ import {
   SignupAction,
   LOGOUT_REQUEST,
   logoutActions,
+  USERS_REQUEST,
+  usersActions,
+  UsersAction,
 } from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
 import { AxiosResponse } from 'axios';
@@ -81,6 +84,29 @@ function* watchLogout() {
   yield takeEvery(LOGOUT_REQUEST, logout);
 }
 
+const getUserAPI = () => {
+  return axios.get('user-service/users');
+};
+
+function* getUser(action: UsersAction) {
+  try {
+    const res: AxiosResponse = yield call(getUserAPI);
+    console.log(res);
+    yield put(usersActions.success());
+  } catch (e) {
+    yield put(usersActions.failure(e));
+  }
+}
+
+function* watchUser() {
+  yield takeEvery(USERS_REQUEST, getUser);
+}
+
 export default function* authSaga() {
-  yield all([fork(watchLogin), fork(watchSignup), fork(watchLogout)]);
+  yield all([
+    fork(watchLogin),
+    fork(watchSignup),
+    fork(watchLogout),
+    fork(watchUser),
+  ]);
 }
