@@ -10,6 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState } from '@redux/reducers';
 
 const style = {
   position: 'absolute',
@@ -117,12 +119,14 @@ const buttonMap = [
   },
 ];
 const PrivateSetting = ({ handleClose }: ISettingProps) => {
+  const userInfo = useSelector((state: RootState) => state.auth);
   const [button, setButton] = useState<IButtonProps>({
     pws: false,
     api: false,
     back: false,
   });
   const [states, setStates] = useState({
+    email: '',
     password: '',
     pwConfirm: '',
     exchange: 'bitsum',
@@ -131,11 +135,14 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     localMsg: '',
   });
   const { pws, api, back } = button;
-  const { password, pwConfirm, localMsg } = states;
+  const { password, pwConfirm, localMsg, email } = states;
   const [validate, setValidate] = useState(false);
   useEffect(() => {
-    console.log('states:', states);
-  }, [states]);
+    setStates({
+      ...states,
+      email: userInfo.email,
+    });
+  }, []);
   useEffect(() => {
     if (!pwConfirm || password === pwConfirm) {
       setStates({
@@ -247,7 +254,7 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     id="email"
                     variant="outlined"
                     // onChange={onTextChange}
-                    value="dgsg"
+                    value={email}
                     disabled
                     className="value"
                   />
