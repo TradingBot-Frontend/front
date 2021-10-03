@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { coinListActions } from '@redux/reducers/coinReducer';
 import { CommonInputContainer } from '@containers/common/InputContainer';
 import { useCallback } from 'react';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 export const DsbContWrapper = styled.div``;
 export interface Data {
@@ -64,23 +65,45 @@ const DsbCoinList = ({ coindata }: any) => {
       {/* <Box sx={{ minWidth: 300, margin: '0rem 0rem 0rem 0rem' }}>
         <h1>Coin market</h1>
       </Box> */}
-      {/* <Box
+      <Box
         component="div"
         sx={{
           display: 'flex',
-          flexDirection: 'row-reverse',
-          margin: '0rem 0rem 1rem 0rem',
+          flexDirection: 'row',
+          margin: '0rem 0rem 0rem 0rem',
+          width: '100%',
         }}
       >
-        <CommonInputContainer
-          placeholder="search"
-          onChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-        />
-      </Box> */}
-      <Typography variant="h5" component="h5">
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            margin: '0rem 0rem 0rem 0rem',
+            width: '100%',
+          }}
+        >
+          <FilterListIcon />
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            margin: '0rem 0rem 0rem 0rem',
+            width: '100%',
+          }}
+        >
+          <CommonInputContainer
+            placeholder="search"
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+          />
+        </Box>
+      </Box>
+      {/* <Typography variant="h5" component="h5">
         코인 시세
-      </Typography>
+      </Typography> */}
 
       <Box component="div" sx={{ display: 'flex', justifyContent: 'center' }}>
         <ReactVirtualizedTable
