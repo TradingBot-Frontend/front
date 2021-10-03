@@ -82,25 +82,25 @@ const headCells: readonly HeadCell[] = [
   {
     id: 'name',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: '암호화폐명',
   },
   {
     id: 'currentPrice',
-    numeric: true,
-    disablePadding: false,
+    numeric: false,
+    disablePadding: true,
     label: '현재가',
   },
   {
     id: 'rateOfChange',
-    numeric: true,
-    disablePadding: false,
+    numeric: false,
+    disablePadding: true,
     label: '변동률',
   },
   {
-    id: 'rateOfChange',
+    id: 'money',
     numeric: true,
-    disablePadding: false,
+    disablePadding: true,
     label: '거래금액',
   },
 ];
@@ -137,10 +137,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'left' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{ margin: '0rem 0rem 0rem 1rem' }}
+            style={{
+              background: '#adb6c4',
+            }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -148,11 +150,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span">
-                  {/* {order === 'desc' ? 'sorted descending' : 'sorted ascending'} */}
-                </Box>
-              ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -230,7 +227,7 @@ export default function EnhancedTable({ coindata }: any) {
     >
       <Paper
         sx={{
-          width: '95%',
+          width: '33rem',
           height: '90%',
           overflow: 'auto',
           mb: 2,
@@ -245,7 +242,7 @@ export default function EnhancedTable({ coindata }: any) {
           <Table
             sx={{ minWidth: 50 }}
             aria-labelledby="tableTitle"
-            size="small"
+            size="medium"
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -256,8 +253,6 @@ export default function EnhancedTable({ coindata }: any) {
               rowCount={rows.length}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-              rows.slice().sort(getComparator(order, orderBy)) */}
               {stableSort(rows, getComparator(order, orderBy)).map(
                 (row, index) => {
                   const isItemSelected = isSelected(row.name);
@@ -267,23 +262,25 @@ export default function EnhancedTable({ coindata }: any) {
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, row.name)}
-                      role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      // style={{ border: '1px solid' }}
                     >
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        // padding="none"
+                        // style={{ border: '1px solid', width: 100 }}
+                        align="left"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.currentPrice}</TableCell>
-                      <TableCell align="right">{row.rateOfChange}</TableCell>
-                      <TableCell align="right">{row.money}</TableCell>
+                      <TableCell align="left">{row.currentPrice}</TableCell>
+                      <TableCell align="left">{row.rateOfChange}</TableCell>
+                      <TableCell align="left">{row.money}</TableCell>
                     </TableRow>
                   );
                 },
