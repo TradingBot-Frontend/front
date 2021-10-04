@@ -9,20 +9,16 @@ import Dialog from '@mui/material/Dialog';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Skeleton from '@mui/material/Skeleton';
 import Avatar from '@mui/material/Avatar';
+import { Bot } from '@redux/reducers/botReducer';
 import bit from '../../assets/images/bitcoin-icon.png';
 
 interface BotCardProps {
-  title: string;
-  profit: string;
-  // botIfno: Bot;
-  botInfo?: any;
+  botInfo: Bot;
   width?: number;
   isLoading: boolean;
 }
 
 export default function BotCard({
-  title,
-  profit,
   botInfo,
   width = 380,
   isLoading = false,
@@ -95,9 +91,9 @@ export default function BotCard({
                 ) : (
                   <>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '1.3rem' }}>
-                      {title}
+                      {botInfo.botName}
                     </Typography>
-                    <Typography>{profit}</Typography>
+                    <Typography>수익률 +25.4%</Typography>
                   </>
                 )}
               </Stack>
@@ -111,7 +107,7 @@ export default function BotCard({
                   }}
                 >
                   <Typography variant="h3" align="center">
-                    On
+                    {botInfo.isActive ? 'On' : 'Off'}
                   </Typography>
                 </Box>
               )}

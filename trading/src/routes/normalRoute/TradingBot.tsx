@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import BotCard from '@components/TradingBot/BotCard';
 import Dialog from '@mui/material/Dialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBotsActions } from '@redux/reducers/botReducer';
+import { Bot, getBotsActions } from '@redux/reducers/botReducer';
 import { RootState } from '@redux/reducers';
 
 const TradingBot = (): JSX.Element => {
@@ -44,7 +44,7 @@ const TradingBot = (): JSX.Element => {
               <BotSkeleton />
             </Grid>
           ))} */}
-          {cards.map(({ title, profit }) => (
+          {/* {cards.map(({ title, profit }) => (
             <Grid key={title} item xl={3} lg={4} md={6} sm={12}>
               <BotCard
                 title={title}
@@ -54,6 +54,11 @@ const TradingBot = (): JSX.Element => {
                 // isLoading={isLoading}
                 isLoading={false}
               />
+            </Grid>
+          ))} */}
+          {bots.map((bot: Bot) => (
+            <Grid key={bot.id} item xl={3} lg={4} md={6} sm={12}>
+              <BotCard botInfo={bot} width={380} isLoading={isLoading} />
             </Grid>
           ))}
         </Grid>

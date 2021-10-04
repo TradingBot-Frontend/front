@@ -13,6 +13,7 @@ import {
   updateBotActions,
   UPDATE_BOT_REQUEST,
 } from '@redux/reducers/botReducer';
+import { AxiosResponse } from 'axios';
 
 // GET bots
 const getBotsAPI = () => {
@@ -23,18 +24,14 @@ interface IResponse<T> {
   data: T;
 }
 
-interface IgetBotsResponse {
-  'token-info': Bots;
-}
-
 interface IResponseMsg {
   msg: string;
 }
 
 function* getBots() {
   try {
-    const res: IResponse<IgetBotsResponse> = yield call(getBotsAPI);
-    yield put(getBotsActions.success(res.data['token-info']));
+    const res: AxiosResponse = yield call(getBotsAPI);
+    yield put(getBotsActions.success(res.data));
   } catch (e) {
     yield put(getBotsActions.failure(e));
   }

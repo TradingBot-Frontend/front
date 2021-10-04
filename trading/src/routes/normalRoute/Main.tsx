@@ -70,7 +70,7 @@ const Main = () => {
   return (
     <MainWapper>
       <Container style={{ border: '1px solid' }}>
-        <Grid item lg={4} md={6} sm={12} className={classes.topContainer}>
+        {/* <Grid item lg={4} md={6} sm={12} className={classes.topContainer}>
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Grid item xs={12} sm={6}>
               <BotCard
@@ -94,7 +94,7 @@ const Main = () => {
               />
             </Grid>
           </Box>
-        </Grid>
+        </Grid> */}
         <Grid container spacing={4} className={classes.bottomContainer}>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.coinContainer}>
