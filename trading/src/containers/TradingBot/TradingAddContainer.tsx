@@ -175,7 +175,7 @@ const TradingBotAdd = ({
     bidReference: '7ma', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
-    isBidConditionExceed: false, // 기준대비
+    isBidConditionExceed: true, // 기준대비
     askReference: 'PROFIT',
     askCondition: 0, // 수익률
     askQuantity: 0,
@@ -253,20 +253,36 @@ const TradingBotAdd = ({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = e.target;
       console.log('id:', id, 'value:', value);
-      setValues({
-        ...values,
-        [id]: value,
-      });
+      if (id === 'botName') {
+        setValues({
+          ...values,
+          [id]: value,
+        });
+      } else {
+        setValues({
+          ...values,
+          [id]: Number(value),
+        });
+      }
     },
     [values, setValues],
   );
 
   const handleSelectChange = useCallback(
     (e: SelectChangeEvent, key: string) => {
-      setValues({
-        ...values,
-        [key]: e.target.value,
-      });
+      const v = e.target.value;
+      if (v === 'true' || v === 'false') {
+        const bool = v === 'true';
+        setValues({
+          ...values,
+          [key]: bool,
+        });
+      } else {
+        setValues({
+          ...values,
+          [key]: v,
+        });
+      }
     },
     [values, setValues],
   );
@@ -344,13 +360,26 @@ const TradingBotAdd = ({
               <span className="lable">이동평균선</span>
               <Select
                 id="bidReference"
-                style={{ width: '7rem' }}
-                defaultValue="7ma"
+                style={{ width: '12.5rem' }}
+                defaultValue="5SMA"
                 onChange={(e) => handleSelectChange(e, 'coinName')}
               >
-                <MenuItem value="7ma">7MA</MenuItem>
-                <MenuItem value="60ma">60MA</MenuItem>
-                <MenuItem value="120ma">120MA</MenuItem>
+                <MenuItem value="5SMA">5초 이동평균선</MenuItem>
+                <MenuItem value="10SMA">10초 이동평균선</MenuItem>
+                <MenuItem value="30SMA">30초 이동평균선</MenuItem>
+                <MenuItem value="60SMA">60초 이동평균선</MenuItem>
+                <MenuItem value="5MMA">5분 이동평균선</MenuItem>
+                <MenuItem value="10MMA">10분 이동평균선</MenuItem>
+                <MenuItem value="30MMA">30분 이동평균선</MenuItem>
+                <MenuItem value="60MMA">60분 이동평균선</MenuItem>
+                <MenuItem value="3HMA">3시간 이동평균선</MenuItem>
+                <MenuItem value="5HMA">5시간 이동평균선</MenuItem>
+                <MenuItem value="10HMA">10시간 이동평균선</MenuItem>
+                <MenuItem value="24HMA">24시간 이동평균선</MenuItem>
+                <MenuItem value="5DMA">5시간 이동평균선</MenuItem>
+                <MenuItem value="20DMA">20시간 이동평균선</MenuItem>
+                <MenuItem value="60DMA">60시간 이동평균선</MenuItem>
+                <MenuItem value="120DMA">120시간 이동평균선</MenuItem>
               </Select>
             </InputWrapper>
             <InputWrapper>
@@ -367,13 +396,15 @@ const TradingBotAdd = ({
                 />
 
                 <Select
-                  id="standardLine"
+                  id="isBidConditionExceed"
                   style={{ width: '7rem', height: '2.5rem' }}
-                  defaultValue="up"
-                  onChange={(e) => handleSelectChange(e, 'standardLine')}
+                  defaultValue="true"
+                  onChange={(e) =>
+                    handleSelectChange(e, 'isBidConditionExceed')
+                  }
                 >
-                  <MenuItem value="up">이상</MenuItem>
-                  <MenuItem value="down">이하</MenuItem>
+                  <MenuItem value="true">이상</MenuItem>
+                  <MenuItem value="false">이하</MenuItem>
                 </Select>
               </div>
             </InputWrapper>
@@ -400,17 +431,6 @@ const TradingBotAdd = ({
           <Box>
             <h3>매도설정</h3>
             <InputWrapper>
-              {/* <span className="lable">수익률</span>
-              <Select
-                id="askCondition"
-                style={{ width: '7rem' }}
-                defaultValue="ten"
-                onChange={(e) => handleSelectChange(e, 'askCondition')}
-              >
-                <MenuItem value="ten">10%</MenuItem>
-                <MenuItem value="twenty">20%</MenuItem>
-                <MenuItem value="thirty">30%</MenuItem>
-              </Select> */}
               <span className="lable">수익률</span>
               <SmallTextField
                 id="askCondition"
