@@ -168,7 +168,11 @@ export default function authReducer(
       const token = action.payload;
       console.log('token', token);
       if (token) {
-        localStorage.setItem('token', token); // localStorage에 token 저장
+        // localStorage.setItem('token', token); // localStorage에 token 저장
+        localStorage.setItem(
+          'token',
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjcxMGQ3Yi02NzdjLTRhYzAtYTU0Mi1lOTZkYWY3MjkzNzMiLCJleHAiOjE2MzE4ODA2OTN9.wUcE0maqr14IJ0SHDHGm_i9n3xjHr0VcZVXm63KlTQ4',
+        ); // localStorage에 token 저장
         setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
         // const base64: string = token.split(' ')[1];
         // const base64payload: string = base64.split('.')[1];

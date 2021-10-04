@@ -9,6 +9,9 @@ import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Alert } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState } from '@redux/reducers';
 
 const style = {
   position: 'absolute',
@@ -30,6 +33,7 @@ const InputWrapper = styled.div`
     flex: 1;
     align-items: center;
     margin: 0rem 3rem 0rem 0rem;
+    border: '1px solid';
   }
   .value {
     display: flex;
@@ -48,8 +52,11 @@ const TextFields = styled(TextField)`
 
 const BtnWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
+  flex: 1;
+  width: 18rem;
+  border: 1px solid;
   margin: 0.5rem 0rem 0rem 0rem;
 `;
 const FooterWrapper = styled.div`
@@ -112,23 +119,43 @@ const buttonMap = [
   },
 ];
 const PrivateSetting = ({ handleClose }: ISettingProps) => {
+  const userInfo = useSelector((state: RootState) => state.auth);
   const [button, setButton] = useState<IButtonProps>({
     pws: false,
     api: false,
     back: false,
   });
   const [states, setStates] = useState({
+    email: '',
     password: '',
     pwConfirm: '',
     exchange: 'bitsum',
     apiKey: '',
     secretKey: '',
+    localMsg: '',
   });
   const { pws, api, back } = button;
+  const { password, pwConfirm, localMsg, email } = states;
   const [validate, setValidate] = useState(false);
   useEffect(() => {
-    console.log('states:', states);
-  }, [states]);
+    setStates({
+      ...states,
+      email: userInfo.email,
+    });
+  }, []);
+  useEffect(() => {
+    if (!pwConfirm || password === pwConfirm) {
+      setStates({
+        ...states,
+        localMsg: '',
+      });
+    } else if (password !== pwConfirm) {
+      setStates({
+        ...states,
+        localMsg: '비밀번호가 일치하지 않습니다',
+      });
+    }
+  }, [pwConfirm]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
@@ -227,9 +254,9 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     id="email"
                     variant="outlined"
                     // onChange={onTextChange}
-                    value="dgsg"
+                    value={email}
                     disabled
-                    // label="ID"
+                    className="value"
                   />
                 </InputWrapper>
                 <InputWrapper>
@@ -238,9 +265,8 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     id="password"
                     variant="outlined"
                     onChange={handleChange}
-                    //   value="dgsg"
-
-                    // label="ID"
+                    className="value"
+                    type="password"
                   />
                 </InputWrapper>
                 <InputWrapper>
@@ -249,9 +275,11 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     id="pwConfirm"
                     variant="outlined"
                     onChange={handleChange}
-                    //   value="dgsg"
+                    className="value"
+                    type="password"
                   />
                 </InputWrapper>
+                {localMsg ? <Alert severity="warning">{localMsg}</Alert> : null}
               </>
             )}
             {api && (
@@ -281,7 +309,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     variant="outlined"
                     onChange={handleChange}
                     className="value"
-                    //   value="dgsg"
                   />
                 </InputWrapper>
                 <InputWrapper>
@@ -291,7 +318,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     variant="outlined"
                     onChange={handleChange}
                     className="value"
-                    //   value="dgsg"
                   />
                 </InputWrapper>
                 <FooterWrapper>
@@ -310,10 +336,17 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
               </div>
             )}
             {(pws || api) && (
-              <BtnWrapper>
+              <DialogActions
+                style={{
+                  display: 'flex',
+                  width: '16rem',
+                  justifyContent: 'center',
+                  margin: '0rem 0rem  0rem 0rem',
+                }}
+              >
                 <ConfirmButton type="submit">save</ConfirmButton>
                 <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-              </BtnWrapper>
+              </DialogActions>
             )}
           </Box>
         </Box>
@@ -323,24 +356,3 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
 };
 export default PrivateSetting;
 export {};
-// return (
-//   <Paper>
-//     <Box sx={style}>
-//       <Box component="form" onSubmit={handleSubmit}>
-//         <InputWrapper>
-//           <span className="lable">ID</span>
-//           <TextFields
-//             id="id"
-//             variant="outlined"
-//             //   onChange={onTextChange}
-//             value="dgsg"
-//             disabled
-
-//             // label="ID"
-//           />
-//         </InputWrapper>
-
-//       </Box>
-//     </Box>
-//   </Paper>
-// );

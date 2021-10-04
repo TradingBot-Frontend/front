@@ -46,7 +46,7 @@
     "web-vitals": "^1.0.1",
     "websocket": "^1.0.34"
   },
-  "proxy": "https://bitsum-mock.herokuapp.com",
+  "proxy": "http://3.35.9.110:8080",
   "scripts": {
     "start": "craco start",
     "build": "craco build",

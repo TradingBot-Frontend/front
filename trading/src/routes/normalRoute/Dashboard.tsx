@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export const Balloon = styled.div`
   position: absolute;
-  top: 17.3rem;
+  top: 14.5rem;
   left: 14rem;
   z-index: 4;
   width: 26rem;
@@ -237,7 +237,11 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <ContentsRouter />
       </main>
-      <Dialog open={settingOpen} onClose={handleSettingClose}>
+      <Dialog
+        open={settingOpen}
+        onClose={handleSettingClose}
+        style={{ overflowX: 'hidden' }}
+      >
         <PrivateSetting handleClose={handleSettingClose} />
       </Dialog>
       {apiKey && (

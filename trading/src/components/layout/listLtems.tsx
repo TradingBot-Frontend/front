@@ -34,12 +34,12 @@ export const MainListItems = ({ handleSettingOpen }: any) => {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </List>
-      <List button onClick={() => handleClick(`${url}/coin-market`)}>
+      {/* <List button onClick={() => handleClick(`${url}/coin-market`)}>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Coin Market" />
-      </List>
+      </List> */}
       <List button onClick={() => handleClick(`${url}/trading-bot`)}>
         <ListItemIcon>
           <AndroidIcon />
