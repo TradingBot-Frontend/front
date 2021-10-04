@@ -37,18 +37,6 @@ function initWebsocket() {
     };
   });
 }
-function* wsSaga(): any {
-  // const channel = yield call(initWebsocket);
-  // while (true) {
-  //   const action = yield take(channel);
-  //   yield put(action);
-  // }
-  yield connectSocketSaga({ payload: 'coinList' });
-}
-export function* watchLivePricesSaga() {
-  yield takeEvery(START_INIT, wsSaga);
-}
-
 const createSocket = () => {
   const client = new WebSocket('ws://3.36.166.137:8080/coins');
   client.binaryType = 'arraybuffer';
@@ -76,6 +64,7 @@ const connectSocket = (socket: any, action: any, buffer: any) => {
     return unsubscribe;
   }, buffer || buffer.none());
 };
+
 export const createConnectSocketSaga = (type: any, dataMapper: any) => {
   const SUCCESS = `${type}_SUCCESS`;
   const ERROR = `${type}_ERROR`;
@@ -126,3 +115,14 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
     }
   };
 };
+function* wsSaga(): any {
+  // const channel = yield call(initWebsocket);
+  // while (true) {
+  //   const action = yield take(channel);
+  //   yield put(action);
+  // }
+  yield connectSocketSaga({ payload: 'coinList' });
+}
+export function* watchLivePricesSaga() {
+  yield takeEvery(START_INIT, wsSaga);
+}

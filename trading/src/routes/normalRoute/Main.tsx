@@ -60,7 +60,7 @@ const Main = () => {
   };
   useEffect(() => {
     console.log('들어옴');
-    dispatch(startInit());
+    // dispatch(startInit());
   }, []);
   useEffect(() => {
     if (coinValue?.coinList.length) {
