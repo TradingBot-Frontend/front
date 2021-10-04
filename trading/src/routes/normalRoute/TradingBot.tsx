@@ -16,6 +16,7 @@ const TradingBot = (): JSX.Element => {
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   const bots = useSelector((state: RootState) => state.bot.bots);
+  const isLoading = useSelector((state: RootState) => state.bot.isLoading);
   const cards = [
     { title: '변동성 돌파 전략1', profit: '수익률 +25.4%' },
     { title: '변동성 돌파 전략1', profit: '수익률 +25.4%' },
@@ -50,7 +51,8 @@ const TradingBot = (): JSX.Element => {
                 profit={profit}
                 botInfo={{}}
                 width={380}
-                isLoading
+                // isLoading={isLoading}
+                isLoading={false}
               />
             </Grid>
           ))}
