@@ -1,6 +1,9 @@
 import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
 import axios from '@utils/axios';
 import {
+  AddBotAction,
+  addBotActions,
+  ADD_BOT_REQUEST,
   Bot,
   Bots,
   deleteBotActions,
@@ -66,6 +69,31 @@ function* watchGetBot() {
   yield takeEvery(GET_BOT_REQUEST, getBot);
 }
 
+// POST bots
+const addBotAPI = (botInfo: Bot) => {
+  return axios.post(`bots`, botInfo);
+};
+
+function* addBot(action: AddBotAction) {
+  try {
+    const res: AxiosResponse<IResponseMsg> = yield call(
+      addBotAPI,
+      action.payload,
+    );
+    if (res.data.msg !== 'success') {
+      throw new Error('POST bots request failed!');
+    }
+    yield put(addBotActions.success());
+    yield put(getBotsActions.request());
+  } catch (e) {
+    yield put(addBotActions.failure(e));
+  }
+}
+
+function* watchAddBot() {
+  yield takeEvery(ADD_BOT_REQUEST, addBot);
+}
+
 // PATCH bots/{bot-id}
 const updateBotAPI = (botInfo: Bot) => {
   return axios.patch(`bots/${botInfo.id}`, botInfo);
@@ -112,6 +140,7 @@ export default function* botSaga() {
   yield all([
     fork(watchGetBots),
     fork(watchGetBot),
+    fork(watchAddBot),
     fork(watchUpdateBot),
     fork(watchDeleteBot),
   ]);

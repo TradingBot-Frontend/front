@@ -98,9 +98,9 @@ const addBotRequest = (botInfo: Bot) => ({
   type: ADD_BOT_REQUEST,
   payload: botInfo,
 });
-const addBotSuccess = (msg: any) => ({
+const addBotSuccess = () => ({
   type: ADD_BOT_SUCCESS,
-  payload: msg,
+  payload: null,
 });
 const addBotFailure = (error: any) => ({
   type: ADD_BOT_FAILURE,
@@ -232,7 +232,7 @@ export default function botReducer(
         bots: action.payload,
       };
     case ADD_BOT_SUCCESS:
-      getBotsActions.request(); // 추가 성공하면 새로 bot 리스트를 업데이트
+      alert('트레이딩 봇이 추가되었습니다!');
       return {
         ...state,
         isLoading: false,

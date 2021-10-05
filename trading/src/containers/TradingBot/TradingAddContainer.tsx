@@ -16,7 +16,7 @@ import {
 } from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@redux/reducers';
 import { ICoinState } from '@redux/reducers/websocketReducer';
 import DialogActions from '@mui/material/DialogActions';
@@ -172,7 +172,7 @@ const TradingBotAdd = ({
   const [values, setValues] = useState<Bot>({
     botName: '',
     coinName: 'BTC',
-    bidReference: '7ma', // 이동평균선
+    bidReference: '5SMA', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
     isBidConditionExceed: true, // 기준대비
@@ -180,9 +180,10 @@ const TradingBotAdd = ({
     askCondition: 0, // 수익률
     askQuantity: 0,
     isActive: false,
-    description: 'default',
+    description: 'default description',
   });
   const [localMsg, setLocalMsg] = useState('');
+  const dispatch = useDispatch();
   const coinList = useSelector((state: RootState) => state.coin.coinList);
   const hasDefaultBotInfo = !!botInfo;
 
@@ -239,10 +240,10 @@ const TradingBotAdd = ({
     } else {
       setLocalMsg('');
       if (hasDefaultBotInfo) {
-        updateBotActions.request(values);
+        dispatch(updateBotActions.request(values));
         console.log('update');
       } else {
-        addBotActions.request(values);
+        dispatch(addBotActions.request(values));
         console.log('add');
       }
       handleClose();
@@ -261,7 +262,7 @@ const TradingBotAdd = ({
       } else {
         setValues({
           ...values,
-          [id]: Number(value),
+          [id]: value,
         });
       }
     },
