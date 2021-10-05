@@ -9,7 +9,10 @@ export interface SignUpContainerProps {
   handleClose: () => void;
 }
 
-export default function SignUpContainer({ open, handleClose }: SignUpContainerProps): JSX.Element {
+export default function SignUpContainer({
+  open,
+  handleClose,
+}: SignUpContainerProps): JSX.Element {
   const [form, setValues] = useState({
     email: '',
     password: '',
@@ -26,7 +29,9 @@ export default function SignUpContainer({ open, handleClose }: SignUpContainerPr
     });
   };
 
-  const handlePasswordConfirm: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handlePasswordConfirm: React.ChangeEventHandler<HTMLInputElement> = (
+    e,
+  ) => {
     setValues({
       ...form,
       [e.target.name]: e.target.value,
@@ -35,12 +40,18 @@ export default function SignUpContainer({ open, handleClose }: SignUpContainerPr
 
   const handleSignUp = () => {
     const { email, password, passwordConfirm, username } = form;
-    if (email !== '' && password !== '' && passwordConfirm !== '' && username !== '' && password === passwordConfirm) {
+    if (
+      email !== '' &&
+      password !== '' &&
+      passwordConfirm !== '' &&
+      username !== '' &&
+      password === passwordConfirm
+    ) {
       setValues({
         ...form,
         localMsg: '',
       });
-      const userInfo = { email, password, username };
+      const userInfo = { email, pwd: password, name: username };
       dispatch(signupActions.request(userInfo));
       handleClose();
     } else if (password === passwordConfirm) {

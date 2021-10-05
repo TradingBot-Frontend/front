@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ContentWrapper from '@components/common/ContentWrapper';
-import Modal from '@mui/material/Modal';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Grid from '@mui/material/Grid';
 import BotCard from '@components/TradingBot/BotCard';
@@ -39,9 +38,20 @@ const TradingBot = (): JSX.Element => {
     <>
       <ContentWrapper title="TradingBot" addButton handleOpen={handleOpen}>
         <Grid container spacing={1}>
+          {/* {cards.map(({ title, profit }) => (
+            <Grid key={title} item xl={3} lg={4} md={6} sm={12}>
+              <BotSkeleton />
+            </Grid>
+          ))} */}
           {cards.map(({ title, profit }) => (
             <Grid key={title} item xl={3} lg={4} md={6} sm={12}>
-              <BotCard title={title} profit={profit} botInfo={{}} width={380} />
+              <BotCard
+                title={title}
+                profit={profit}
+                botInfo={{}}
+                width={380}
+                isLoading
+              />
             </Grid>
           ))}
         </Grid>

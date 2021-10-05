@@ -56,7 +56,7 @@ const PortfolioDonutChart = () =>  {
     //     name: 'series-1',
     //     data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
     // }]
-    series: [44, 55, 41, 17, 15],
+    series: [70, 30],
     options: {
       dataLabels: {
         enabled: true,
@@ -70,7 +70,7 @@ const PortfolioDonutChart = () =>  {
           },
         },
       },
-      labels: ['Apple', 'Mango', 'Orange', 'Watermelon'],
+      labels: ['ADA', 'BTC'],
     },
   });
 

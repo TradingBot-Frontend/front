@@ -16,6 +16,11 @@ export const LOGOUT_FAILURE = 'auth/LOGOUT_FAILURE' as const;
 export const PRIVATEKEY_REQUEST = 'auth/PRIVATEKEY_REQUEST' as const;
 export const PRIVATEKEY_SUCCESS = 'auth/PRIVATEKEY_SUCCESS' as const;
 export const PRIVATEKEY_FAILURE = 'auth/PRIVATEKEY_FAILURE' as const;
+
+export const USERS_REQUEST = 'auth/USERS_REQUEST' as const;
+export const USERS_SUCCESS = 'auth/USERS_SUCCESS' as const;
+export const USERS_FAILURE = 'auth/USERS_FAILURE' as const;
+
 // type LoginAction =
 // | typeof LOGIN_REQUEST
 // | typeof LOGIN_SUCCESS
@@ -65,6 +70,15 @@ export const logoutActions = {
   failure: logoutFailure,
 };
 
+const usersRequest = () => ({ type: USERS_REQUEST, payload: null });
+const usersSuccess = () => ({ type: USERS_SUCCESS, payload: null });
+const usersFailure = (error: any) => ({ type: USERS_FAILURE, payload: error });
+export const usersActions = {
+  request: usersRequest,
+  success: usersSuccess,
+  failure: usersFailure,
+};
+
 const privateKeyRequest = (form: any) => ({
   type: PRIVATEKEY_REQUEST,
   payload: form,
@@ -100,18 +114,24 @@ export type privateKeyAction =
   | ReturnType<typeof privateKeyRequest>
   | ReturnType<typeof privateKeyRequestSuccess>
   | ReturnType<typeof privateKeyRequestFailure>;
+export type UsersAction =
+  | ReturnType<typeof usersRequest>
+  | ReturnType<typeof usersSuccess>
+  | ReturnType<typeof usersFailure>;
 export type AuthAction =
   | LoginAction
   | SignupAction
   | LogoutAction
-  | privateKeyAction;
+  | privateKeyAction
+  | UsersAction;
 
 interface IAuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  // eamil: string;
-  // userName: string;
+  eamil: string;
+  name: string;
+  pwd: string;
   // successMsg: string;
   errorMsg: string;
   apiKey: boolean | null;
@@ -122,8 +142,9 @@ const initialState: IAuthState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  // eamil: '',
-  // userName: '',
+  eamil: '',
+  name: '',
+  pwd: '',
   // successMsg: '',
   errorMsg: '',
   apiKey: true,
@@ -137,17 +158,25 @@ export default function authReducer(
   switch (action.type) {
     case SIGNUP_REQUEST:
     case LOGIN_REQUEST:
+    case USERS_REQUEST:
       return {
         ...state,
         errorMsg: '',
         isLoading: true,
       };
     case LOGIN_SUCCESS: {
-      const token = action.payload.data?.msg;
+      const token = action.payload;
       console.log('token', token);
       if (token) {
-        localStorage.setItem('token', token); // localStorage에 token 저장
-        setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
+        // localStorage.setItem('token', token); // localStorage에 token 저장
+        localStorage.setItem(
+          'token',
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjcxMGQ3Yi02NzdjLTRhYzAtYTU0Mi1lOTZkYWY3MjkzNzMiLCJleHAiOjE2MzE4ODA2OTN9.wUcE0maqr14IJ0SHDHGm_i9n3xjHr0VcZVXm63KlTQ4',
+        ); // localStorage에 token 저장
+        setAuthToken(
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZjcxMGQ3Yi02NzdjLTRhYzAtYTU0Mi1lOTZkYWY3MjkzNzMiLCJleHAiOjE2MzE4ODA2OTN9.wUcE0maqr14IJ0SHDHGm_i9n3xjHr0VcZVXm63KlTQ4',
+        ); // 모든 axios 요청 헤더에 token이 들어가게 설정
+        // setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
         // const base64: string = token.split(' ')[1];
         // const base64payload: string = base64.split('.')[1];
         // const payload: any = Buffer.from(base64payload, 'base64');
@@ -172,11 +201,12 @@ export default function authReducer(
     case LOGOUT_FAILURE:
       localStorage.removeItem('token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
+      alert('로그인 실패!');
       return {
         ...state,
         isAuthenticated: false,
         isLoading: false,
-        errorMsg: action.payload?.detail.msg,
+        errorMsg: action.payload,
       };
     case SIGNUP_SUCCESS:
       alert('가입 되었습니다!');
@@ -189,7 +219,7 @@ export default function authReducer(
       return {
         ...state,
         isLoading: false,
-        errorMsg: action.payload.msg,
+        errorMsg: action.payload.message,
       };
     case PRIVATEKEY_REQUEST:
       return {

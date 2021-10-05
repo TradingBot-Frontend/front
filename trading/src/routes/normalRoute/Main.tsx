@@ -49,13 +49,25 @@ const Main = () => {
         <Grid item lg={4} md={6} sm={12} className={classes.topContainer}>
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Grid item xs={12} sm={6}>
-              <BotCard title="변동성 돌파 전략1" profit="수익률 +25.4%" />
+              <BotCard
+                title="변동성 돌파 전략1"
+                profit="수익률 +25.4%"
+                isLoading={false}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <BotCard title="변동성 돌파 전략1" profit="수익률 +25.4%" />
+              <BotCard
+                title="변동성 돌파 전략1"
+                profit="수익률 +25.4%"
+                isLoading={false}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <BotCard title="변동성 돌파 전략1" profit="수익률 +25.4%" />
+              <BotCard
+                title="변동성 돌파 전략1"
+                profit="수익률 +25.4%"
+                isLoading={false}
+              />
             </Grid>
           </Box>
         </Grid>

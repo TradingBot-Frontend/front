@@ -17,9 +17,13 @@ import {
   SignupAction,
   LOGOUT_REQUEST,
   logoutActions,
+  USERS_REQUEST,
+  usersActions,
+  UsersAction,
 } from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
 import { connectSocketSaga } from '@redux/reducers/websocketReducer';
+import { AxiosResponse } from 'axios';
 
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
@@ -30,20 +34,22 @@ import { connectSocketSaga } from '@redux/reducers/websocketReducer';
 
 const loginAPI = (user: any) => {
   console.log(user, '@login user');
-  return axios.post('sign-in', user);
+  return axios.post('user-service/login', user);
 };
 
-interface ILoginResponse {
-  data: {
-    msg: string;
-  };
-}
+// interface ILoginResponse e {
+//   data: {
+//     msg: string;
+//   };
+// }
 
 function* login(action: LoginAction) {
   try {
-    const res: ILoginResponse = yield call(loginAPI, action.payload);
+    const res: AxiosResponse = yield call(loginAPI, action.payload);
     console.log(res);
-    yield put(loginActions.success(res));
+    const token = res.headers?.authorization;
+    console.log(token);
+    yield put(loginActions.success(token));
   } catch (e) {
     yield put(loginActions.failure(e));
   }
@@ -74,7 +80,8 @@ export function* loginFlow(): any {
   }
 }
 const signupAPI = (user: any) => {
-  return axios.post('sign-up', user);
+  console.log('@signupAPIuser, user: ', user);
+  return axios.post('user-service/users', user);
 };
 
 interface ISignUpResponse {
@@ -108,11 +115,30 @@ function* watchLogout() {
   yield takeEvery(LOGOUT_REQUEST, logout);
 }
 
+const getUserAPI = () => {
+  return axios.get('user-service/users');
+};
+
+function* getUser(action: UsersAction) {
+  try {
+    const res: AxiosResponse = yield call(getUserAPI);
+    console.log(res);
+    yield put(usersActions.success());
+  } catch (e) {
+    yield put(usersActions.failure(e));
+  }
+}
+
+function* watchUser() {
+  yield takeEvery(USERS_REQUEST, getUser);
+}
+
 export default function* authSaga() {
   yield all([
     // fork(watchLogin),
     fork(watchSignup),
     // fork(watchLogout),
+    fork(watchUser),
     fork(loginFlow),
   ]);
 }

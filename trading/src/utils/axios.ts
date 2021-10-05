@@ -4,13 +4,14 @@ const instance = axios.create({
   headers: {
     'Content-type': 'application/json',
   },
+  baseURL: 'http://localhost:3000',
 });
 
 export const setAuthToken = (token: string | null): void => {
   if (token) {
-    instance.defaults.headers.common.Authorization = token;
+    instance.defaults.headers.common.authorization = token;
   } else {
-    delete instance.defaults.headers.common.Authorization;
+    delete instance.defaults.headers.common.authorization;
   }
 };
 
