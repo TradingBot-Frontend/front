@@ -45,6 +45,7 @@ export const DELETE_BOT_FAILURE = 'bot/DELETE_BOT_FAILURE' as const;
 // }
 
 export interface Bot {
+  uuid?: string;
   id?: string;
   botName: string;
   coinName: string;
@@ -212,12 +213,19 @@ export default function botReducer(
         ...state,
         isLoading: true,
       };
-    case GET_BOTS_SUCCESS:
+    case GET_BOTS_SUCCESS: {
+      const bots = action.payload;
+      const newBots: Bots = bots.map((bot: Bot) => {
+        const copied: Bot = { ...bot };
+        delete copied.uuid;
+        return copied;
+      });
       return {
         ...state,
         isLoading: false,
-        bots: action.payload,
+        bots: newBots,
       };
+    }
     case GET_BOT_SUCCESS:
       return {
         ...state,
