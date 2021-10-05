@@ -226,9 +226,10 @@ const TradingBotAdd = ({
 
   // TODO: 제대로 작동하는지 확인
   const isBlank = useCallback(() => {
-    return Object.values(values).some((val) => {
-      console.log('val: ', val, 'ret: ', !val);
+    return Object.entries(values).some(([key, val]) => {
+      console.log('key:', key, 'val: ', val, 'ret: ', !val);
       if (typeof val === 'boolean') return false;
+      if (key === 'profit') return false;
       return !val;
     });
   }, [values]);
