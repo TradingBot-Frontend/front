@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
+import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
-import { Box, Divider } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper } from '@material-ui/core';
-import { startInit } from '@redux/reducers/websocketReducer';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
-import { useDispatch, useSelector } from 'react-redux';
 import BotCard from '@components/TradingBot/BotCard';
 import { makeStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
-import { RootState } from '@redux/reducers';
-import { coinDataUtils } from '@utils/utils';
-import EnhancedTable from '@components/common/CoinTable';
 
 const MainWapper = styled.div`
   display: flex;
@@ -27,7 +20,7 @@ const MainWapper = styled.div`
     margin: 0.5rem 0.5rem 0rem 0rem;
   }
 `;
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   topContainer: {
     margin: '2rem 0rem 0rem 0rem',
     height: '30%',
@@ -48,25 +41,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Main = () => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const coinValue = useSelector((state: RootState) => state.coin);
-  const [coinData, setCoinData] = useState(coinValue);
-  // const coinData = useSelector((state: RootState) => state.coin);
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('클릭!');
-  };
-  useEffect(() => {
-    console.log('들어옴');
-    // dispatch(startInit());
-  }, []);
-  useEffect(() => {
-    if (coinValue?.coinList.length) {
-      setCoinData(coinDataUtils.convertData(coinValue));
-    }
-  }, [coinValue?.coinList]);
   return (
     <MainWapper>
       <Container style={{ border: '1px solid' }}>
@@ -86,8 +62,7 @@ const Main = () => {
         <Grid container spacing={4} className={classes.bottomContainer}>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.coinContainer}>
-              <EnhancedTable coindata={coinData.length ? coinData : []} />
-              {/* <DsbCoinList coindata={coinData.length ? coinData : []} /> */}
+              <DsbCoinList />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>

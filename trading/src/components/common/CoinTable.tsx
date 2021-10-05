@@ -21,6 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 // import { visuallyHidden } from '@mui/utils';
 import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 export interface Data {
   name: string;
@@ -178,45 +179,55 @@ export default function EnhancedTable({ coindata }: any) {
     setRows(coindata);
   }, [coindata]);
 
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
+  const handleRequestSort = useCallback(
+    (event: React.MouseEvent<unknown>, property: keyof Data) => {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+    },
+    [selected, orderBy, order],
+  );
+  const handleSelectAllClick = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        const newSelecteds = rows.map((n) => n.name);
+        setSelected(newSelecteds);
+        return;
+      }
+      setSelected([]);
+    },
+    [selected],
+  );
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
+  const handleClick = useCallback(
+    (event: React.MouseEvent<unknown>, name: string) => {
+      const selectedIndex = selected.indexOf(name);
+      let newSelected: readonly string[] = [];
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, name);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1),
+        );
+      }
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+      setSelected(newSelected);
+    },
+    [selected],
+  );
 
-    setSelected(newSelected);
-  };
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = useCallback(
+    (name: string) => {
+      return selected.indexOf(name) !== -1;
+    },
+    [selected],
+  );
   return (
     <Box
       component="div"
