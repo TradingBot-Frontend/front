@@ -86,23 +86,17 @@ const FooterWrapper = styled.div`
   }
 `;
 const Buttons = styled(Button)`
-  color: #ffffff;
-  background-color: #3072eb;
-  width: 7rem;
-`;
-const ConfirmButton = styled(Button)`
   display: flex;
-  background-color: #bdb8b8;
-  color: #ffffff;
+  color: #000000;
   width: 11rem;
   margin: 0.5rem 0rem 0rem 0rem;
 `;
-const CancleButton = styled(Button)`
-  display: flex;
+const ConfirmButton = styled(Buttons)`
+  background-color: #294c60;
+  color: #ffffff;
+`;
+const CancleButton = styled(Buttons)`
   border: 1px solid #bdb8b8;
-  color: #000000;
-  width: 11rem;
-  margin: 0.5rem 0rem 0rem 0.5rem;
 `;
 
 const IOSSwitch = muiStyled((props: SwitchProps) => (
