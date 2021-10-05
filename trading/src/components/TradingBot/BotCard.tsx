@@ -93,7 +93,7 @@ export default function BotCard({
                     <Typography sx={{ fontWeight: 'bold', fontSize: '1.3rem' }}>
                       {botInfo.botName}
                     </Typography>
-                    <Typography>수익률 +25.4%</Typography>
+                    <Typography>수익률 {`${botInfo?.profit || 0}%`}</Typography>
                   </>
                 )}
               </Stack>

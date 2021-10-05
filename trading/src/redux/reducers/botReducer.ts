@@ -57,6 +57,7 @@ export interface Bot {
   askCondition: number;
   askQuantity: number;
   isActive: boolean;
+  profit?: number;
   description?: string;
 }
 
