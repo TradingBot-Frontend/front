@@ -179,7 +179,7 @@ const TradingBotAdd = ({
     askReference: 'PROFIT',
     askCondition: 0, // 수익률
     askQuantity: 0,
-    isActive: false,
+    isActive: true,
     description: 'default description',
   });
   const [localMsg, setLocalMsg] = useState('');
@@ -345,7 +345,7 @@ const TradingBotAdd = ({
                   control={
                     <IOSSwitch
                       sx={{ m: 1, ml: 5 }}
-                      defaultChecked
+                      checked={values.isActive}
                       onChange={handleSwitchChange}
                     />
                   }
