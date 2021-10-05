@@ -10,6 +10,7 @@ interface ContentWrapperProps {
   addButton?: boolean;
   children: JSX.Element;
   overflow?: string;
+  padding?: string;
   handleOpen?: () => void;
 }
 
@@ -18,6 +19,7 @@ export default function ContentWrapper({
   addButton = false,
   children,
   overflow = 'auto',
+  padding = '2rem',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleOpen = () => {},
 }: ContentWrapperProps): JSX.Element {
@@ -25,10 +27,7 @@ export default function ContentWrapper({
     <Box
       sx={{
         flex: 1,
-          paddingTop: '2rem',
-          paddingBottom: '2rem',
-          paddingRight: '200px',
-          paddingLeft: '200px',
+        padding,
       }}
     >
       <Typography variant="h4" component="div">
