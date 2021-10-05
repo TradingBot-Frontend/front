@@ -1,4 +1,13 @@
-import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  all,
+  fork,
+  takeEvery,
+  take,
+  race,
+} from 'redux-saga/effects';
+
 import {
   loginActions,
   LOGIN_REQUEST,
@@ -13,7 +22,9 @@ import {
   UsersAction,
 } from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
+import { connectSocketSaga } from '@redux/reducers/websocketReducer';
 import { AxiosResponse } from 'axios';
+
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
 // all: all에 제네레이터 함수를 배열로 담아서 넘기면 제네레이터 함수들이
@@ -47,7 +58,27 @@ function* login(action: LoginAction) {
 function* watchLogin() {
   yield takeEvery(LOGIN_REQUEST, login);
 }
-
+export function* loginFlow(): any {
+  while (true) {
+    const action = yield take(LOGIN_REQUEST);
+    try {
+      const res: ILoginResponse = yield call(loginAPI, action.payload);
+      console.log(res);
+      yield put(loginActions.success(res));
+    } catch (e) {
+      yield put(loginActions.failure(e));
+    }
+    yield race({
+      websocket: connectSocketSaga({ payload: 'coinList' }),
+      logouts: take(LOGOUT_REQUEST),
+    });
+    try {
+      yield put(logoutActions.success());
+    } catch (e) {
+      yield put(logoutActions.failure());
+    }
+  }
+}
 const signupAPI = (user: any) => {
   console.log('@signupAPIuser, user: ', user);
   return axios.post('user-service/users', user);
@@ -104,9 +135,10 @@ function* watchUser() {
 
 export default function* authSaga() {
   yield all([
-    fork(watchLogin),
+    // fork(watchLogin),
     fork(watchSignup),
-    fork(watchLogout),
+    // fork(watchLogout),
     fork(watchUser),
+    fork(loginFlow),
   ]);
 }
