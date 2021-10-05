@@ -62,7 +62,7 @@ export function* loginFlow(): any {
   while (true) {
     const action = yield take(LOGIN_REQUEST);
     try {
-      const res: ILoginResponse = yield call(loginAPI, action.payload);
+      const res: AxiosResponse = yield call(loginAPI, action.payload);
       console.log(res);
       yield put(loginActions.success(res));
     } catch (e) {
