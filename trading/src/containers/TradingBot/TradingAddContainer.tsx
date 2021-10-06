@@ -341,7 +341,8 @@ const TradingBotAdd = ({
                 <Select
                   id="coinName"
                   style={{ width: '7rem' }}
-                  value={values.coinName || 'BTC'}
+                  // value={values.coinName || 'BTC'}
+                  defaultValue="BTC"
                   onChange={(e) => handleSelectChange(e, 'coinName')}
                 >
                   <MenuItem value="BTC">BTC</MenuItem>
