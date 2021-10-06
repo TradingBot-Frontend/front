@@ -128,8 +128,13 @@ const getUserAPI = () => {
 const getPrivateAPI = () => {
   return axios.get('user-api');
 };
-const createPrivateAPI = (user: any) => {
-  return axios.post('user-api', userInfo);
+const createPrivateAPI = async (user: any) => {
+  const res = await axios.post('user-api', user);
+  let resValue;
+  if (res.data === 'success') {
+    resValue = getPrivateAPI();
+  }
+  return resValue;
 };
 function* getUser(action: UsersAction) {
   try {
@@ -143,7 +148,6 @@ function* getUser(action: UsersAction) {
 function* getUserPrivate(action: privateKeyAction) {
   try {
     const res: AxiosResponse = yield call(getPrivateAPI);
-    console.log(res);
     yield put(privateKeyActions.success(res.data));
   } catch (e) {
     yield put(privateKeyActions.failure(e));
@@ -151,9 +155,14 @@ function* getUserPrivate(action: privateKeyAction) {
 }
 function* createUserPrivate(action: keyCreateAction) {
   try {
-    const res: AxiosResponse = yield call(createPrivateAPI, action.payload);
-    console.log(res);
-    yield put(privateKeyActions.success(res));
+    const obj = {
+      connect_key: action.payload.apiKey,
+      secret_key: action.payload.secretKey,
+    };
+    const res: AxiosResponse = yield call(createPrivateAPI, obj);
+    if (res) {
+      yield put(privateKeyActions.success(res.data));
+    }
   } catch (e) {
     yield put(privateKeyActions.failure(e));
   }

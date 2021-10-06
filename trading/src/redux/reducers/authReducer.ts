@@ -156,7 +156,7 @@ interface IAuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  eamil: string;
+  email: string;
   name: string;
   pwd: string;
   // successMsg: string;
@@ -169,8 +169,8 @@ const initialState: IAuthState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  eamil: '',
-  name: '',
+  email: 'test2@gmail.com',
+  name: '스폰지밥',
   pwd: '',
   // successMsg: '',
   errorMsg: '',
@@ -251,12 +251,13 @@ export default function authReducer(
 
     case PRIVATEKEY_SUCCESS:
     case KEYCREATE_SUCCESS:
-      console.log('action:', action.payload);
       return {
         ...state,
         apiKey: action.payload.connect_key,
         secretKey: action.payload.secret_key,
+        errorMsg: '',
       };
+
     default:
       return state;
   }

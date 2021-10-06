@@ -10,7 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@redux/reducers';
 import { keyCreateActions } from '@redux/reducers/authReducer';
 
@@ -120,7 +120,6 @@ const buttonMap = [
   },
 ];
 const PrivateSetting = ({ handleClose }: ISettingProps) => {
-  const userInfo = useSelector((state: RootState) => state.auth);
   const [button, setButton] = useState<IButtonProps>({
     pws: false,
     api: false,
@@ -135,15 +134,18 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     secretKey: '',
     localMsg: '',
   });
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const authInfo = useSelector((state: RootState) => state.auth);
   const { pws, api, back } = button;
   const { password, pwConfirm, localMsg, email } = states;
   const [validate, setValidate] = useState(false);
   useEffect(() => {
     setStates({
       ...states,
-      email: userInfo.email,
+      email: authInfo.email,
     });
-  }, []);
+  }, [button]);
   useEffect(() => {
     if (!pwConfirm || password === pwConfirm) {
       setStates({
@@ -157,16 +159,25 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       });
     }
   }, [pwConfirm]);
+  useEffect(() => {
+    if (authInfo.apiKey?.length) {
+      setOpen(true);
+    }
+  }, [authInfo.apiKey]);
+  // TODO: 페이지 나가면 값 사라지게 만들기
+  // useEffect(() => {
+  //   handleClose();
+  // }, [open]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
+    dispatch(keyCreateActions.request(states));
   };
   const handleValidate = () => {
     setValidate(!validate);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    console.log('id:', id, 'value:', value);
     setStates({
       ...states,
       [id]: value,
@@ -199,12 +210,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       });
     }
   };
-  const handleClickSave = () => {
-    keyCreateActions.request(button);
-  };
-  useEffect(() => {
-    console.log('button:', button);
-  }, [button]);
   return (
     <>
       <DialogTitle
@@ -348,9 +353,7 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                   margin: '0rem 0rem  0rem 0rem',
                 }}
               >
-                <ConfirmButton type="submit" onClick={handleClickSave}>
-                  save
-                </ConfirmButton>
+                <ConfirmButton type="submit">save</ConfirmButton>
                 <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
               </DialogActions>
             )}
