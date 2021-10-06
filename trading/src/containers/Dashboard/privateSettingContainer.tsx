@@ -10,8 +10,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@redux/reducers';
+import { keyCreateActions, signupActions } from '@redux/reducers/authReducer';
 
 const style = {
   position: 'absolute',
@@ -119,7 +120,6 @@ const buttonMap = [
   },
 ];
 const PrivateSetting = ({ handleClose }: ISettingProps) => {
-  const userInfo = useSelector((state: RootState) => state.auth);
   const [button, setButton] = useState<IButtonProps>({
     pws: false,
     api: false,
@@ -134,15 +134,18 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     secretKey: '',
     localMsg: '',
   });
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const authInfo = useSelector((state: RootState) => state.auth);
   const { pws, api, back } = button;
   const { password, pwConfirm, localMsg, email } = states;
   const [validate, setValidate] = useState(false);
   useEffect(() => {
     setStates({
       ...states,
-      email: userInfo.email,
+      email: authInfo.email,
     });
-  }, []);
+  }, [button]);
   useEffect(() => {
     if (!pwConfirm || password === pwConfirm) {
       setStates({
@@ -156,16 +159,34 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       });
     }
   }, [pwConfirm]);
+  useEffect(() => {
+    if (authInfo.apiKey?.length) {
+      setOpen(true);
+    }
+  }, [authInfo.apiKey]);
+  // TODO: 페이지 나가면 값 사라지게 만들기
+  // useEffect(() => {
+  //   handleClose();
+  // }, [open]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
+    if (api) {
+      dispatch(keyCreateActions.request(states));
+    } else {
+      const obj = {
+        email: authInfo.email,
+        name: authInfo.name,
+        password,
+      };
+      dispatch(signupActions.request(obj));
+    }
   };
   const handleValidate = () => {
     setValidate(!validate);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    console.log('id:', id, 'value:', value);
     setStates({
       ...states,
       [id]: value,
@@ -198,23 +219,32 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       });
     }
   };
-  useEffect(() => {
-    console.log('button:', button);
-  }, [button]);
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <DialogTitle
-        sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
+        sx={{
+          color: '#170F8B',
+          textAlign: 'center',
+        }}
       >
         Privatekey Setting
       </DialogTitle>
       <DialogContent
         sx={{
           width: '20rem',
-          height: '25rem',
+          height: '20rem',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          borderBottom: '1px solid #C1C6CE',
+          borderTop: '1px solid #C1C6CE',
         }}
       >
         <Box component="form" onSubmit={handleSubmit}>
@@ -335,23 +365,23 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                 </FooterWrapper>
               </div>
             )}
-            {(pws || api) && (
-              <DialogActions
-                style={{
-                  display: 'flex',
-                  width: '16rem',
-                  justifyContent: 'center',
-                  margin: '0rem 0rem  0rem 0rem',
-                }}
-              >
-                <ConfirmButton type="submit">save</ConfirmButton>
-                <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-              </DialogActions>
-            )}
           </Box>
         </Box>
       </DialogContent>
-    </>
+      {(pws || api) && (
+        <DialogActions
+          style={{
+            display: 'flex',
+            width: '16rem',
+            justifyContent: 'center',
+            margin: '0rem 0rem  0rem 0rem',
+          }}
+        >
+          <ConfirmButton type="submit">save</ConfirmButton>
+          <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+        </DialogActions>
+      )}
+    </div>
   );
 };
 export default PrivateSetting;

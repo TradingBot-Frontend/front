@@ -20,10 +20,17 @@ import {
   USERS_REQUEST,
   usersActions,
   UsersAction,
+  PRIVATEKEY_REQUEST,
+  privateKeyActions,
+  privateKeyAction,
+  KEYCREATE_REQUEST,
+  keyCreateActions,
+  keyCreateAction,
 } from '@redux/reducers/authReducer';
 import axios from '@utils/axios';
 import { connectSocketSaga } from '@redux/reducers/websocketReducer';
 import { AxiosResponse } from 'axios';
+import { userInfo } from 'os';
 
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
@@ -118,7 +125,17 @@ function* watchLogout() {
 const getUserAPI = () => {
   return axios.get('user-service/users');
 };
-
+const getPrivateAPI = () => {
+  return axios.get('user-api');
+};
+const createPrivateAPI = async (user: any) => {
+  const res = await axios.post('user-api', user);
+  let resValue;
+  if (res.data === 'success') {
+    resValue = getPrivateAPI();
+  }
+  return resValue;
+};
 function* getUser(action: UsersAction) {
   try {
     const res: AxiosResponse = yield call(getUserAPI);
@@ -128,11 +145,35 @@ function* getUser(action: UsersAction) {
     yield put(usersActions.failure(e));
   }
 }
-
+function* getUserPrivate(action: privateKeyAction) {
+  try {
+    const res: AxiosResponse = yield call(getPrivateAPI);
+    yield put(privateKeyActions.success(res.data));
+  } catch (e) {
+    yield put(privateKeyActions.failure(e));
+  }
+}
+function* createUserPrivate(action: keyCreateAction) {
+  try {
+    const obj = {
+      connect_key: action.payload.apiKey,
+      secret_key: action.payload.secretKey,
+    };
+    const res: AxiosResponse = yield call(createPrivateAPI, obj);
+    if (res) {
+      yield put(privateKeyActions.success(res.data));
+    }
+  } catch (e) {
+    yield put(privateKeyActions.failure(e));
+  }
+}
 function* watchUser() {
   yield takeEvery(USERS_REQUEST, getUser);
 }
-
+function* watchUserPrivateKey() {
+  yield takeEvery(PRIVATEKEY_REQUEST, getUserPrivate);
+  yield takeEvery(KEYCREATE_REQUEST, createUserPrivate);
+}
 export default function* authSaga() {
   yield all([
     // fork(watchLogin),
@@ -140,5 +181,6 @@ export default function* authSaga() {
     // fork(watchLogout),
     fork(watchUser),
     fork(loginFlow),
+    fork(watchUserPrivateKey),
   ]);
 }

@@ -22,8 +22,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { MainListItems } from '@components/layout/listLtems';
 import ContentsRouter from '@routes/ContentsRouter';
 import Modal from '@mui/material/Modal';
-import { logoutActions } from '@redux/reducers/authReducer';
+import { logoutActions, privateKeyActions } from '@redux/reducers/authReducer';
 import { RootState } from '@redux/reducers';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
+    color: '#170f8b',
   },
   toolbarIcon: {
     display: 'flex',
@@ -70,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: '#170f8b',
     fontFamily: 'Btro_core',
   },
   loginIcon: {
@@ -100,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
+    background: '#f7f2f2',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -122,12 +126,12 @@ export const Balloon = styled.div`
   z-index: 4;
   width: 26rem;
   height: 3rem;
-  background: #adb6c4;
+  background: #c1c6ce;
   border-radius: 15px;
   animation: 'bounce';
   animation-duration: 3s;
   :after {
-    border-top: 15px solid #adb6c4;
+    border-top: 15px solid #c1c6ce;
     border-left: 15px solid transparent;
     border-right: 0px solid transparent;
     border-bottom: 0px solid transparent;
@@ -144,7 +148,12 @@ export default function Dashboard() {
   const [search, setsearch] = useState('');
   const dispatch = useDispatch();
   const apiKey = useSelector((state: RootState) => state.auth.apiKey);
-
+  useEffect(() => {
+    dispatch(privateKeyActions.request());
+  }, []);
+  useEffect(() => {
+    console.log('apiKey: ', apiKey);
+  }, [apiKey]);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -173,7 +182,7 @@ export default function Dashboard() {
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
-        style={{ background: '#294c60' }}
+        style={{ background: '#FFFFFF' }}
       >
         <Toolbar className={classes.toolbar}>
           <IconButton
@@ -191,7 +200,7 @@ export default function Dashboard() {
           <Typography
             component="h1"
             variant="h6"
-            color="inherit"
+            // color="inherit"
             noWrap
             className={classes.title}
           >
@@ -205,7 +214,7 @@ export default function Dashboard() {
           </Button> */}
           <CommonButtonContainer
             title="LOGOUT"
-            color="white"
+            color="#170F8B"
             onClick={handleLogout}
           />
         </Toolbar>
@@ -238,7 +247,7 @@ export default function Dashboard() {
       >
         <PrivateSetting handleClose={handleSettingClose} />
       </Dialog>
-      {apiKey && (
+      {!apiKey?.length && (
         <Balloon>
           <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>
             Private Setting에서 API Key를 등록해야만 진행이 가능합니다.
