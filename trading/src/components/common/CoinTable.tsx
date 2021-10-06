@@ -142,7 +142,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
             style={{
-              background: '#adb6c4',
+              background: '#C1C6CE',
             }}
           >
             <TableSortLabel

@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
+    color: '#170f8b',
   },
   toolbarIcon: {
     display: 'flex',
@@ -70,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: '#170f8b',
     fontFamily: 'Btro_core',
   },
   loginIcon: {
@@ -100,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
+    background: '#f7f2f2',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -122,12 +125,12 @@ export const Balloon = styled.div`
   z-index: 4;
   width: 26rem;
   height: 3rem;
-  background: #adb6c4;
+  background: #c1c6ce;
   border-radius: 15px;
   animation: 'bounce';
   animation-duration: 3s;
   :after {
-    border-top: 15px solid #adb6c4;
+    border-top: 15px solid #c1c6ce;
     border-left: 15px solid transparent;
     border-right: 0px solid transparent;
     border-bottom: 0px solid transparent;
@@ -173,7 +176,7 @@ export default function Dashboard() {
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
-        style={{ background: '#294c60' }}
+        style={{ background: '#FFFFFF' }}
       >
         <Toolbar className={classes.toolbar}>
           <IconButton
@@ -191,7 +194,7 @@ export default function Dashboard() {
           <Typography
             component="h1"
             variant="h6"
-            color="inherit"
+            // color="inherit"
             noWrap
             className={classes.title}
           >
@@ -205,7 +208,7 @@ export default function Dashboard() {
           </Button> */}
           <CommonButtonContainer
             title="LOGOUT"
-            color="white"
+            color="#170F8B"
             onClick={handleLogout}
           />
         </Toolbar>

@@ -45,7 +45,7 @@ const Main = () => {
   const classes = useStyles();
   return (
     <MainWapper>
-      <Container style={{ border: '1px solid' }}>
+      <Container>
         <Grid item lg={4} md={6} sm={12} className={classes.topContainer}>
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Grid item xs={12} sm={6}>
