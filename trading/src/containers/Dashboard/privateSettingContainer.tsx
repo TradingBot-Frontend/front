@@ -12,7 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@redux/reducers';
-import { keyCreateActions } from '@redux/reducers/authReducer';
+import { keyCreateActions, signupActions } from '@redux/reducers/authReducer';
 
 const style = {
   position: 'absolute',
@@ -171,7 +171,16 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('submit:', states);
-    dispatch(keyCreateActions.request(states));
+    if (api) {
+      dispatch(keyCreateActions.request(states));
+    } else {
+      const obj = {
+        email: authInfo.email,
+        name: authInfo.name,
+        password,
+      };
+      dispatch(signupActions.request(obj));
+    }
   };
   const handleValidate = () => {
     setValidate(!validate);
