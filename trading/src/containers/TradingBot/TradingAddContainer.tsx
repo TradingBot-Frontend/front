@@ -12,6 +12,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import {
   addBotActions,
   Bot,
+  deleteBotActions,
   updateBotActions,
 } from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
@@ -97,6 +98,14 @@ const ConfirmButton = styled(Buttons)`
 `;
 const CancleButton = styled(Buttons)`
   border: 1px solid #bdb8b8;
+`;
+const DeleteButton = styled(Buttons)`
+  width: 5rem;
+  background-color: #d00000;
+  color: #ffffff;
+  position: absolute;
+  right: 15px;
+  top: 6px;
 `;
 
 const IOSSwitch = muiStyled((props: SwitchProps) => (
@@ -245,6 +254,13 @@ const TradingBotAdd = ({
     }
   };
 
+  const handleDelete = useCallback(() => {
+    console.log('click delete');
+    console.log('values.id', values.id);
+    console.log('values', values);
+    if (values.id) dispatch(deleteBotActions.request(values.id));
+  }, [values, dispatch]);
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = e.target;
@@ -303,6 +319,9 @@ const TradingBotAdd = ({
         sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
       >
         TradingBot 추가
+        {hasDefaultBotInfo ? (
+          <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+        ) : null}
       </DialogTitle>
       <DialogContent>
         <Box component="form" onSubmit={handleSubmit}>

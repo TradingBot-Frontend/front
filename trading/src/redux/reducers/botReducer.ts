@@ -132,9 +132,9 @@ export const updateBotActions = {
   failure: updateBotFailure,
 };
 
-const deleteBotRequest = (botInfo: Bot) => ({
+const deleteBotRequest = (botId: string) => ({
   type: DELETE_BOT_REQUEST,
-  payload: botInfo,
+  payload: botId,
 });
 const deleteBotSuccess = (msg: string) => ({
   type: DELETE_BOT_SUCCESS,
@@ -241,7 +241,7 @@ export default function botReducer(
         bots: action.payload,
       };
     case ADD_BOT_SUCCESS:
-      alert('트레이딩 봇이 추가되었습니다!');
+      // alert('트레이딩 봇이 추가되었습니다!');
       return {
         ...state,
         isLoading: false,
