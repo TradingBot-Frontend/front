@@ -92,14 +92,14 @@ const Buttons = styled(Button)`
 `;
 const ConfirmButton = styled(Button)`
   display: flex;
-  background-color: #bdb8b8;
+  background-color: #170f8b;
   color: #ffffff;
   width: 11rem;
   margin: 0.5rem 0rem 0rem 0rem;
 `;
 const CancleButton = styled(Button)`
   display: flex;
-  border: 1px solid #bdb8b8;
+  border: 1px solid #c1c6ce;
   color: #000000;
   width: 11rem;
   margin: 0.5rem 0rem 0rem 0.5rem;
