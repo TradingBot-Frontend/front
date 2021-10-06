@@ -22,8 +22,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { MainListItems } from '@components/layout/listLtems';
 import ContentsRouter from '@routes/ContentsRouter';
 import Modal from '@mui/material/Modal';
-import { logoutActions } from '@redux/reducers/authReducer';
+import { logoutActions, privateKeyActions } from '@redux/reducers/authReducer';
 import { RootState } from '@redux/reducers';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
@@ -147,7 +148,12 @@ export default function Dashboard() {
   const [search, setsearch] = useState('');
   const dispatch = useDispatch();
   const apiKey = useSelector((state: RootState) => state.auth.apiKey);
-
+  useEffect(() => {
+    dispatch(privateKeyActions.request());
+  }, []);
+  useEffect(() => {
+    console.log('apiKey: ', apiKey);
+  }, [apiKey]);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -241,7 +247,7 @@ export default function Dashboard() {
       >
         <PrivateSetting handleClose={handleSettingClose} />
       </Dialog>
-      {apiKey && (
+      {!apiKey?.length && (
         <Balloon>
           <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>
             Private Setting에서 API Key를 등록해야만 진행이 가능합니다.

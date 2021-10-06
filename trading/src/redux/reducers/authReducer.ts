@@ -21,6 +21,10 @@ export const USERS_REQUEST = 'auth/USERS_REQUEST' as const;
 export const USERS_SUCCESS = 'auth/USERS_SUCCESS' as const;
 export const USERS_FAILURE = 'auth/USERS_FAILURE' as const;
 
+export const KEYCREATE_REQUEST = 'auth/KEYCREATE_REQUEST' as const;
+export const KEYCREATE_SUCCESS = 'auth/KEYCREATE_SUCCESS' as const;
+export const KEYCREATE_FAILURE = 'auth/KEYCREATE_FAILURE' as const;
+
 // type LoginAction =
 // | typeof LOGIN_REQUEST
 // | typeof LOGIN_SUCCESS
@@ -79,9 +83,9 @@ export const usersActions = {
   failure: usersFailure,
 };
 
-const privateKeyRequest = (form: any) => ({
+const privateKeyRequest = () => ({
   type: PRIVATEKEY_REQUEST,
-  payload: form,
+  // payload: form,
 });
 const privateKeyRequestSuccess = (res: any) => ({
   type: PRIVATEKEY_SUCCESS,
@@ -96,6 +100,24 @@ export const privateKeyActions = {
   request: privateKeyRequest,
   success: privateKeyRequestSuccess,
   failure: privateKeyRequestFailure,
+};
+const keyCreateRequest = (form: any) => ({
+  type: KEYCREATE_REQUEST,
+  payload: form,
+});
+const keyCreateRequestSuccess = (res: any) => ({
+  type: KEYCREATE_SUCCESS,
+  payload: res,
+});
+const keyCreateRequestFailure = (error: any) => ({
+  type: KEYCREATE_FAILURE,
+  payload: error,
+});
+
+export const keyCreateActions = {
+  request: keyCreateRequest,
+  success: keyCreateRequestSuccess,
+  failure: keyCreateRequestFailure,
 };
 
 export type LoginAction =
@@ -114,6 +136,10 @@ export type privateKeyAction =
   | ReturnType<typeof privateKeyRequest>
   | ReturnType<typeof privateKeyRequestSuccess>
   | ReturnType<typeof privateKeyRequestFailure>;
+export type keyCreateAction =
+  | ReturnType<typeof keyCreateRequest>
+  | ReturnType<typeof keyCreateRequestSuccess>
+  | ReturnType<typeof keyCreateRequestFailure>;
 export type UsersAction =
   | ReturnType<typeof usersRequest>
   | ReturnType<typeof usersSuccess>
@@ -123,7 +149,8 @@ export type AuthAction =
   | SignupAction
   | LogoutAction
   | privateKeyAction
-  | UsersAction;
+  | UsersAction
+  | keyCreateAction;
 
 interface IAuthState {
   token: string | null;
@@ -134,8 +161,8 @@ interface IAuthState {
   pwd: string;
   // successMsg: string;
   errorMsg: string;
-  apiKey: boolean | null;
-  secretKey: boolean | null;
+  apiKey: string | null;
+  secretKey: string | null;
 }
 
 const initialState: IAuthState = {
@@ -147,8 +174,8 @@ const initialState: IAuthState = {
   pwd: '',
   // successMsg: '',
   errorMsg: '',
-  apiKey: true,
-  secretKey: false,
+  apiKey: '',
+  secretKey: '',
 };
 
 export default function authReducer(
@@ -221,11 +248,14 @@ export default function authReducer(
         isLoading: false,
         errorMsg: action.payload.message,
       };
-    case PRIVATEKEY_REQUEST:
+
+    case PRIVATEKEY_SUCCESS:
+    case KEYCREATE_SUCCESS:
+      console.log('action:', action.payload);
       return {
         ...state,
-        apiKey: true,
-        secretKey: true,
+        apiKey: action.payload.connect_key,
+        secretKey: action.payload.secret_key,
       };
     default:
       return state;

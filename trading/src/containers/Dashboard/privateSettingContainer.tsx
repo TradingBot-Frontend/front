@@ -12,6 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '@redux/reducers';
+import { keyCreateActions } from '@redux/reducers/authReducer';
 
 const style = {
   position: 'absolute',
@@ -198,6 +199,9 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       });
     }
   };
+  const handleClickSave = () => {
+    keyCreateActions.request(button);
+  };
   useEffect(() => {
     console.log('button:', button);
   }, [button]);
@@ -344,7 +348,9 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                   margin: '0rem 0rem  0rem 0rem',
                 }}
               >
-                <ConfirmButton type="submit">save</ConfirmButton>
+                <ConfirmButton type="submit" onClick={handleClickSave}>
+                  save
+                </ConfirmButton>
                 <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
               </DialogActions>
             )}
