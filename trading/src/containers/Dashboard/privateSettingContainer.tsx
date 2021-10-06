@@ -220,19 +220,31 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     }
   };
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <DialogTitle
-        sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
+        sx={{
+          color: '#170F8B',
+          textAlign: 'center',
+        }}
       >
         Privatekey Setting
       </DialogTitle>
       <DialogContent
         sx={{
           width: '20rem',
-          height: '25rem',
+          height: '20rem',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          borderBottom: '1px solid #C1C6CE',
+          borderTop: '1px solid #C1C6CE',
         }}
       >
         <Box component="form" onSubmit={handleSubmit}>
@@ -353,23 +365,23 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                 </FooterWrapper>
               </div>
             )}
-            {(pws || api) && (
-              <DialogActions
-                style={{
-                  display: 'flex',
-                  width: '16rem',
-                  justifyContent: 'center',
-                  margin: '0rem 0rem  0rem 0rem',
-                }}
-              >
-                <ConfirmButton type="submit">save</ConfirmButton>
-                <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-              </DialogActions>
-            )}
           </Box>
         </Box>
       </DialogContent>
-    </>
+      {(pws || api) && (
+        <DialogActions
+          style={{
+            display: 'flex',
+            width: '16rem',
+            justifyContent: 'center',
+            margin: '0rem 0rem  0rem 0rem',
+          }}
+        >
+          <ConfirmButton type="submit">save</ConfirmButton>
+          <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+        </DialogActions>
+      )}
+    </div>
   );
 };
 export default PrivateSetting;
