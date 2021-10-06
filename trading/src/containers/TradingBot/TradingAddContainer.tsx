@@ -378,7 +378,7 @@ const TradingBotAdd = ({
                 id="bidReference"
                 style={{ width: '12.5rem' }}
                 defaultValue="5SMA"
-                onChange={(e) => handleSelectChange(e, 'coinName')}
+                onChange={(e) => handleSelectChange(e, 'bidReference')}
               >
                 <MenuItem value="5SMA">5초 이동평균선</MenuItem>
                 <MenuItem value="10SMA">10초 이동평균선</MenuItem>
