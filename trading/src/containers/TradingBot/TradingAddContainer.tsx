@@ -380,22 +380,18 @@ const TradingBotAdd = ({
                 defaultValue="5SMA"
                 onChange={(e) => handleSelectChange(e, 'bidReference')}
               >
-                <MenuItem value="5SMA">5초 이동평균선</MenuItem>
-                <MenuItem value="10SMA">10초 이동평균선</MenuItem>
-                <MenuItem value="30SMA">30초 이동평균선</MenuItem>
-                <MenuItem value="60SMA">60초 이동평균선</MenuItem>
-                <MenuItem value="5MMA">5분 이동평균선</MenuItem>
-                <MenuItem value="10MMA">10분 이동평균선</MenuItem>
-                <MenuItem value="30MMA">30분 이동평균선</MenuItem>
-                <MenuItem value="60MMA">60분 이동평균선</MenuItem>
-                <MenuItem value="3HMA">3시간 이동평균선</MenuItem>
-                <MenuItem value="5HMA">5시간 이동평균선</MenuItem>
-                <MenuItem value="10HMA">10시간 이동평균선</MenuItem>
-                <MenuItem value="24HMA">24시간 이동평균선</MenuItem>
-                <MenuItem value="5DMA">5시간 이동평균선</MenuItem>
-                <MenuItem value="20DMA">20시간 이동평균선</MenuItem>
-                <MenuItem value="60DMA">60시간 이동평균선</MenuItem>
-                <MenuItem value="120DMA">120시간 이동평균선</MenuItem>
+                <MenuItem value="MMA5">5분 이동평균선</MenuItem>
+                <MenuItem value="MMA10">10분 이동평균선</MenuItem>
+                <MenuItem value="MMA30">30분 이동평균선</MenuItem>
+                <MenuItem value="MMA60">60분 이동평균선</MenuItem>
+                <MenuItem value="HMA3">3시간 이동평균선</MenuItem>
+                <MenuItem value="HMA5">5시간 이동평균선</MenuItem>
+                <MenuItem value="HMA10">10시간 이동평균선</MenuItem>
+                <MenuItem value="HMA24">24시간 이동평균선</MenuItem>
+                <MenuItem value="DMA5">5시간 이동평균선</MenuItem>
+                <MenuItem value="DMA20">20시간 이동평균선</MenuItem>
+                <MenuItem value="DMA60">60시간 이동평균선</MenuItem>
+                <MenuItem value="DMA120">120시간 이동평균선</MenuItem>
               </Select>
             </InputWrapper>
             <InputWrapper>
