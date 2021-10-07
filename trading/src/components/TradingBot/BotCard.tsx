@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
@@ -10,7 +10,7 @@ import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import Skeleton from '@mui/material/Skeleton';
 import Avatar from '@mui/material/Avatar';
 import { Bot } from '@redux/reducers/botReducer';
-import bit from '../../assets/images/bitcoin-icon.png';
+import icons from '@assets/images';
 
 interface BotCardProps {
   botInfo: Bot;
@@ -65,9 +65,13 @@ export default function BotCard({
       },
     },
   });
+  const [icon, setIcon] = useState(icons.BTC);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  useEffect(() => {
+    setIcon(icons[botInfo.coinName]);
+  }, []);
   return (
     <>
       <Card sx={{ width, cursor: 'pointer' }} onClick={handleOpen}>
@@ -79,7 +83,7 @@ export default function BotCard({
                   <Avatar />
                 </Skeleton>
               ) : (
-                <img src={bit} alt="coin" width="70" height="70" />
+                <img src={icon} alt="coin" width="70" height="70" />
               )}
               <Stack spacing={2}>
                 {isLoading ? (
