@@ -377,7 +377,7 @@ const TradingBotAdd = ({
               <Select
                 id="bidReference"
                 style={{ width: '12.5rem' }}
-                defaultValue="5SMA"
+                value={values.bidReference || 'MMA5'}
                 onChange={(e) => handleSelectChange(e, 'bidReference')}
               >
                 <MenuItem value="MMA5">5분 이동평균선</MenuItem>
