@@ -230,84 +230,53 @@ export default function EnhancedTable({ coindata }: any) {
     [selected],
   );
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center',
+    <div
+      style={{
+        width: '90%',
+        height: '95%',
+        overflow: 'auto',
       }}
     >
-      <Grid
-        item
-        xs={6}
-        sm={12}
-        style={{ display: 'flex', justifyContent: 'center' }}
-      >
-        <Paper
-          sx={{
-            width: '90%',
-            height: '90%',
-            overflow: 'auto',
-            mb: 2,
-            marginTop: '1rem',
-          }}
-        >
-          <TableContainer
-            sx={{
-              margin: '0rem 0rem 0rem 0rem',
-            }}
-          >
-            <Table
-              sx={{ minWidth: 50 }}
-              aria-labelledby="tableTitle"
-              size="medium"
-            >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {stableSort(rows, getComparator(order, orderBy)).map(
-                  (row, index) => {
-                    const isItemSelected = isSelected(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+      <Table aria-labelledby="tableTitle" size="medium">
+        <EnhancedTableHead
+          numSelected={selected.length}
+          order={order}
+          orderBy={orderBy}
+          onSelectAllClick={handleSelectAllClick}
+          onRequestSort={handleRequestSort}
+          rowCount={rows.length}
+        />
+        <TableBody>
+          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+            const isItemSelected = isSelected(row.name);
+            const labelId = `enhanced-table-checkbox-${index}`;
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, row.name)}
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.name}
-                        selected={isItemSelected}
-                        // style={{ border: '1px solid' }}
-                      >
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          // padding="none"
-                          // style={{ border: '1px solid', width: 100 }}
-                          align="left"
-                        >
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="left">{row.currentPrice}</TableCell>
-                        <TableCell align="left">{row.rateOfChange}</TableCell>
-                        <TableCell align="left">{row.money}</TableCell>
-                      </TableRow>
-                    );
-                  },
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Grid>
-    </Box>
+            return (
+              <TableRow
+                hover
+                onClick={(event) => handleClick(event, row.name)}
+                aria-checked={isItemSelected}
+                tabIndex={-1}
+                key={row.name}
+                selected={isItemSelected}
+              >
+                <TableCell
+                  component="th"
+                  id={labelId}
+                  scope="row"
+                  // padding="none"
+                  align="left"
+                >
+                  {row.name}
+                </TableCell>
+                <TableCell align="left">{row.currentPrice}</TableCell>
+                <TableCell align="left">{row.rateOfChange}</TableCell>
+                <TableCell align="left">{row.money}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

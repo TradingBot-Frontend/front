@@ -16,8 +16,7 @@ import BotCard from '../../components/TradingBot/BotCard';
 const MainWapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 10rem;
+
   .buttons {
     display: flex;
     flex-direction: row-reverse;
@@ -39,14 +38,15 @@ const useStyles = makeStyles((theme) => ({
     height: '35%',
   },
   coinContainer: {
-    height: '30rem',
+    height: '90%',
     paddingTop: '1rem',
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     // margin: '0rem 0rem 0rem 0rem',
   },
   chartContainer: {
-    height: '30rem',
+    height: '90%',
     // paddingTop: '1rem',
     // display: 'flex',
     // justifyContent: 'center',
