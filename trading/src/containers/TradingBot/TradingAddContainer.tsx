@@ -175,7 +175,7 @@ const TradingBotAdd = ({
   const [values, setValues] = useState<Bot>({
     botName: '',
     coinName: 'BTC',
-    bidReference: '5SMA', // 이동평균선
+    bidReference: 'MMA5', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
     isBidConditionExceed: true, // 기준대비
@@ -341,8 +341,7 @@ const TradingBotAdd = ({
                 <Select
                   id="coinName"
                   style={{ width: '7rem' }}
-                  // value={values.coinName || 'BTC'}
-                  defaultValue="BTC"
+                  value={values.coinName || 'BTC'}
                   onChange={(e) => handleSelectChange(e, 'coinName')}
                 >
                   <MenuItem value="BTC">BTC</MenuItem>
