@@ -103,12 +103,7 @@ const updateBotAPI = (botInfo: Bot) => {
 
 function* updateBot(action: GetBotAction) {
   try {
-    const botInfo: Bot = {
-      id: '', // id, uuid가 필수값이라 빈 값이라도 들어가야함.
-      uuid: '',
-      ...action.payload,
-    };
-    const res: AxiosResponse = yield call(updateBotAPI, botInfo);
+    const res: AxiosResponse = yield call(updateBotAPI, action.payload);
     if (res.data !== 'success') {
       throw new Error('PATCH bots request failed!');
     }
