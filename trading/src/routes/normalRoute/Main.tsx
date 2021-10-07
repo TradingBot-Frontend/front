@@ -26,16 +26,25 @@ const useStyles = makeStyles(() => ({
     height: '30%',
     display: 'flex',
     flexDirection: 'row',
+
+    width: '100%',
   },
   bottomContainer: {
-    margin: '3rem 0rem 0rem 0rem',
-    height: '30rem',
+    margin: '2.3rem 0rem 0rem 0rem',
+    height: '35%',
   },
   coinContainer: {
     height: '30rem',
     paddingTop: '1rem',
     display: 'flex',
     justifyContent: 'center',
+    // margin: '0rem 0rem 0rem 0rem',
+  },
+  chartContainer: {
+    height: '30rem',
+    // paddingTop: '1rem',
+    // display: 'flex',
+    // justifyContent: 'center',
     // margin: '0rem 0rem 0rem 0rem',
   },
 }));
@@ -46,39 +55,45 @@ const Main = () => {
   return (
     <MainWapper>
       <Container>
-        <Grid item lg={4} md={6} sm={12} className={classes.topContainer}>
+        <Grid container xs={12} className={classes.topContainer}>
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Grid item xs={12} sm={6}>
+            <Grid key="변동성 돌파 전략1" item xl={3} lg={4} md={6} sm={12}>
               <BotCard
                 title="변동성 돌파 전략1"
                 profit="수익률 +25.4%"
-                isLoading={false}
+                botInfo={{}}
+                width={380}
+                isLoading
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid key="변동성 돌파 전략1" item xl={3} lg={4} md={6} sm={12}>
               <BotCard
                 title="변동성 돌파 전략1"
                 profit="수익률 +25.4%"
-                isLoading={false}
+                botInfo={{}}
+                width={380}
+                isLoading
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid key="변동성 돌파 전략1" item xl={3} lg={4} md={6} sm={12}>
               <BotCard
                 title="변동성 돌파 전략1"
                 profit="수익률 +25.4%"
-                isLoading={false}
+                botInfo={{}}
+                width={380}
+                isLoading
               />
             </Grid>
           </Box>
         </Grid>
-        <Grid container spacing={4} className={classes.bottomContainer}>
+        <Grid container spacing={1} className={classes.bottomContainer}>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.coinContainer}>
               <DsbCoinList />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.coinContainer}>
+            <Paper className={classes.chartContainer}>
               <PortfolioDonutChart />
             </Paper>
           </Grid>
