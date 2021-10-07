@@ -236,18 +236,26 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       >
         Privatekey Setting
       </DialogTitle>
-      <DialogContent
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
-          width: '20rem',
-          height: '20rem',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          borderBottom: '1px solid #C1C6CE',
-          borderTop: '1px solid #C1C6CE',
+          flexDirection: 'column',
         }}
       >
-        <Box component="form" onSubmit={handleSubmit}>
+        <DialogContent
+          sx={{
+            width: '20rem',
+            height: '20rem',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '1px solid #C1C6CE',
+            borderTop: '1px solid #C1C6CE',
+          }}
+        >
           <Box
             component="div"
             sx={{
@@ -366,21 +374,21 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
               </div>
             )}
           </Box>
-        </Box>
-      </DialogContent>
-      {(pws || api) && (
-        <DialogActions
-          style={{
-            display: 'flex',
-            width: '16rem',
-            justifyContent: 'center',
-            margin: '0rem 0rem  0rem 0rem',
-          }}
-        >
-          <ConfirmButton type="submit">save</ConfirmButton>
-          <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
-        </DialogActions>
-      )}
+        </DialogContent>
+        {(pws || api) && (
+          <DialogActions
+            style={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'center',
+              margin: '0rem 0rem  0rem 0rem',
+            }}
+          >
+            <ConfirmButton type="submit">save</ConfirmButton>
+            <CancleButton onClick={handleButtonClick}>cancel</CancleButton>
+          </DialogActions>
+        )}
+      </Box>
     </div>
   );
 };
