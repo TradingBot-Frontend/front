@@ -19,37 +19,38 @@ export const DELETE_BOT_REQUEST = 'bot/DELETE_BOT_REQUEST' as const;
 export const DELETE_BOT_SUCCESS = 'bot/DELETE_BOT_SUCCESS' as const;
 export const DELETE_BOT_FAILURE = 'bot/DELETE_BOT_FAILURE' as const;
 
-// export interface Bot {
-//   bot_name: string;
-//   coin_name: string;
-//   coin_ratio: string;
-//   quantity: number;
-//   refrence: string;
-//   type: string;
-// }
+type CoinName =
+  | 'BTC'
+  | 'ADA'
+  | 'LTC'
+  | 'XRP'
+  | 'ETH'
+  | 'LINK'
+  | 'XLM'
+  | 'BCH'
+  | 'EOS'
+  | 'TRX';
 
-// export interface BotInfo {
-//   id?: string;
-//   uuid: string;
-//   botName: string;
-//   coinName: string;
-//   bidReference: string;
-//   bidCondition: number;
-//   bidQuantity: number;
-//   isBidConditionExceed: boolean;
-//   askReference?: string;
-//   askCondition: number;
-//   askQuantity?: number;
-//   isActive: boolean;
-//   description?: string;
-// }
+type BidReference =
+  | 'MMA5'
+  | 'MMA10'
+  | 'MMA30'
+  | 'MMA60'
+  | 'HMA3'
+  | 'HMA5'
+  | 'HMA10'
+  | 'HMA24'
+  | 'DMA5'
+  | 'DMA20'
+  | 'DMA60'
+  | 'DMA120';
 
 export interface Bot {
   uuid?: string;
   id?: string;
   botName: string;
-  coinName: string;
-  bidReference: string;
+  coinName: CoinName;
+  bidReference: BidReference;
   bidCondition: number;
   bidQuantity: number;
   isBidConditionExceed: boolean;
