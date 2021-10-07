@@ -4,6 +4,13 @@ import { call, put, take, takeEvery } from '@redux-saga/core/effects';
 import { flush, select, delay } from 'redux-saga/effects';
 import { ICoinState, START_INIT } from '@redux/reducers/websocketReducer';
 import { connectSocketSaga } from '@redux/reducers/websocketReducer';
+// import axios from '@utils/coinAxios';
+import axios from 'axios';
+import {
+  fetchCoinActions,
+  fetchCoinAction,
+  FETCH_COIN_REQUEST,
+} from '@redux/reducers/websocketReducer';
 
 function initWebsocket() {
   console.log('initWebsocket');
@@ -38,7 +45,7 @@ function initWebsocket() {
   });
 }
 const createSocket = () => {
-  const client = new WebSocket('ws://3.36.166.137:8080/coins');
+  const client = new WebSocket('ws://3.36.52.243:8081/live/coins');
   client.binaryType = 'arraybuffer';
   return client;
 };
@@ -115,6 +122,17 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
     }
   };
 };
+const coinAPI = () => {
+  return axios.get('http://3.36.52.243:8081/coins');
+};
+function* fetchCoin(): any {
+  try {
+    const res = yield call(coinAPI);
+    yield put(fetchCoinActions.success(res.data));
+  } catch (e) {
+    yield put(fetchCoinActions.failure(e));
+  }
+}
 function* wsSaga(): any {
   // const channel = yield call(initWebsocket);
   // while (true) {
@@ -124,5 +142,6 @@ function* wsSaga(): any {
   yield connectSocketSaga({ payload: 'coinList' });
 }
 export function* watchLivePricesSaga() {
+  yield takeEvery(FETCH_COIN_REQUEST, fetchCoin);
   yield takeEvery(START_INIT, wsSaga);
 }

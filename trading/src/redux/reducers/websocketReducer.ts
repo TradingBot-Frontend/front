@@ -7,6 +7,29 @@ const CONNECT_SOCKET = 'coin/CONNECT_SOCKET' as const;
 const CONNECT_SOCKET_SUCCESS = 'coin/CONNECT_SOCKET_SUCCESS' as const;
 const CONNECT_SOCKET_ERROR = 'coin/CONNECT_SOCKET_ERROR' as const;
 
+export const FETCH_COIN_REQUEST = 'coin/FETCH_COIN_REQUEST' as const;
+export const FETCH_COIN_SUCCESS = 'coin/FETCH_COIN_SUCCESS' as const;
+export const FETCH_COIN_ERROR = 'coin/FETCH_COIN_ERROR' as const;
+
+const fetchCoinRequest = () => ({ type: FETCH_COIN_REQUEST, payload: null });
+const fetchCoinSuccess = (res: any) => ({
+  type: FETCH_COIN_SUCCESS,
+  payload: res,
+});
+const fetchCoinFailure = (res: any) => ({
+  type: FETCH_COIN_ERROR,
+  payload: res,
+});
+export const fetchCoinActions = {
+  request: fetchCoinRequest,
+  success: fetchCoinSuccess,
+  failure: fetchCoinFailure,
+};
+export type fetchCoinAction =
+  | ReturnType<typeof fetchCoinRequest>
+  | ReturnType<typeof fetchCoinSuccess>
+  | ReturnType<typeof fetchCoinFailure>;
+export type websocketAction = fetchCoinAction;
 export const startInit = () => ({ type: START_INIT });
 
 export const postLivePriceData = (livePriceData: any) => {
@@ -84,6 +107,11 @@ export default function websocketReducer(
     case CONNECT_SOCKET_SUCCESS:
     case CONNECT_SOCKET_ERROR:
       return requestActions(CONNECT_SOCKET, 'coinList')(state, action);
+    case FETCH_COIN_SUCCESS:
+      return {
+        ...state,
+        coinList: action.payload,
+      };
     default:
       return state;
   }

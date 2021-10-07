@@ -11,6 +11,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { RootState } from '@redux/reducers';
 import { coinDataUtils } from '@utils/utils';
 import EnhancedTable from '@components/common/CoinTable';
+import { fetchCoinActions } from '@redux/reducers/websocketReducer';
 
 export const DsbContWrapper = styled.div``;
 
@@ -18,6 +19,9 @@ const DsbCoinList = () => {
   const dispatch = useDispatch();
   const coinValue = useSelector((state: RootState) => state.coin);
   const [coinData, setCoinData] = useState(coinValue);
+  useEffect(() => {
+    dispatch(fetchCoinActions.request());
+  }, []);
   useEffect(() => {
     if (coinValue?.coinList.length) {
       setCoinData(coinDataUtils.convertData(coinValue));
