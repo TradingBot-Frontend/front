@@ -103,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
+    width: '100%',
     background: '#f7f2f2',
   },
   container: {
