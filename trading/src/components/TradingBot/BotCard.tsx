@@ -64,13 +64,14 @@ export default function BotCard({
                 <Box
                   component="div"
                   sx={{
+                    display: 'flex',
                     flex: '1',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
                 >
                   <Typography variant="h3" align="center">
-                    {botInfo.isActive ? 'On' : 'Off'}
+                    {botInfo.isActive ? 'ON' : 'OFF'}
                   </Typography>
                 </Box>
               )}
