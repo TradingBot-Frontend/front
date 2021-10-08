@@ -224,16 +224,23 @@ export default function authReducer(
       };
     }
     case LOGIN_FAILURE:
-    case LOGOUT_SUCCESS:
-    case LOGOUT_FAILURE:
+      alert('로그인 실패!');
       localStorage.removeItem('token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
-      alert('로그인 실패!');
       return {
         ...state,
         isAuthenticated: false,
         isLoading: false,
-        errorMsg: action.payload,
+      };
+    case LOGOUT_FAILURE:
+    case LOGOUT_SUCCESS:
+      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      setAuthToken(null);
+      return {
+        ...state,
+        isAuthenticated: false,
+        isLoading: false,
+        // errorMsg: action.payload,
       };
     case SIGNUP_SUCCESS:
       alert('가입 되었습니다!');

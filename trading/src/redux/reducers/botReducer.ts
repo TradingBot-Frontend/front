@@ -19,36 +19,38 @@ export const DELETE_BOT_REQUEST = 'bot/DELETE_BOT_REQUEST' as const;
 export const DELETE_BOT_SUCCESS = 'bot/DELETE_BOT_SUCCESS' as const;
 export const DELETE_BOT_FAILURE = 'bot/DELETE_BOT_FAILURE' as const;
 
-// export interface Bot {
-//   bot_name: string;
-//   coin_name: string;
-//   coin_ratio: string;
-//   quantity: number;
-//   refrence: string;
-//   type: string;
-// }
+type CoinName =
+  | 'BTC'
+  | 'ADA'
+  | 'LTC'
+  | 'XRP'
+  | 'ETH'
+  | 'LINK'
+  | 'XLM'
+  | 'BCH'
+  | 'EOS'
+  | 'TRX';
 
-// export interface BotInfo {
-//   id?: string;
-//   uuid: string;
-//   botName: string;
-//   coinName: string;
-//   bidReference: string;
-//   bidCondition: number;
-//   bidQuantity: number;
-//   isBidConditionExceed: boolean;
-//   askReference?: string;
-//   askCondition: number;
-//   askQuantity?: number;
-//   isActive: boolean;
-//   description?: string;
-// }
+type BidReference =
+  | 'MMA5'
+  | 'MMA10'
+  | 'MMA30'
+  | 'MMA60'
+  | 'HMA3'
+  | 'HMA5'
+  | 'HMA10'
+  | 'HMA24'
+  | 'DMA5'
+  | 'DMA20'
+  | 'DMA60'
+  | 'DMA120';
 
 export interface Bot {
+  uuid?: string;
   id?: string;
   botName: string;
-  coinName: string;
-  bidReference: string;
+  coinName: CoinName;
+  bidReference: BidReference;
   bidCondition: number;
   bidQuantity: number;
   isBidConditionExceed: boolean;
@@ -56,6 +58,7 @@ export interface Bot {
   askCondition: number;
   askQuantity: number;
   isActive: boolean;
+  profit?: number;
   description?: string;
 }
 
@@ -98,9 +101,9 @@ const addBotRequest = (botInfo: Bot) => ({
   type: ADD_BOT_REQUEST,
   payload: botInfo,
 });
-const addBotSuccess = (msg: any) => ({
+const addBotSuccess = () => ({
   type: ADD_BOT_SUCCESS,
-  payload: msg,
+  payload: null,
 });
 const addBotFailure = (error: any) => ({
   type: ADD_BOT_FAILURE,
@@ -130,9 +133,9 @@ export const updateBotActions = {
   failure: updateBotFailure,
 };
 
-const deleteBotRequest = (botInfo: Bot) => ({
+const deleteBotRequest = (botId: string) => ({
   type: DELETE_BOT_REQUEST,
-  payload: botInfo,
+  payload: botId,
 });
 const deleteBotSuccess = (msg: string) => ({
   type: DELETE_BOT_SUCCESS,
@@ -212,12 +215,19 @@ export default function botReducer(
         ...state,
         isLoading: true,
       };
-    case GET_BOTS_SUCCESS:
+    case GET_BOTS_SUCCESS: {
+      const bots = action.payload;
+      const newBots: Bots = bots.map((bot: Bot) => {
+        const copied: Bot = { ...bot };
+        delete copied.uuid;
+        return copied;
+      });
       return {
         ...state,
         isLoading: false,
-        bots: action.payload,
+        bots: newBots,
       };
+    }
     case GET_BOT_SUCCESS:
       return {
         ...state,
@@ -232,7 +242,7 @@ export default function botReducer(
         bots: action.payload,
       };
     case ADD_BOT_SUCCESS:
-      getBotsActions.request(); // 추가 성공하면 새로 bot 리스트를 업데이트
+      // alert('트레이딩 봇이 추가되었습니다!');
       return {
         ...state,
         isLoading: false,

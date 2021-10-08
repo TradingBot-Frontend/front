@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,12 +24,12 @@ import ContentsRouter from '@routes/ContentsRouter';
 import Modal from '@mui/material/Modal';
 import { logoutActions, privateKeyActions } from '@redux/reducers/authReducer';
 import { RootState } from '@redux/reducers';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 import 'animate.css';
+import { usersActions } from '../../redux/reducers/authReducer';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -176,6 +176,11 @@ export default function Dashboard() {
   const handleLogout = () => {
     dispatch(logoutActions.request());
   };
+
+  useEffect(() => {
+    dispatch(usersActions.request());
+  }, []);
+
   return (
     <div className={classes.root}>
       <CssBaseline />

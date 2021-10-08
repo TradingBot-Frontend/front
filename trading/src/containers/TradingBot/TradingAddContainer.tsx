@@ -12,11 +12,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import {
   addBotActions,
   Bot,
+  deleteBotActions,
   updateBotActions,
 } from '@redux/reducers/botReducer';
 import { styled as muiStyled } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@redux/reducers';
 import { ICoinState } from '@redux/reducers/websocketReducer';
 import DialogActions from '@mui/material/DialogActions';
@@ -86,23 +87,25 @@ const FooterWrapper = styled.div`
   }
 `;
 const Buttons = styled(Button)`
-  color: #ffffff;
-  background-color: #3072eb;
-  width: 7rem;
-`;
-const ConfirmButton = styled(Button)`
   display: flex;
-  background-color: #170f8b;
-  color: #ffffff;
+  color: #000000;
   width: 11rem;
   margin: 0.5rem 0rem 0rem 0rem;
 `;
-const CancleButton = styled(Button)`
-  display: flex;
-  border: 1px solid #c1c6ce;
-  color: #000000;
-  width: 11rem;
-  margin: 0.5rem 0rem 0rem 0.5rem;
+const ConfirmButton = styled(Buttons)`
+  background-color: #294c60;
+  color: #ffffff;
+`;
+const CancleButton = styled(Buttons)`
+  border: 1px solid #bdb8b8;
+`;
+const DeleteButton = styled(Buttons)`
+  width: 5rem;
+  background-color: #d00000;
+  color: #ffffff;
+  position: absolute;
+  right: 15px;
+  top: 6px;
 `;
 
 const IOSSwitch = muiStyled((props: SwitchProps) => (
@@ -172,17 +175,18 @@ const TradingBotAdd = ({
   const [values, setValues] = useState<Bot>({
     botName: '',
     coinName: 'BTC',
-    bidReference: '7ma', // 이동평균선
+    bidReference: 'MMA5', // 이동평균선
     bidCondition: 0, // 기준
     bidQuantity: 0, // 수량
-    isBidConditionExceed: false, // 기준대비
+    isBidConditionExceed: true, // 기준대비
     askReference: 'PROFIT',
     askCondition: 0, // 수익률
     askQuantity: 0,
-    isActive: false,
-    description: 'default',
+    isActive: true,
+    description: 'default description',
   });
   const [localMsg, setLocalMsg] = useState('');
+  const dispatch = useDispatch();
   const coinList = useSelector((state: RootState) => state.coin.coinList);
   const hasDefaultBotInfo = !!botInfo;
 
@@ -225,9 +229,10 @@ const TradingBotAdd = ({
 
   // TODO: 제대로 작동하는지 확인
   const isBlank = useCallback(() => {
-    return Object.values(values).some((val) => {
-      console.log('val: ', val, 'ret: ', !val);
+    return Object.entries(values).some(([key, val]) => {
+      console.log('key:', key, 'val: ', val, 'ret: ', !val);
       if (typeof val === 'boolean') return false;
+      if (key === 'profit') return false;
       return !val;
     });
   }, [values]);
@@ -239,34 +244,57 @@ const TradingBotAdd = ({
     } else {
       setLocalMsg('');
       if (hasDefaultBotInfo) {
-        updateBotActions.request(values);
+        dispatch(updateBotActions.request(values));
         console.log('update');
       } else {
-        addBotActions.request(values);
+        dispatch(addBotActions.request(values));
         console.log('add');
       }
       handleClose();
     }
   };
 
+  const handleDelete = useCallback(() => {
+    console.log('click delete');
+    console.log('values.id', values.id);
+    console.log('values', values);
+    if (values.id) dispatch(deleteBotActions.request(values.id));
+  }, [values, dispatch]);
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = e.target;
       console.log('id:', id, 'value:', value);
-      setValues({
-        ...values,
-        [id]: value,
-      });
+      if (id === 'botName') {
+        setValues({
+          ...values,
+          [id]: value,
+        });
+      } else {
+        setValues({
+          ...values,
+          [id]: value,
+        });
+      }
     },
     [values, setValues],
   );
 
   const handleSelectChange = useCallback(
     (e: SelectChangeEvent, key: string) => {
-      setValues({
-        ...values,
-        [key]: e.target.value,
-      });
+      const v = e.target.value;
+      if (v === 'true' || v === 'false') {
+        const bool = v === 'true';
+        setValues({
+          ...values,
+          [key]: bool,
+        });
+      } else {
+        setValues({
+          ...values,
+          [key]: v,
+        });
+      }
     },
     [values, setValues],
   );
@@ -289,6 +317,9 @@ const TradingBotAdd = ({
     <>
       <DialogTitle sx={{ color: '#170F8B', textAlign: 'center' }}>
         TradingBot 추가
+        {hasDefaultBotInfo ? (
+          <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+        ) : null}
       </DialogTitle>
       <DialogContent
         sx={{
@@ -331,7 +362,7 @@ const TradingBotAdd = ({
                   control={
                     <IOSSwitch
                       sx={{ m: 1, ml: 5 }}
-                      defaultChecked
+                      checked={values.isActive}
                       onChange={handleSwitchChange}
                     />
                   }
@@ -347,13 +378,22 @@ const TradingBotAdd = ({
               <span className="lable">이동평균선</span>
               <Select
                 id="bidReference"
-                style={{ width: '7rem' }}
-                defaultValue="7ma"
-                onChange={(e) => handleSelectChange(e, 'coinName')}
+                style={{ width: '12.5rem' }}
+                value={values.bidReference || 'MMA5'}
+                onChange={(e) => handleSelectChange(e, 'bidReference')}
               >
-                <MenuItem value="7ma">7MA</MenuItem>
-                <MenuItem value="60ma">60MA</MenuItem>
-                <MenuItem value="120ma">120MA</MenuItem>
+                <MenuItem value="MMA5">5분 이동평균선</MenuItem>
+                <MenuItem value="MMA10">10분 이동평균선</MenuItem>
+                <MenuItem value="MMA30">30분 이동평균선</MenuItem>
+                <MenuItem value="MMA60">60분 이동평균선</MenuItem>
+                <MenuItem value="HMA3">3시간 이동평균선</MenuItem>
+                <MenuItem value="HMA5">5시간 이동평균선</MenuItem>
+                <MenuItem value="HMA10">10시간 이동평균선</MenuItem>
+                <MenuItem value="HMA24">24시간 이동평균선</MenuItem>
+                <MenuItem value="DMA5">5시간 이동평균선</MenuItem>
+                <MenuItem value="DMA20">20시간 이동평균선</MenuItem>
+                <MenuItem value="DMA60">60시간 이동평균선</MenuItem>
+                <MenuItem value="DMA120">120시간 이동평균선</MenuItem>
               </Select>
             </InputWrapper>
             <InputWrapper>
@@ -370,13 +410,15 @@ const TradingBotAdd = ({
                 />
 
                 <Select
-                  id="standardLine"
+                  id="isBidConditionExceed"
                   style={{ width: '7rem', height: '2.5rem' }}
-                  defaultValue="up"
-                  onChange={(e) => handleSelectChange(e, 'standardLine')}
+                  defaultValue="true"
+                  onChange={(e) =>
+                    handleSelectChange(e, 'isBidConditionExceed')
+                  }
                 >
-                  <MenuItem value="up">이상</MenuItem>
-                  <MenuItem value="down">이하</MenuItem>
+                  <MenuItem value="true">이상</MenuItem>
+                  <MenuItem value="false">이하</MenuItem>
                 </Select>
               </div>
             </InputWrapper>
@@ -403,17 +445,6 @@ const TradingBotAdd = ({
           <Box>
             <h3>매도설정</h3>
             <InputWrapper>
-              {/* <span className="lable">수익률</span>
-              <Select
-                id="askCondition"
-                style={{ width: '7rem' }}
-                defaultValue="ten"
-                onChange={(e) => handleSelectChange(e, 'askCondition')}
-              >
-                <MenuItem value="ten">10%</MenuItem>
-                <MenuItem value="twenty">20%</MenuItem>
-                <MenuItem value="thirty">30%</MenuItem>
-              </Select> */}
               <span className="lable">수익률</span>
               <SmallTextField
                 id="askCondition"

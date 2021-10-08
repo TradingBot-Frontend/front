@@ -56,35 +56,7 @@ const Main = () => {
     <MainWapper>
       <Container>
         <Grid container xs={12} className={classes.topContainer}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Grid key="변동성 돌파 전략1" item xl={3} lg={4} md={6} sm={12}>
-              <BotCard
-                title="변동성 돌파 전략1"
-                profit="수익률 +25.4%"
-                botInfo={{}}
-                width={380}
-                isLoading
-              />
-            </Grid>
-            <Grid key="변동성 돌파 전략1" item xl={3} lg={4} md={6} sm={12}>
-              <BotCard
-                title="변동성 돌파 전략1"
-                profit="수익률 +25.4%"
-                botInfo={{}}
-                width={380}
-                isLoading
-              />
-            </Grid>
-            <Grid key="변동성 돌파 전략1" item xl={3} lg={4} md={6} sm={12}>
-              <BotCard
-                title="변동성 돌파 전략1"
-                profit="수익률 +25.4%"
-                botInfo={{}}
-                width={380}
-                isLoading
-              />
-            </Grid>
-          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'row' }} />
         </Grid>
         <Grid container spacing={1} className={classes.bottomContainer}>
           <Grid item xs={12} sm={6}>
