@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import { Box } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper } from '@material-ui/core';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
-import BotCard from '@components/TradingBot/BotCard';
 import { makeStyles } from '@material-ui/core/styles';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/reducers/index';
+import { getBotsActions } from '../../redux/reducers/botReducer';
+import BotCard from '../../components/TradingBot/BotCard';
 
 const MainWapper = styled.div`
   display: flex;
@@ -23,10 +26,10 @@ const MainWapper = styled.div`
 const useStyles = makeStyles(() => ({
   topContainer: {
     margin: '2rem 0rem 0rem 0rem',
-    height: '30%',
-    display: 'flex',
-    flexDirection: 'row',
-
+    height: '10rem',
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'center',
     width: '100%',
   },
   bottomContainer: {
@@ -48,33 +51,53 @@ const useStyles = makeStyles(() => ({
     // margin: '0rem 0rem 0rem 0rem',
   },
 }));
+
+const MainCards = () => {
+  const dispatch = useDispatch();
+  const bots = useSelector((state: RootState) => state.bot.bots);
+  const isLoading = useSelector((state: RootState) => state.bot.isLoading);
+  useEffect(() => {
+    dispatch(getBotsActions.request());
+  }, [dispatch]);
+  const botContainer = [];
+
+  for (let i = 0; i < bots.length && i < 4; i += 1) {
+    const bot = bots[i];
+    botContainer.push(
+      <Grid key={bot.id} item xl={3} lg={4} md={6} sm={12}>
+        <BotCard botInfo={bot} width={300} isLoading={isLoading} />
+      </Grid>,
+    );
+  }
+
+  return <>{botContainer}</>;
+};
+
 const Main = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const classes = useStyles();
   return (
-    <MainWapper>
-      <Container>
-        <Grid container xs={12} className={classes.topContainer}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }} />
+    <Container maxWidth="lg">
+      <Grid container spacing={3} className={classes.topContainer}>
+        <MainCards />
+      </Grid>
+      <Grid container spacing={1} className={classes.bottomContainer}>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.coinContainer}>
+            <DsbCoinList />
+          </Paper>
         </Grid>
-        <Grid container spacing={1} className={classes.bottomContainer}>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.coinContainer}>
-              <DsbCoinList />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.chartContainer}>
-              <PortfolioDonutChart />
-            </Paper>
-          </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.chartContainer}>
+            <PortfolioDonutChart />
+          </Paper>
         </Grid>
-      </Container>
+      </Grid>
       <Modal open={open} onClose={handleClose}>
         <PrivateSetting handleClose={handleClose} />
       </Modal>
-    </MainWapper>
+    </Container>
   );
 };
 export default Main;
