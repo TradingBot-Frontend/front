@@ -3,11 +3,12 @@ import Modal from '@mui/material/Modal';
 import { Box } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Container, Grid, Paper, useMediaQuery } from '@material-ui/core';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { makeStyles } from '@material-ui/core/styles';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from '@mui/material/styles';
 import { RootState } from '../../redux/reducers/index';
 import { getBotsActions } from '../../redux/reducers/botReducer';
 import BotCard from '../../components/TradingBot/BotCard';
@@ -23,13 +24,14 @@ const MainWapper = styled.div`
     margin: 0.5rem 0.5rem 0rem 0rem;
   }
 `;
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   topContainer: {
     margin: '2rem 0rem 0rem 0rem',
     height: '10rem',
-    // display: 'flex',
-    // flexDirection: 'row',
-    // alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
   },
   bottomContainer: {
@@ -53,9 +55,15 @@ const useStyles = makeStyles(() => ({
 }));
 
 const MainCards = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const bots = useSelector((state: RootState) => state.bot.bots);
   const isLoading = useSelector((state: RootState) => state.bot.isLoading);
+  const theme = useTheme();
+  // const showFirstCard = useMediaQuery(theme.breakpoints.up('sm'));
+  const showSecondCard = useMediaQuery(theme.breakpoints.up('sm'));
+  const showThirdCard = useMediaQuery(theme.breakpoints.up('md'));
+  const showFourthCard = useMediaQuery(theme.breakpoints.up('lg'));
   useEffect(() => {
     dispatch(getBotsActions.request());
   }, [dispatch]);
@@ -63,14 +71,22 @@ const MainCards = () => {
 
   for (let i = 0; i < bots.length && i < 4; i += 1) {
     const bot = bots[i];
+    let show = null;
+    if (i === 1) show = showSecondCard;
+    if (i === 2) show = showThirdCard;
+    if (i === 3) show = showFourthCard;
     botContainer.push(
-      <Grid key={bot.id} item xl={3} lg={4} md={6} sm={12}>
-        <BotCard botInfo={bot} width={300} isLoading={isLoading} />
-      </Grid>,
+      <>
+        {show && (
+          <Box key={bot.id} sx={{ marginRight: '2rem' }}>
+            <BotCard botInfo={bot} width={360} isLoading={isLoading} />
+          </Box>
+        )}
+      </>,
     );
   }
 
-  return <>{botContainer}</>;
+  return <Box className={classes.topContainer}>{botContainer}</Box>;
 };
 
 const Main = () => {
@@ -79,9 +95,7 @@ const Main = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} className={classes.topContainer}>
-        <MainCards />
-      </Grid>
+      <MainCards />
       <Grid container spacing={1} className={classes.bottomContainer}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.coinContainer}>
