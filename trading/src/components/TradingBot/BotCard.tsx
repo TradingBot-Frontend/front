@@ -22,7 +22,7 @@ export default function BotCard({
   width = 380,
   isLoading = false,
 }: BotCardProps): JSX.Element {
-  const [icon, setIcon] = useState(icons.BTC);
+  const [icon, setIcon] = useState('');
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
