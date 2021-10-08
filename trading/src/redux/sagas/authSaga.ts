@@ -7,7 +7,6 @@ import {
   take,
   race,
 } from 'redux-saga/effects';
-
 import {
   loginActions,
   LOGIN_REQUEST,
@@ -30,8 +29,6 @@ import {
 import axios from '@utils/axios';
 import { connectSocketSaga } from '@redux/reducers/websocketReducer';
 import { AxiosResponse } from 'axios';
-import { userInfo } from 'os';
-
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
 // all: all에 제네레이터 함수를 배열로 담아서 넘기면 제네레이터 함수들이
@@ -70,8 +67,8 @@ export function* loginFlow(): any {
     const action = yield take(LOGIN_REQUEST);
     try {
       const res: AxiosResponse = yield call(loginAPI, action.payload);
-      console.log(res);
-      yield put(loginActions.success(res));
+      const token = res.headers?.authorization;
+      yield put(loginActions.success(token));
     } catch (e) {
       yield put(loginActions.failure(e));
     }
