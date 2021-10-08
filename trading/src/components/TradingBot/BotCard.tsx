@@ -22,7 +22,7 @@ export default function BotCard({
   width = 380,
   isLoading = false,
 }: BotCardProps): JSX.Element {
-  const [icon, setIcon] = useState(icons.BTC);
+  const [icon, setIcon] = useState('');
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,7 +34,7 @@ export default function BotCard({
       <Card sx={{ width, cursor: 'pointer' }} onClick={handleOpen}>
         <CardContent>
           <Stack spacing={1}>
-            <Stack spacing={2} direction="row">
+            <Stack spacing={2.5} direction="row">
               {isLoading ? (
                 <Skeleton variant="circular" width={70} height={70}>
                   <Avatar />
@@ -42,7 +42,7 @@ export default function BotCard({
               ) : (
                 <img src={icon} alt="coin" width="70" height="70" />
               )}
-              <Stack spacing={2}>
+              <Stack spacing={1.5}>
                 {isLoading ? (
                   <Skeleton width="100%">
                     <Typography>##########################</Typography>
@@ -64,13 +64,14 @@ export default function BotCard({
                 <Box
                   component="div"
                   sx={{
+                    display: 'flex',
                     flex: '1',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
                 >
                   <Typography variant="h3" align="center">
-                    {botInfo.isActive ? 'On' : 'Off'}
+                    {botInfo.isActive ? 'ON' : 'OFF'}
                   </Typography>
                 </Box>
               )}

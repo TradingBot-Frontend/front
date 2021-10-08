@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import { Box } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Container, Grid, Paper, useMediaQuery } from '@material-ui/core';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
-import BotCard from '@components/TradingBot/BotCard';
 import { makeStyles } from '@material-ui/core/styles';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from '@mui/material/styles';
+import { RootState } from '../../redux/reducers/index';
+import { getBotsActions } from '../../redux/reducers/botReducer';
+import BotCard from '../../components/TradingBot/BotCard';
 
 const MainWapper = styled.div`
   display: flex;
@@ -20,13 +24,14 @@ const MainWapper = styled.div`
     margin: 0.5rem 0.5rem 0rem 0rem;
   }
 `;
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   topContainer: {
     margin: '2rem 0rem 0rem 0rem',
-    height: '30%',
+    height: '10rem',
     display: 'flex',
     flexDirection: 'row',
-
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
   },
   bottomContainer: {
@@ -48,33 +53,65 @@ const useStyles = makeStyles(() => ({
     // margin: '0rem 0rem 0rem 0rem',
   },
 }));
+
+const MainCards = () => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const bots = useSelector((state: RootState) => state.bot.bots);
+  const isLoading = useSelector((state: RootState) => state.bot.isLoading);
+  const theme = useTheme();
+  // const showFirstCard = useMediaQuery(theme.breakpoints.up('sm'));
+  const showSecondCard = useMediaQuery(theme.breakpoints.up('sm'));
+  const showThirdCard = useMediaQuery(theme.breakpoints.up('md'));
+  const showFourthCard = useMediaQuery(theme.breakpoints.up('lg'));
+  useEffect(() => {
+    dispatch(getBotsActions.request());
+  }, [dispatch]);
+  const botContainer = [];
+
+  for (let i = 0; i < bots.length && i < 4; i += 1) {
+    const bot = bots[i];
+    let show = null;
+    if (i === 1) show = showSecondCard;
+    if (i === 2) show = showThirdCard;
+    if (i === 3) show = showFourthCard;
+    botContainer.push(
+      <>
+        {show && (
+          <Box key={bot.id} sx={{ marginRight: '2rem' }}>
+            <BotCard botInfo={bot} width={360} isLoading={isLoading} />
+          </Box>
+        )}
+      </>,
+    );
+  }
+
+  return <Box className={classes.topContainer}>{botContainer}</Box>;
+};
+
 const Main = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const classes = useStyles();
   return (
-    <MainWapper>
-      <Container>
-        <Grid container xs={12} className={classes.topContainer}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }} />
+    <Container maxWidth="lg">
+      <MainCards />
+      <Grid container spacing={1} className={classes.bottomContainer}>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.coinContainer}>
+            <DsbCoinList />
+          </Paper>
         </Grid>
-        <Grid container spacing={1} className={classes.bottomContainer}>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.coinContainer}>
-              <DsbCoinList />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.chartContainer}>
-              <PortfolioDonutChart />
-            </Paper>
-          </Grid>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.chartContainer}>
+            <PortfolioDonutChart />
+          </Paper>
         </Grid>
-      </Container>
+      </Grid>
       <Modal open={open} onClose={handleClose}>
         <PrivateSetting handleClose={handleClose} />
       </Modal>
-    </MainWapper>
+    </Container>
   );
 };
 export default Main;
