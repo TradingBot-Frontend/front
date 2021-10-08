@@ -34,7 +34,7 @@ export default function BotCard({
       <Card sx={{ width, cursor: 'pointer' }} onClick={handleOpen}>
         <CardContent>
           <Stack spacing={1}>
-            <Stack spacing={2} direction="row">
+            <Stack spacing={2.5} direction="row">
               {isLoading ? (
                 <Skeleton variant="circular" width={70} height={70}>
                   <Avatar />
@@ -42,7 +42,7 @@ export default function BotCard({
               ) : (
                 <img src={icon} alt="coin" width="70" height="70" />
               )}
-              <Stack spacing={2}>
+              <Stack spacing={1.5}>
                 {isLoading ? (
                   <Skeleton width="100%">
                     <Typography>##########################</Typography>
