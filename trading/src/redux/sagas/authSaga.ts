@@ -41,7 +41,7 @@ import { userInfo } from 'os';
 
 const loginAPI = (user: any) => {
   console.log(user, '@login user');
-  return axios.post('user-service/login', user);
+  return axios.post('/login', user);
 };
 
 // interface ILoginResponse e {
@@ -88,7 +88,7 @@ export function* loginFlow(): any {
 }
 const signupAPI = (user: any) => {
   console.log('@signupAPIuser, user: ', user);
-  return axios.post('user-service/users', user);
+  return axios.post('/users', user);
 };
 
 interface ISignUpResponse {
