@@ -44,7 +44,7 @@ const coinDataUtils = {
           name: coin.symbol,
           currentPrice: coin.chgAmt,
           rateOfChange: coin.chgRate,
-          money: coin.value,
+          money: `${parseInt(coin.value, 10).toLocaleString()}원`,
         };
       });
     }

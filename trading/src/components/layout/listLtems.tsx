@@ -13,7 +13,7 @@ import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 
 export const List = styled(ListItem)`
   :hover {
-    background-color: #adb6c4;
+    background-color: #c1c6ce;
   }
 `;
 

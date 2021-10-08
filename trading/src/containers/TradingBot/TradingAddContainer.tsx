@@ -315,15 +315,18 @@ const TradingBotAdd = ({
 
   return (
     <>
-      <DialogTitle
-        sx={{ background: '#294c60', color: '#ffffff', textAlign: 'center' }}
-      >
+      <DialogTitle sx={{ color: '#170F8B', textAlign: 'center' }}>
         TradingBot 추가
         {hasDefaultBotInfo ? (
           <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
         ) : null}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent
+        sx={{
+          borderBottom: '1px solid #C1C6CE',
+          borderTop: '1px solid #C1C6CE',
+        }}
+      >
         <Box component="form" onSubmit={handleSubmit}>
           <Box sx={{ margin: '2rem 0rem 0rem 0rem' }}>
             <InputWrapper>
