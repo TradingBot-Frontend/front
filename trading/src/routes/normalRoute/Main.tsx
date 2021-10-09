@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper, useMediaQuery } from '@material-ui/core';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { makeStyles } from '@material-ui/core/styles';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
+import btc from '@assets/images/btc.png';
+import bitcoin from '@assets/images/bitcoin.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import { RootState } from '../../redux/reducers/index';
@@ -16,12 +18,77 @@ import BotCard from '../../components/TradingBot/BotCard';
 const MainWapper = styled.div`
   display: flex;
   flex-direction: column;
-
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  font-family: 'sleig';
+  /* margin: 20rem 0rem 0rem 0rem; */
   .buttons {
     display: flex;
     flex-direction: row-reverse;
     margin: 0.5rem 0.5rem 0rem 0rem;
   }
+`;
+const MainBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 40%;
+  overflow: hidden;
+  .mainTitle {
+    font-size: 30px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .text {
+    position: absolute;
+    color: #ffffff;
+    top: 8rem;
+    /* left: 30rem; */
+  }
+  .photo {
+    width: 100%;
+    height: 63rem;
+  }
+`;
+const TradingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0rem 0rem 0rem;
+  height: 40%;
+  border: 1px solid;
+  .tradingTitle {
+    font-size: 30px;
+    margin: 0rem 0rem 1rem 0rem;
+  }
+  .tradingcard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+const Papers = styled(Paper)`
+  height: 15rem;
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    font-size: 20px;
+  }
+  .content {
+    font-size: 15px;
+    color: #ccc;
+  }
+`;
+const Buttons = styled.button`
+  color: #ffffff;
+  background-color: #353635;
+  width: 5rem;
+  height: 2rem;
+  border-radius: 25px;
+  margin: 0.5rem 0rem 0rem 0rem;
 `;
 const useStyles = makeStyles((theme) => ({
   topContainer: {
@@ -94,24 +161,77 @@ const Main = () => {
   const handleClose = () => setOpen(false);
   const classes = useStyles();
   return (
-    <Container maxWidth="lg">
-      <MainCards />
-      <Grid container spacing={1} className={classes.bottomContainer}>
-        <Grid item xs={12} sm={6}>
-          <Paper className={classes.coinContainer}>
-            <DsbCoinList />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Paper className={classes.chartContainer}>
-            <PortfolioDonutChart />
-          </Paper>
-        </Grid>
-      </Grid>
-      <Modal open={open} onClose={handleClose}>
-        <PrivateSetting handleClose={handleClose} />
-      </Modal>
-    </Container>
+    <MainWapper>
+      <MainBoxWrapper>
+        <div className="mainTitle">
+          <img src={bitcoin} alt="" className="photo" />
+          <div className="text">당신의 트레이딩을 맡기세요</div>
+        </div>
+      </MainBoxWrapper>
+      <Container style={{ height: '100%' }}>
+        <TradingWrapper>
+          <div className="tradingTitle">추천 트레이딩봇을 소개합니다.</div>
+          <div className="tradingcard">
+            <Papers>
+              <img
+                src={btc}
+                alt=""
+                style={{
+                  width: '5rem',
+                  height: '5rem',
+                  margin: '3rem 0rem 0rem 0rem',
+                }}
+              />
+              <div className="title">BTC</div>
+              <div className="content">15%</div>
+              <Buttons>ON</Buttons>
+            </Papers>
+            <Papers>
+              <img
+                src={btc}
+                alt=""
+                style={{
+                  width: '5rem',
+                  height: '5rem',
+                  margin: '3rem 0rem 0rem 0rem',
+                }}
+              />
+              <div className="title">BTC</div>
+              <div className="content">15%</div>
+              <Buttons>ON</Buttons>
+            </Papers>
+            <Papers>
+              <img
+                src={btc}
+                alt=""
+                style={{
+                  width: '5rem',
+                  height: '5rem',
+                  margin: '3rem 0rem 0rem 0rem',
+                }}
+              />
+              <div className="title">BTC</div>
+              <div className="content">15%</div>
+              <Buttons>ON</Buttons>
+            </Papers>
+            <Papers>
+              <img
+                src={btc}
+                alt=""
+                style={{
+                  width: '5rem',
+                  height: '5rem',
+                  margin: '3rem 0rem 0rem 0rem',
+                }}
+              />
+              <div className="title">BTC</div>
+              <div className="content">15%</div>
+              <Buttons>ON</Buttons>
+            </Papers>
+          </div>
+        </TradingWrapper>
+      </Container>
+    </MainWapper>
   );
 };
 export default Main;
