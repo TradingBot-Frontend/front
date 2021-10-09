@@ -4,6 +4,7 @@ const isProduction = process.env.REACT_APP_ENV === 'production';
 const instance = axios.create({
   headers: {
     'Content-type': 'application/json',
+    'Access-Control-Allow-Credentials': 'true',
   },
   baseURL: isProduction
     ? process.env.REACT_APP_BASIC_SERVER_URL

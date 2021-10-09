@@ -158,7 +158,7 @@ interface IAuthState {
   isLoading: boolean;
   email: string;
   name: string;
-  pwd: string;
+  password: string;
   // successMsg: string;
   errorMsg: string;
   apiKey: string | null;
@@ -171,7 +171,7 @@ const initialState: IAuthState = {
   isLoading: false,
   email: 'test2@gmail.com',
   name: '스폰지밥',
-  pwd: '',
+  password: '',
   // successMsg: '',
   errorMsg: '',
   apiKey: '',
@@ -192,8 +192,7 @@ export default function authReducer(
         isLoading: true,
       };
     case LOGIN_SUCCESS: {
-      const token = action.payload.headers?.authorization;
-      console.log('token', token);
+      const token = action.payload;
       if (token) {
         localStorage.setItem('token', token); // localStorage에 token 저장
         setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정

@@ -72,6 +72,7 @@
       }
     ]
   },
+  "proxy": "http://3.34.47.32:8000",
   "browserslist": {
     "production": [
       ">0.2%",
