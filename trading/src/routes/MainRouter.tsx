@@ -12,8 +12,12 @@ function MainRouter(): JSX.Element {
     <Switch>
       <Switch>
         <Route exact path="/login" component={Login} />
-        <PrivateRoute path="/main" isAuthenticated={isAuthenticated} component={Dashboard} />
-        <Redirect from="*" to="/login" />
+        <PrivateRoute
+          path="/main"
+          isAuthenticated={isAuthenticated}
+          component={Dashboard}
+        />
+        <Redirect path="*" to="/login" />
       </Switch>
     </Switch>
   );
