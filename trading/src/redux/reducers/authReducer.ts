@@ -158,7 +158,7 @@ interface IAuthState {
   isLoading: boolean;
   email: string;
   name: string;
-  pwd: string;
+  password: string;
   // successMsg: string;
   errorMsg: string;
   apiKey: string | null;
@@ -171,7 +171,7 @@ const initialState: IAuthState = {
   isLoading: false,
   email: 'test2@gmail.com',
   name: '스폰지밥',
-  pwd: '',
+  password: '',
   // successMsg: '',
   errorMsg: '',
   apiKey: '',
