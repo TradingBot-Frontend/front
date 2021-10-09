@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflow: 'hidden',
     position: 'relative',
+    height: '80rem',
   },
   toolbar: {
     // paddingRight: 24, // keep right padding when drawer closed

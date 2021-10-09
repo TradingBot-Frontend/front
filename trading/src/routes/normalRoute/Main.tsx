@@ -19,10 +19,10 @@ const MainWapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
-  overflow: auto;
+  height: 80rem;
+  border: 1px solid;
   font-family: 'sleig';
-  /* margin: 20rem 0rem 0rem 0rem; */
+  background-color: #ffffff;
   .buttons {
     display: flex;
     flex-direction: row-reverse;
@@ -33,7 +33,7 @@ const MainBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 40%;
+  height: 20%;
   overflow: hidden;
   .mainTitle {
     font-size: 30px;
@@ -44,7 +44,7 @@ const MainBoxWrapper = styled.div`
   .text {
     position: absolute;
     color: #ffffff;
-    top: 8rem;
+    top: 5rem;
     /* left: 30rem; */
   }
   .photo {
@@ -57,7 +57,7 @@ const TradingWrapper = styled.div`
   flex-direction: column;
   margin: 2rem 0rem 0rem 0rem;
   height: 40%;
-  border: 1px solid;
+  /* border: 1px solid; */
   .tradingTitle {
     font-size: 30px;
     margin: 0rem 0rem 1rem 0rem;
@@ -69,7 +69,7 @@ const TradingWrapper = styled.div`
   }
 `;
 const Papers = styled(Paper)`
-  height: 15rem;
+  height: 99%;
   width: 15rem;
   display: flex;
   flex-direction: column;
@@ -86,9 +86,17 @@ const Buttons = styled.button`
   color: #ffffff;
   background-color: #353635;
   width: 5rem;
-  height: 2rem;
+  height: 10%;
   border-radius: 25px;
   margin: 0.5rem 0rem 0rem 0rem;
+`;
+const TableWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 60%;
+  /* border: 1px solid; */
+  margin: 2rem 0rem 0rem 0rem;
 `;
 const useStyles = makeStyles((theme) => ({
   topContainer: {
@@ -110,14 +118,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // margin: '0rem 0rem 0rem 0rem',
   },
   chartContainer: {
     height: '90%',
-    // paddingTop: '1rem',
-    // display: 'flex',
-    // justifyContent: 'center',
-    // margin: '0rem 0rem 0rem 0rem',
   },
 }));
 
@@ -168,7 +171,7 @@ const Main = () => {
           <div className="text">당신의 트레이딩을 맡기세요</div>
         </div>
       </MainBoxWrapper>
-      <Container style={{ height: '100%' }}>
+      <Container style={{ height: '70%' }}>
         <TradingWrapper>
           <div className="tradingTitle">추천 트레이딩봇을 소개합니다.</div>
           <div className="tradingcard">
@@ -178,8 +181,8 @@ const Main = () => {
                 alt=""
                 style={{
                   width: '5rem',
-                  height: '5rem',
-                  margin: '3rem 0rem 0rem 0rem',
+                  height: '40%',
+                  margin: '2rem 0rem 0rem 0rem',
                 }}
               />
               <div className="title">BTC</div>
@@ -192,8 +195,8 @@ const Main = () => {
                 alt=""
                 style={{
                   width: '5rem',
-                  height: '5rem',
-                  margin: '3rem 0rem 0rem 0rem',
+                  height: '40%',
+                  margin: '2rem 0rem 0rem 0rem',
                 }}
               />
               <div className="title">BTC</div>
@@ -206,8 +209,8 @@ const Main = () => {
                 alt=""
                 style={{
                   width: '5rem',
-                  height: '5rem',
-                  margin: '3rem 0rem 0rem 0rem',
+                  height: '40%',
+                  margin: '2rem 0rem 0rem 0rem',
                 }}
               />
               <div className="title">BTC</div>
@@ -220,8 +223,8 @@ const Main = () => {
                 alt=""
                 style={{
                   width: '5rem',
-                  height: '5rem',
-                  margin: '3rem 0rem 0rem 0rem',
+                  height: '40%',
+                  margin: '2rem 0rem 0rem 0rem',
                 }}
               />
               <div className="title">BTC</div>
@@ -230,6 +233,9 @@ const Main = () => {
             </Papers>
           </div>
         </TradingWrapper>
+        <TableWrapper>
+          <DsbCoinList />
+        </TableWrapper>
       </Container>
     </MainWapper>
   );
