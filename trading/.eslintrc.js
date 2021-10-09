@@ -21,6 +21,8 @@ module.exports = {
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': ['error'],
     'react/require-default-props': 'off',
+    'react/static-property-placement': ['error', 'static public field'],
+    camelcase: 'off',
     'import/extensions': [
       'error',
       'ignorePackages',

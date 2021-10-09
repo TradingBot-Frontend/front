@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,19 +16,31 @@ import Container from '@material-ui/core/Container';
 // import Paper from "@material-ui/core/Paper";
 // import Link from "@material-ui/core/Link";
 import MenuIcon from '@material-ui/icons/Menu';
+import styled from 'styled-components';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { CommonInputContainer } from '@containers/common/InputContainer';
-import { mainListItems } from './listLtems';
+import { MainListItems } from '@components/layout/listLtems';
+import ContentsRouter from '@routes/ContentsRouter';
+import Modal from '@mui/material/Modal';
+import { logoutActions, privateKeyActions } from '@redux/reducers/authReducer';
+import { RootState } from '@redux/reducers';
+import { useDispatch, useSelector } from 'react-redux';
+import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
+import 'animate.css';
+import { usersActions } from '../../redux/reducers/authReducer';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    overflow: 'hidden',
+    position: 'relative',
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
+    color: '#170f8b',
   },
   toolbarIcon: {
     display: 'flex',
@@ -60,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: '#170f8b',
     fontFamily: 'Btro_core',
   },
   loginIcon: {
@@ -68,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
+    zIndex: 0,
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -89,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
+    background: '#f7f2f2',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -105,17 +119,49 @@ const useStyles = makeStyles((theme) => ({
     height: 240,
   },
 }));
-
+export const Balloon = styled.div`
+  position: absolute;
+  top: 14.5rem;
+  left: 14rem;
+  z-index: 4;
+  width: 26rem;
+  height: 3rem;
+  background: #c1c6ce;
+  border-radius: 15px;
+  animation: 'bounce';
+  animation-duration: 3s;
+  :after {
+    border-top: 15px solid #c1c6ce;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: -13px;
+  }
+`;
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [settingOpen, setSettingOpen] = useState(false);
   const [search, setsearch] = useState('');
+  const dispatch = useDispatch();
+  const apiKey = useSelector((state: RootState) => state.auth.apiKey);
+  useEffect(() => {
+    dispatch(privateKeyActions.request());
+  }, []);
+  useEffect(() => {
+    console.log('apiKey: ', apiKey);
+  }, [apiKey]);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleSettingOpen = () => setSettingOpen(true);
+  const handleSettingClose = () => setSettingOpen(false);
   // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -127,13 +173,21 @@ export default function Dashboard() {
   const handleKeyPress = () => {
     console.log('press key: ', search);
   };
+  const handleLogout = () => {
+    dispatch(logoutActions.request());
+  };
+
+  useEffect(() => {
+    dispatch(usersActions.request());
+  }, []);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
-        style={{ background: '#2E3B55' }}
+        style={{ background: '#FFFFFF' }}
       >
         <Toolbar className={classes.toolbar}>
           <IconButton
@@ -141,11 +195,20 @@ export default function Dashboard() {
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            className={clsx(
+              classes.menuButton,
+              open && classes.menuButtonHidden,
+            )}
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+          <Typography
+            component="h1"
+            variant="h6"
+            // color="inherit"
+            noWrap
+            className={classes.title}
+          >
             tradingbot
           </Typography>
           <IconButton color="inherit" className={classes.loginIcon}>
@@ -154,7 +217,11 @@ export default function Dashboard() {
           {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
-          <CommonButtonContainer title="Login" onClick={handleButtonClick} />
+          <CommonButtonContainer
+            title="LOGOUT"
+            color="#170F8B"
+            onClick={handleLogout}
+          />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -170,15 +237,28 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>
+          <MainListItems handleSettingOpen={handleSettingOpen} />
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          Content page
-          <CommonInputContainer placeholder="search" onChange={handleInputChange} onKeyPress={handleKeyPress} />
-        </Container>
+        <ContentsRouter />
       </main>
+      <Dialog
+        open={settingOpen}
+        onClose={handleSettingClose}
+        style={{ overflowX: 'hidden' }}
+      >
+        <PrivateSetting handleClose={handleSettingClose} />
+      </Dialog>
+      {!apiKey?.length && (
+        <Balloon>
+          <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>
+            Private Setting에서 API Key를 등록해야만 진행이 가능합니다.
+          </div>
+        </Balloon>
+      )}
     </div>
   );
 }
