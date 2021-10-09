@@ -30,6 +30,8 @@ export interface Data {
   rateOfChange: string;
   money: string;
   id: string;
+  color?: any;
+  changeCell?: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -58,10 +60,7 @@ function getComparator<Key extends keyof any>(
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
-function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number,
-) {
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -171,6 +170,8 @@ export default function EnhancedTable({ coindata }: any) {
       rateOfChange: '',
       money: '',
       id: '',
+      color: '',
+      changeCell: '',
     },
   ]);
   useEffect(() => {
@@ -178,6 +179,15 @@ export default function EnhancedTable({ coindata }: any) {
   }, []);
   useEffect(() => {
     setRows(coindata);
+    setTimeout(() => {
+      const newDataColor = coindata.map((data: any) => {
+        return {
+          ...data,
+          color: 'false',
+        };
+      });
+      setRows(newDataColor);
+    }, 500);
   }, [coindata]);
 
   const handleRequestSort = useCallback(
@@ -269,9 +279,42 @@ export default function EnhancedTable({ coindata }: any) {
                 >
                   {row.name}
                 </TableCell>
-                <TableCell align="left">{row.currentPrice}</TableCell>
-                <TableCell align="left">{row.rateOfChange}</TableCell>
-                <TableCell align="left">{row.money}</TableCell>
+                <TableCell align="left">
+                  <div
+                    style={
+                      row.color === 'true' && row.changeCell === 'currentPrice'
+                        ? {
+                            borderBottom: '2px solid #f31616',
+                          }
+                        : { border: '0px solid ' }
+                    }
+                  >
+                    {row.currentPrice}
+                  </div>
+                </TableCell>
+                <TableCell
+                  align="left"
+                  style={
+                    parseFloat(row.rateOfChange) > 0
+                      ? { color: '#f31616' }
+                      : { color: '#0c60df' }
+                  }
+                >
+                  {row.rateOfChange}
+                </TableCell>
+                <TableCell align="left">
+                  <div
+                    style={
+                      row.color === 'true' && row.changeCell === 'money'
+                        ? {
+                            borderBottom: '2px solid #f31616',
+                          }
+                        : { border: '0px solid ' }
+                    }
+                  >
+                    {row.money}
+                  </div>
+                </TableCell>
               </TableRow>
             );
           })}
