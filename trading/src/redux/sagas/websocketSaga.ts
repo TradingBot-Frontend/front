@@ -12,40 +12,8 @@ import {
   FETCH_COIN_REQUEST,
 } from '@redux/reducers/websocketReducer';
 
-function initWebsocket() {
-  console.log('initWebsocket');
-  return eventChannel((emitter) => {
-    // websocket 구독하기 나중에 ip 받으면 그에 따라 수정 필요
-    const ws = new WebSocket('ws://3.36.166.137:8080/coins');
-    ws.onopen = () => {
-      console.log('opening websocket');
-    };
-    ws.onerror = (error) => {
-      console.log('ERROR:', error);
-      console.dir(error);
-    };
-    ws.onmessage = (e) => {
-      let value = null;
-      try {
-        value = JSON.parse(e.data);
-      } catch (error) {
-        console.error('Error parsing data:', error);
-      }
-      console.log('value', value);
-      if (value && value.type === 'ticker') {
-        emitter({
-          type: 'POST_LIVE_PRICE_DATA',
-          data: value.price,
-        });
-      }
-    };
-    return () => {
-      ws.close();
-    };
-  });
-}
 const createSocket = () => {
-  const client = new WebSocket('ws://3.36.52.243:8081/live/coins');
+  const client = new WebSocket('ws://3.36.52.243:8081/ws/coins');
   client.binaryType = 'arraybuffer';
   return client;
 };
@@ -92,7 +60,18 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
         if (datas.length) {
           // 이 문구 없으면 메시지를 받았든 받지 않았든 200ms 마다 항상 dispatch 작업을 해서 혼란 야기할 수 도 있음
           // newCoinList: 기존값 data: 새로 들어온 값
-          const newCoinList: any = [...state.coin.coinList];
+          let newCoinList: any = [...state.coin.coinList];
+          let changeFlag = '0';
+          const flagMap: any = {
+            currentPrice: `currentPrice`,
+            money: `money`,
+          };
+          newCoinList = newCoinList.map((data: any) => {
+            return {
+              ...data,
+              color: 'false',
+            };
+          });
           datas.forEach((data: ICoinState) => {
             const symbol: string = data.symbol as string;
             // if (state.coin.coinList[symbol]) {
@@ -101,11 +80,21 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
             );
             if (targetIdx !== -1) {
               // 버퍼에 있는 데이터중 시간이 가장 최근인 데이터만 남김
+              if (newCoinList[targetIdx].chgAmt !== data.chgAmt) {
+                changeFlag = 'currentPrice';
+              } else if (
+                newCoinList[targetIdx].money !==
+                `${parseInt(data.value, 10).toLocaleString()}원`
+              ) {
+                changeFlag = 'money';
+              }
               if (
                 newCoinList[targetIdx].timeTag.split('T')[1] <
                 data.timeTag.split('T')[1]
               ) {
                 newCoinList[targetIdx] = data;
+                newCoinList[targetIdx].color = 'true';
+                newCoinList[targetIdx].changeCell = flagMap[changeFlag];
               }
             } else {
               // 새로운 데이터면 그냥 넣음

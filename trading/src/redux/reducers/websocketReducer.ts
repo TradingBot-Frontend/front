@@ -53,6 +53,8 @@ export interface ICoinState {
   chgRate: string;
   chgAmt: string;
   timeTag: string;
+  color?: any;
+  changeCell?: string;
 }
 interface ICoinInit {
   coinList: ICoinInit[];

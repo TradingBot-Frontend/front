@@ -30,6 +30,8 @@ export interface Data {
   rateOfChange: string;
   money: string;
   id: string;
+  color?: any;
+  changeCell?: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -58,10 +60,7 @@ function getComparator<Key extends keyof any>(
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
-function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number,
-) {
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -171,6 +170,8 @@ export default function EnhancedTable({ coindata }: any) {
       rateOfChange: '',
       money: '',
       id: '',
+      color: '',
+      changeCell: '',
     },
   ]);
   useEffect(() => {
@@ -178,6 +179,15 @@ export default function EnhancedTable({ coindata }: any) {
   }, []);
   useEffect(() => {
     setRows(coindata);
+    setTimeout(() => {
+      const newDataColor = coindata.map((data: any) => {
+        return {
+          ...data,
+          color: 'false',
+        };
+      });
+      setRows(newDataColor);
+    }, 500);
   }, [coindata]);
 
   const handleRequestSort = useCallback(
@@ -230,84 +240,86 @@ export default function EnhancedTable({ coindata }: any) {
     [selected],
   );
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center',
+    <div
+      style={{
+        width: '90%',
+        height: '95%',
+        overflow: 'auto',
       }}
     >
-      <Grid
-        item
-        xs={6}
-        sm={12}
-        style={{ display: 'flex', justifyContent: 'center' }}
-      >
-        <Paper
-          sx={{
-            width: '90%',
-            height: '90%',
-            overflow: 'auto',
-            mb: 2,
-            marginTop: '1rem',
-          }}
-        >
-          <TableContainer
-            sx={{
-              margin: '0rem 0rem 0rem 0rem',
-            }}
-          >
-            <Table
-              sx={{ minWidth: 50 }}
-              aria-labelledby="tableTitle"
-              size="medium"
-            >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {stableSort(rows, getComparator(order, orderBy)).map(
-                  (row, index) => {
-                    const isItemSelected = isSelected(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+      <Table aria-labelledby="tableTitle" size="medium">
+        <EnhancedTableHead
+          numSelected={selected.length}
+          order={order}
+          orderBy={orderBy}
+          onSelectAllClick={handleSelectAllClick}
+          onRequestSort={handleRequestSort}
+          rowCount={rows.length}
+        />
+        <TableBody>
+          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+            const isItemSelected = isSelected(row.name);
+            const labelId = `enhanced-table-checkbox-${index}`;
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, row.name)}
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.name}
-                        selected={isItemSelected}
-                        // style={{ border: '1px solid' }}
-                      >
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          // padding="none"
-                          // style={{ border: '1px solid', width: 100 }}
-                          align="left"
-                        >
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="left">{row.currentPrice}</TableCell>
-                        <TableCell align="left">{row.rateOfChange}</TableCell>
-                        <TableCell align="left">{row.money}</TableCell>
-                      </TableRow>
-                    );
-                  },
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Grid>
-    </Box>
+            return (
+              <TableRow
+                hover
+                onClick={(event) => handleClick(event, row.name)}
+                aria-checked={isItemSelected}
+                tabIndex={-1}
+                key={row.name}
+                selected={isItemSelected}
+              >
+                <TableCell
+                  component="th"
+                  id={labelId}
+                  scope="row"
+                  // padding="none"
+                  align="left"
+                >
+                  {row.name}
+                </TableCell>
+                <TableCell align="left">
+                  <div
+                    style={
+                      row.color === 'true' && row.changeCell === 'currentPrice'
+                        ? {
+                            borderBottom: '2px solid #f31616',
+                          }
+                        : { border: '0px solid ' }
+                    }
+                  >
+                    {row.currentPrice}
+                  </div>
+                </TableCell>
+                <TableCell
+                  align="left"
+                  style={
+                    parseFloat(row.rateOfChange) > 0
+                      ? { color: '#f31616' }
+                      : { color: '#0c60df' }
+                  }
+                >
+                  {row.rateOfChange}
+                </TableCell>
+                <TableCell align="left">
+                  <div
+                    style={
+                      row.color === 'true' && row.changeCell === 'money'
+                        ? {
+                            borderBottom: '2px solid #f31616',
+                          }
+                        : { border: '0px solid ' }
+                    }
+                  >
+                    {row.money}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
