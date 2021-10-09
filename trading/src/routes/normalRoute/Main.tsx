@@ -20,7 +20,6 @@ const MainWapper = styled.div`
   flex-direction: column;
   width: 100%;
   height: 80rem;
-  border: 1px solid;
   font-family: 'sleig';
   background-color: #ffffff;
   .buttons {
