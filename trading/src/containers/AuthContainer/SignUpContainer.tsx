@@ -51,7 +51,7 @@ export default function SignUpContainer({
         ...form,
         localMsg: '',
       });
-      const userInfo = { email, pwd: password, name: username };
+      const userInfo = { email, password, name: username };
       dispatch(signupActions.request(userInfo));
       handleClose();
     } else if (password === passwordConfirm) {
