@@ -1,11 +1,12 @@
 import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
 import {
-    GetItemsAction,
-    GET_ITEMS_REQUEST,
-    getItemsActions,
-    GetPortfolioActions,
-    GET_PORTFOLIO_REQUEST,
-    getPortfolioActions } from '@redux/reducers/portfolioReducer';
+  GetItemsAction,
+  GET_ITEMS_REQUEST,
+  getItemsActions,
+  GetPortfolioActions,
+  GET_PORTFOLIO_REQUEST,
+  getPortfolioActions,
+} from '@redux/reducers/portfolioReducer';
 import axios from '@utils/axios';
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
@@ -15,57 +16,51 @@ import axios from '@utils/axios';
 // fork: 인자로 들어온 함수를 실행시킨다. 비동기적인 함수 호출일 때 사용. (순서 상관 없을 때
 
 const itemsGetAPI = () => {
-    return axios.get(`/orders`);
+  return axios.get(`trading-service/orders`);
 };
 
 const portfolioGetAPI = () => {
-    return axios.get(`/user-portfolio`);
+  return axios.get(`trading-service/user-portfolio`);
 };
 
 interface IItemResponse<T> {
-    data: T;
+  data: T;
 }
 
 interface IPortfolioResponse<T> {
-    data: T;
+  data: T;
 }
 
 function* items(action: GetItemsAction) {
-    try {
-        const res: IItemResponse<any> = yield call(itemsGetAPI);
-        console.log('items');
-        console.log(res);
-        yield put(getItemsActions.success(res));
-    } catch (e) {
-        yield put(getItemsActions.failure(e));
-    }
+  try {
+    const res: IItemResponse<any> = yield call(itemsGetAPI);
+    console.log('items');
+    console.log(res);
+    yield put(getItemsActions.success(res));
+  } catch (e) {
+    yield put(getItemsActions.failure(e));
+  }
 }
 
 function* itemsGet() {
-    yield takeEvery(GET_ITEMS_REQUEST, items);
+  yield takeEvery(GET_ITEMS_REQUEST, items);
 }
 
 function* portfolio(action: GetPortfolioActions) {
-    try {
-        const res: IPortfolioResponse<any> = yield call(portfolioGetAPI);
-        console.log('portfolio');
-        console.log(res);
-        yield put(getPortfolioActions.success(res));
-    } catch (e) {
-        yield put(getPortfolioActions.failure(e));
-    }
+  try {
+    const res: IPortfolioResponse<any> = yield call(portfolioGetAPI);
+    console.log('portfolio');
+    console.log(res);
+    yield put(getPortfolioActions.success(res));
+  } catch (e) {
+    yield put(getPortfolioActions.failure(e));
+  }
 }
 
 function* portfolioGet() {
-    yield takeEvery(GET_PORTFOLIO_REQUEST, portfolio);
+  yield takeEvery(GET_PORTFOLIO_REQUEST, portfolio);
 }
-
 
 export default function* portfolioSaga() {
-    yield all([
-        fork(itemsGet),
-        fork(portfolioGet)
-    ]);
+  yield all([fork(itemsGet), fork(portfolioGet)]);
 }
-
-

@@ -123,10 +123,10 @@ const getUserAPI = () => {
   return axios.get('user-service/users');
 };
 const getPrivateAPI = () => {
-  return axios.get('user-api');
+  return axios.get('user-service/user-api');
 };
 const createPrivateAPI = async (user: any) => {
-  const res = await axios.post('user-api', user);
+  const res = await axios.post('user-service/user-api', user);
   let resValue;
   if (res.data === 'success') {
     resValue = getPrivateAPI();
