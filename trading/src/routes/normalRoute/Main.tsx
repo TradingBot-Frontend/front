@@ -10,6 +10,8 @@ import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { green } from '@mui/material/colors';
 import { RootState } from '../../redux/reducers/index';
 import { getBotsActions } from '../../redux/reducers/botReducer';
 import BotCard from '../../components/TradingBot/BotCard';
@@ -96,9 +98,12 @@ const MainCards = () => {
     );
   }
   const noData = (
-    <Typography variant="h4" align="center">
-      트레이딩봇을 추가해주세요!
-    </Typography>
+    <>
+      <AddCircleIcon sx={{ color: green[500], fontSize: 40 }} />
+      <Typography variant="h4" align="center">
+        트레이딩봇을 추가해주세요!
+      </Typography>
+    </>
   );
   const isBotContainerEmtpy = botContainer.length === 0;
   const classes = useStyles();
