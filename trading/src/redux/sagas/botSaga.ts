@@ -29,7 +29,7 @@ import { AxiosResponse } from 'axios';
 
 // GET bots
 const getBotsAPI = () => {
-  return axios.get('bots');
+  return axios.get('trading-service/bots');
 };
 
 interface IResponse<T> {
@@ -51,7 +51,7 @@ function* watchGetBots() {
 
 // GET bots/{bot-id}
 const getBotAPI = (botId: string) => {
-  return axios.get(`bots/${botId}`);
+  return axios.get(`trading-service/bots/${botId}`);
 };
 
 interface IgetBotResponse {
@@ -76,7 +76,7 @@ function* watchGetBot() {
 
 // POST bots
 const addBotAPI = (botInfo: Bot) => {
-  return axios.post(`bots`, botInfo);
+  return axios.post(`trading-service/bots`, botInfo);
 };
 
 function* addBot(action: AddBotAction) {
@@ -98,7 +98,7 @@ function* watchAddBot() {
 
 // PATCH bots/{bot-id}
 const updateBotAPI = (botInfo: Bot) => {
-  return axios.patch(`bots/${botInfo.id}`, botInfo);
+  return axios.patch(`trading-service/bots/${botInfo.id}`, botInfo);
 };
 
 function* updateBot(action: GetBotAction) {
@@ -120,7 +120,7 @@ function* watchUpdateBot() {
 
 // DELETE bots/{bot-id}
 const deleteBotAPI = (botId: string) => {
-  return axios.delete(`bots/${botId}`);
+  return axios.delete(`trading-service/bots/${botId}`);
 };
 
 function* deleteBot(action: GetBotAction) {
