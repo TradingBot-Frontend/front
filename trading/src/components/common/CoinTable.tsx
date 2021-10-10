@@ -138,11 +138,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'left' : 'center'}
+            align="left"
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
             style={{
-              background: '#C1C6CE',
+              background: '#f8f8f8',
             }}
           >
             <TableSortLabel
@@ -245,6 +245,7 @@ export default function EnhancedTable({ coindata }: any) {
         width: '90%',
         height: '95%',
         overflow: 'auto',
+        fontFamily: 'sleig',
       }}
     >
       <Table aria-labelledby="tableTitle" size="medium">

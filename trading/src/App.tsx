@@ -4,6 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from '@redux/store';
 import MainRouter from '@routes/MainRouter';
 import { createTheme, ThemeProvider } from '@mui/material/styles/';
+import GlobalStyles from './styles/GlobalStyle';
 
 const theme = createTheme({
   breakpoints: {
@@ -23,6 +24,7 @@ const theme = createTheme({
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyles />
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <MainRouter />
