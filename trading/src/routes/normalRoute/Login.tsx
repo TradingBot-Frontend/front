@@ -24,6 +24,13 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import SignUpContainer from '@containers/AuthContainer/SignUpContainer';
 import { useHistory } from 'react-router';
 import { RootState } from '@redux/reducers';
+import { createTheme, ThemeProvider } from '@mui/material/styles/';
+
+const loginTitleFont = createTheme({
+  typography: {
+    fontFamily: 'Btro_core',
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   realRoot: {
@@ -56,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingTop: '10px',
     paddingBottom: '10px',
+    fontFamily: 'Btro_core',
   },
 }));
 
@@ -116,15 +124,17 @@ export default function Login(): JSX.Element {
                 className={classes.card}
               >
                 <CardContent>
-                  <Typography
-                    variant="h4"
-                    align="center"
-                    color="text.primary"
-                    className={classes.title}
-                    gutterBottom
-                  >
-                    TradingBot
-                  </Typography>
+                  <ThemeProvider theme={loginTitleFont}>
+                    <Typography
+                      variant="h4"
+                      align="center"
+                      color="text.primary"
+                      className={classes.title}
+                      gutterBottom
+                    >
+                      TradingBot
+                    </Typography>
+                  </ThemeProvider>
                   <Box
                     component="form"
                     onSubmit={handleSubmit}

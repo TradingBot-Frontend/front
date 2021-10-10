@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from '@redux/store';
-import './App.css';
 import MainRouter from '@routes/MainRouter';
 import { createTheme, ThemeProvider } from '@mui/material/styles/';
 
