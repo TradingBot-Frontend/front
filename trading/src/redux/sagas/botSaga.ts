@@ -76,7 +76,7 @@ function* watchGetBot() {
 
 // POST bots
 const addBotAPI = (botInfo: Bot) => {
-  return axios.post(`bots`, botInfo);
+  return axios.post(`trading-service/bots`, botInfo);
 };
 
 function* addBot(action: AddBotAction) {
