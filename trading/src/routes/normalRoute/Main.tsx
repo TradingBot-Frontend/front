@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import { RootState } from '../../redux/reducers/index';
 import { getBotsActions } from '../../redux/reducers/botReducer';
 import BotCard from '../../components/TradingBot/BotCard';
@@ -25,6 +26,15 @@ const MainWapper = styled.div`
 `;
 const useStyles = makeStyles((theme) => ({
   topContainer: {
+    margin: '2rem 0rem 0rem 0rem',
+    height: '10rem',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  emptyTopContainer: {
     margin: '2rem 0rem 0rem 0rem',
     height: '10rem',
     display: 'flex',
@@ -55,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MainCards = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const bots = useSelector((state: RootState) => state.bot.bots);
   const isLoading = useSelector((state: RootState) => state.bot.isLoading);
@@ -72,6 +81,7 @@ const MainCards = () => {
   for (let i = 0; i < bots.length && i < 4; i += 1) {
     const bot = bots[i];
     let show = null;
+    if (i === 0) show = true;
     if (i === 1) show = showSecondCard;
     if (i === 2) show = showThirdCard;
     if (i === 3) show = showFourthCard;
@@ -85,8 +95,22 @@ const MainCards = () => {
       </>,
     );
   }
-
-  return <Box className={classes.topContainer}>{botContainer}</Box>;
+  const noData = (
+    <Typography variant="h4" align="center">
+      트레이딩봇을 추가해주세요!
+    </Typography>
+  );
+  const isBotContainerEmtpy = botContainer.length === 0;
+  const classes = useStyles();
+  return (
+    <Box
+      className={
+        isBotContainerEmtpy ? classes.emptyTopContainer : classes.topContainer
+      }
+    >
+      {isBotContainerEmtpy ? noData : botContainer}
+    </Box>
+  );
 };
 
 const Main = () => {
