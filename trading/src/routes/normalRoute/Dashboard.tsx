@@ -29,6 +29,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from '@mui/material/Snackbar';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
+import { endInit } from '@redux/reducers/websocketReducer';
+
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 import 'animate.css';
 import { usersActions } from '../../redux/reducers/authReducer';
@@ -179,11 +181,13 @@ export default function Dashboard() {
       setToast(true);
     }
   }, [apiKey]);
+
   const handleSettingOpen = () => setSettingOpen(true);
   const handleSettingClose = () => setSettingOpen(false);
   const handleToastClose = () => setToast(false);
   const handleLogout = () => {
     dispatch(logoutActions.request());
+    dispatch(endInit());
   };
   useEffect(() => {
     dispatch(usersActions.request());
@@ -271,7 +275,7 @@ export default function Dashboard() {
           vertical: 'top',
           horizontal: 'center',
         }}
-        autoHideDuration={6000}
+        autoHideDuration={1000}
         onClose={handleToastClose}
         message="설정에서 API Key를 등록해야만 진행이 가능합니다."
       />
