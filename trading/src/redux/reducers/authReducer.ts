@@ -25,20 +25,9 @@ export const KEYCREATE_REQUEST = 'auth/KEYCREATE_REQUEST' as const;
 export const KEYCREATE_SUCCESS = 'auth/KEYCREATE_SUCCESS' as const;
 export const KEYCREATE_FAILURE = 'auth/KEYCREATE_FAILURE' as const;
 
-// type LoginAction =
-// | typeof LOGIN_REQUEST
-// | typeof LOGIN_SUCCESS
-// | typeof LOGIN_FAILURE;
-
-// interface ActionCreator<T> {
-//   type: LoginAction;
-//   payload: T;
-// }
-
-// action creators
-// const request = (user): ActionCreator<typeof user> => ({type: LOGIN_REQUEST, payload: user});
-// const success = (user): ActionCreator<typeof user> => ({type: LOGIN_SUCCESS, payload: user});
-// const failure = (error): ActionCreator<typeof error> => ({type: LOGIN_FAILURE, payload: error});
+export const VALIDATE_TOKEN_REQUEST = 'auth/VALIDATE_TOKEN_REQUEST' as const;
+export const VALIDATE_TOKEN_SUCCESS = 'auth/VALIDATE_TOKEN_SUCCESS' as const;
+export const VALIDATE_TOKEN_FAILURE = 'auth/VALIDATE_TOKEN_FAILURE' as const;
 
 // action creators
 const loginRequest = (user: any) => ({ type: LOGIN_REQUEST, payload: user });
@@ -113,11 +102,28 @@ const keyCreateRequestFailure = (error: any) => ({
   type: KEYCREATE_FAILURE,
   payload: error,
 });
-
 export const keyCreateActions = {
   request: keyCreateRequest,
   success: keyCreateRequestSuccess,
   failure: keyCreateRequestFailure,
+};
+
+const validateTokenRequest = (token: string | null) => ({
+  type: VALIDATE_TOKEN_REQUEST,
+  payload: token,
+});
+const validateTokenSuccess = () => ({
+  type: VALIDATE_TOKEN_SUCCESS,
+  payload: null,
+});
+const validateTokenFailure = () => ({
+  type: VALIDATE_TOKEN_FAILURE,
+  payload: null,
+});
+export const validateTokenActions = {
+  request: validateTokenRequest,
+  success: validateTokenSuccess,
+  failure: validateTokenFailure,
 };
 
 export type LoginAction =
@@ -144,13 +150,18 @@ export type UsersAction =
   | ReturnType<typeof usersRequest>
   | ReturnType<typeof usersSuccess>
   | ReturnType<typeof usersFailure>;
+export type ValidateTokenAction =
+  | ReturnType<typeof validateTokenRequest>
+  | ReturnType<typeof validateTokenSuccess>
+  | ReturnType<typeof validateTokenFailure>;
 export type AuthAction =
   | LoginAction
   | SignupAction
   | LogoutAction
   | privateKeyAction
   | UsersAction
-  | keyCreateAction;
+  | keyCreateAction
+  | ValidateTokenAction;
 
 interface IAuthState {
   token: string | null;
@@ -186,6 +197,7 @@ export default function authReducer(
     case SIGNUP_REQUEST:
     case LOGIN_REQUEST:
     case USERS_REQUEST:
+    case VALIDATE_TOKEN_REQUEST:
       return {
         ...state,
         errorMsg: '',
@@ -256,6 +268,19 @@ export default function authReducer(
         ...state,
         email: action.payload.email,
         name: action.payload.name,
+      };
+    case VALIDATE_TOKEN_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case VALIDATE_TOKEN_FAILURE:
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
+      setAuthToken(null);
+      return {
+        ...state,
+        isAuthenticated: false,
+        isLoading: false,
       };
     default:
       return state;

@@ -92,11 +92,6 @@ export default function Login(): JSX.Element {
     dispatch(loginActions.request(user));
   };
 
-  useEffect(() => {
-    if (sessionStorage.getItem('trb-token')) {
-      dispatch(loginActions.success(sessionStorage.getItem('trb-token')));
-    }
-  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
