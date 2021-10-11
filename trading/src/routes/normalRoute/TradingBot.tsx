@@ -12,6 +12,33 @@ import { green } from '@mui/material/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { Bot, getBotsActions } from '@redux/reducers/botReducer';
 import { RootState } from '@redux/reducers';
+import NewBotCard from '@components/TradingBot/NewBotCard';
+
+const NoData = (): JSX.Element => (
+  <Box
+    sx={{
+      display: 'flex',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
+    <Stack spacing={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <AddCircleIcon sx={{ color: green[500], fontSize: 70 }} />
+      </Box>
+      <Typography variant="h4" align="center">
+        트레이딩봇을 추가해주세요!
+      </Typography>
+    </Stack>
+  </Box>
+);
 
 const TradingBot = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -26,41 +53,19 @@ const TradingBot = (): JSX.Element => {
     dispatch(getBotsActions.request());
   }, [dispatch]);
 
-  const noData = (
-    <Stack spacing={1}>
-      <Box
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
-        <AddCircleIcon sx={{ color: green[500], fontSize: 70 }} />
-      </Box>
-      <Typography variant="h4" align="center">
-        트레이딩봇을 추가해주세요!
-      </Typography>
-    </Stack>
-  );
-
   return (
     <>
-      <ContentWrapper title="TradingBot" addButton handleOpen={handleOpen}>
+      <ContentWrapper title="트레이딩 봇" addButton handleOpen={handleOpen}>
         {bots.length > 0 ? (
           <Grid container spacing={1}>
             {bots.map((bot: Bot) => (
-              <Grid key={bot.id} item xl={3} lg={4} md={6} sm={12}>
-                <BotCard botInfo={bot} width={380} isLoading={isLoading} />
+              <Grid key={bot.id} item xl={2} lg={2} md={3} sm={5} xs={12}>
+                <NewBotCard botInfo={bot} isLoading={isLoading} />
               </Grid>
             ))}
           </Grid>
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {noData}
-          </Box>
+          <NoData />
         )}
       </ContentWrapper>
       <Dialog open={open} onClose={handleClose}>
