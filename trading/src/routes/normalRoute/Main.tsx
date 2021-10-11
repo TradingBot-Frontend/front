@@ -14,6 +14,7 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { green } from '@mui/material/colors';
+import NewBotCard from '@components/TradingBot/NewBotCard';
 import { RootState } from '../../redux/reducers/index';
 import { getBotsActions } from '../../redux/reducers/botReducer';
 import BotCard from '../../components/TradingBot/BotCard';
@@ -159,8 +160,8 @@ const MainCards = () => {
     botContainer.push(
       <>
         {show && (
-          <Box key={bot.id} sx={{ marginRight: '2rem' }}>
-            <BotCard botInfo={bot} width={360} isLoading={isLoading} />
+          <Box key={bot.id} sx={{ marginRight: '7rem' }}>
+            <NewBotCard botInfo={bot} isLoading={isLoading} />
           </Box>
         )}
       </>,
@@ -201,65 +202,8 @@ const Main = () => {
       </MainBoxWrapper>
       <Container style={{ height: '70%' }}>
         <TradingWrapper>
-          <div className="tradingTitle">추천 트레이딩봇을 소개합니다.</div>
-          <div className="tradingcard">
-            <Papers>
-              <img
-                src={btc}
-                alt=""
-                style={{
-                  width: '5rem',
-                  height: '40%',
-                  margin: '2rem 0rem 0rem 0rem',
-                }}
-              />
-              <div className="title">BTC</div>
-              <div className="content">15%</div>
-              <Buttons>ON</Buttons>
-            </Papers>
-            <Papers>
-              <img
-                src={btc}
-                alt=""
-                style={{
-                  width: '5rem',
-                  height: '40%',
-                  margin: '2rem 0rem 0rem 0rem',
-                }}
-              />
-              <div className="title">BTC</div>
-              <div className="content">15%</div>
-              <Buttons>ON</Buttons>
-            </Papers>
-            <Papers>
-              <img
-                src={btc}
-                alt=""
-                style={{
-                  width: '5rem',
-                  height: '40%',
-                  margin: '2rem 0rem 0rem 0rem',
-                }}
-              />
-              <div className="title">BTC</div>
-              <div className="content">15%</div>
-              <Buttons>ON</Buttons>
-            </Papers>
-            <Papers>
-              <img
-                src={btc}
-                alt=""
-                style={{
-                  width: '5rem',
-                  height: '40%',
-                  margin: '2rem 0rem 0rem 0rem',
-                }}
-              />
-              <div className="title">BTC</div>
-              <div className="content">15%</div>
-              <Buttons>ON</Buttons>
-            </Papers>
-          </div>
+          <div className="tradingTitle">트레이딩봇</div>
+          <MainCards />
         </TradingWrapper>
         <TableWrapper>
           <DsbCoinList />
