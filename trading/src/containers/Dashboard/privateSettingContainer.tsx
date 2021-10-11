@@ -178,6 +178,7 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
         email: authInfo.email,
         name: authInfo.name,
         password,
+        case: 'update',
       };
       dispatch(signupActions.request(obj));
     }

@@ -81,7 +81,9 @@ interface ISignUpResponse {
 function* signup(action: SignupAction) {
   try {
     const res: ISignUpResponse = yield call(signupAPI, action.payload);
-    yield put(signupActions.success(res));
+    if (action.payload?.case === 'update')
+      yield put(signupActions.success('update'));
+    else yield put(signupActions.success(res));
   } catch (e) {
     yield put(signupActions.failure(e));
   }
