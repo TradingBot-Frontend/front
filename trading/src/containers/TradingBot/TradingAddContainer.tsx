@@ -100,12 +100,12 @@ const CancleButton = styled(Buttons)`
   border: 1px solid #bdb8b8;
 `;
 const DeleteButton = styled(Buttons)`
-  width: 5rem;
-  background-color: #d00000;
-  color: #ffffff;
-  position: absolute;
-  right: 15px;
-  top: 6px;
+  width: 5rem !important;
+  background-color: #d00000 !important;
+  color: #ffffff !important;
+  position: absolute !important;
+  right: 15px !important;
+  top: 16px !important;
 `;
 
 const IOSSwitch = muiStyled((props: SwitchProps) => (
