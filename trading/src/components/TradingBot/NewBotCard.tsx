@@ -64,7 +64,16 @@ export default function NewBotCard({
   }, []);
   return (
     <>
-      <Card sx={{ cursor: 'pointer', width: '14rem' }} onClick={handleOpen}>
+      <Card
+        sx={{
+          cursor: 'pointer',
+          width: '14rem',
+          borderRadius: '16px',
+          backgroundColor: '#FCFCFC',
+          boxShadow: '4',
+        }}
+        onClick={handleOpen}
+      >
         <CardContent>
           <Stack spacing={2}>
             <Box sx={flexCenter}>
@@ -73,7 +82,18 @@ export default function NewBotCard({
                   <Avatar />
                 </Skeleton>
               ) : (
-                <img src={icon} alt="coin" width="70" height="70" />
+                <Box
+                  sx={{
+                    ...flexCenter,
+                    alignItems: 'center',
+                    // backgroundColor: '#E9E9E9',
+                    borderRadius: '16px',
+                    width: '85px',
+                    height: '85px',
+                  }}
+                >
+                  <img src={icon} alt="coin" width="70" height="70" />
+                </Box>
               )}
             </Box>
             <Box sx={flexCenter}>
