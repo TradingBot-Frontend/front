@@ -94,7 +94,10 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
             );
             if (targetIdx !== -1) {
               // 버퍼에 있는 데이터중 시간이 가장 최근인 데이터만 남김
-              if (newCoinList[targetIdx].chgAmt !== data.chgAmt) {
+              if (
+                newCoinList[targetIdx].closePrice !==
+                `${parseInt(data.closePrice, 10).toLocaleString()}원`
+              ) {
                 changeFlag = 'currentPrice';
               } else if (
                 newCoinList[targetIdx].money !==

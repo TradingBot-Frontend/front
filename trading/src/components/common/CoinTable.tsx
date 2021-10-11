@@ -286,6 +286,7 @@ export default function EnhancedTable({ coindata }: any) {
                       row.color === 'true' && row.changeCell === 'currentPrice'
                         ? {
                             borderBottom: '2px solid #f31616',
+                            width: '6rem',
                           }
                         : { border: '0px solid ' }
                     }
@@ -309,6 +310,7 @@ export default function EnhancedTable({ coindata }: any) {
                       row.color === 'true' && row.changeCell === 'money'
                         ? {
                             borderBottom: '2px solid #f31616',
+                            width: '7rem',
                           }
                         : { border: '0px solid ' }
                     }
