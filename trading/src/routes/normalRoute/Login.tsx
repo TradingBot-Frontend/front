@@ -16,6 +16,7 @@ import Checkbox from '@mui/material/Checkbox';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
 import SignUpContainer from '@containers/AuthContainer/SignUpContainer';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory } from 'react-router';
 import { RootState } from '@redux/reducers';
 import { createTheme, ThemeProvider } from '@mui/material/styles/';
@@ -73,6 +74,7 @@ export default function Login(): JSX.Element {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   const handleClickSignUp = () => {
     setOpen(true);
   };
@@ -92,12 +94,26 @@ export default function Login(): JSX.Element {
     dispatch(loginActions.request(user));
   };
 
-
   useEffect(() => {
     if (isAuthenticated) {
       history.push('/main/dashboard');
     }
   }, [isAuthenticated]);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          height: '100vh',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress size={80} />
+      </Box>
+    );
+  }
 
   return (
     <div className={classes.root}>
