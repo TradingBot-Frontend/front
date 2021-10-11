@@ -26,8 +26,12 @@ import {
   keyCreateActions,
   keyCreateAction,
 } from '@redux/reducers/authReducer';
+import {
+  START_INIT,
+  connectSocketSaga,
+} from '@redux/reducers/websocketReducer';
 import axios from '@utils/axios';
-import { connectSocketSaga } from '@redux/reducers/websocketReducer';
+import { wsSaga } from '@redux/sagas/websocketSaga';
 import { AxiosResponse } from 'axios';
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
@@ -62,27 +66,7 @@ function* login(action: LoginAction) {
 function* watchLogin() {
   yield takeEvery(LOGIN_REQUEST, login);
 }
-export function* loginFlow(): any {
-  while (true) {
-    const action = yield take(LOGIN_REQUEST);
-    try {
-      const res: AxiosResponse = yield call(loginAPI, action.payload);
-      const token = res.headers?.authorization;
-      yield put(loginActions.success(token));
-    } catch (e) {
-      yield put(loginActions.failure(e));
-    }
-    yield race({
-      websocket: connectSocketSaga({ payload: 'coinList' }),
-      logouts: take(LOGOUT_REQUEST),
-    });
-    try {
-      yield put(logoutActions.success());
-    } catch (e) {
-      yield put(logoutActions.failure());
-    }
-  }
-}
+
 const signupAPI = (user: any) => {
   console.log('@signupAPIuser, user: ', user);
   return axios.post('user-service/users', user);
@@ -118,15 +102,14 @@ function* logout() {
 function* watchLogout() {
   yield takeEvery(LOGOUT_REQUEST, logout);
 }
-
 const getUserAPI = () => {
   return axios.get('user-service/users');
 };
 const getPrivateAPI = () => {
-  return axios.get('user-service/user-api');
+  return axios.get('trading-service/user-api');
 };
 const createPrivateAPI = async (user: any) => {
-  const res = await axios.post('user-service/user-api', user);
+  const res = await axios.post('trading-service/user-api', user);
   let resValue;
   if (res.data === 'success') {
     resValue = getPrivateAPI();
@@ -137,7 +120,7 @@ function* getUser(action: UsersAction) {
   try {
     const res: AxiosResponse = yield call(getUserAPI);
     console.log(res);
-    yield put(usersActions.success());
+    yield put(usersActions.success(res.data));
   } catch (e) {
     yield put(usersActions.failure(e));
   }
@@ -173,11 +156,10 @@ function* watchUserPrivateKey() {
 }
 export default function* authSaga() {
   yield all([
-    // fork(watchLogin),
+    fork(watchLogin),
     fork(watchSignup),
-    // fork(watchLogout),
+    fork(watchLogout),
     fork(watchUser),
-    fork(loginFlow),
     fork(watchUserPrivateKey),
   ]);
 }

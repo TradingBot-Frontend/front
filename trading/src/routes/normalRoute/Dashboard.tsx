@@ -26,8 +26,11 @@ import { logoutActions, privateKeyActions } from '@redux/reducers/authReducer';
 import { RootState } from '@redux/reducers';
 import { Link, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Snackbar from '@mui/material/Snackbar';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
+import { endInit } from '@redux/reducers/websocketReducer';
+
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 import 'animate.css';
 import { usersActions } from '../../redux/reducers/authReducer';
@@ -90,6 +93,9 @@ const useStyles = makeStyles((theme) => ({
     margin: '0rem 0rem 0rem 1rem',
     color: '#000000',
     fontFamily: 'sleig',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
   loginIcon: {
     // flexGrow: 1,
@@ -138,15 +144,16 @@ const useStyles = makeStyles((theme) => ({
 export const Balloon = styled.div`
   position: absolute;
   top: 14.5rem;
-  left: 14rem;
+  left: calc(100%-50px);
   z-index: 4;
-  width: 26rem;
-  height: 3rem;
-  background: #c1c6ce;
+  width: 15rem;
+  height: 6rem;
+  background: #ffffff;
   border-radius: 15px;
   animation: 'bounce';
   animation-duration: 3s;
-  :after {
+  font-family: 'sleig';
+  /* :after {
     border-top: 15px solid #c1c6ce;
     border-left: 15px solid transparent;
     border-right: 0px solid transparent;
@@ -155,12 +162,13 @@ export const Balloon = styled.div`
     position: absolute;
     top: 7px;
     left: -13px;
-  }
+  } */
 `;
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [settingOpen, setSettingOpen] = useState(false);
+  const [toast, setToast] = useState(false);
   const [search, setsearch] = useState('');
   const dispatch = useDispatch();
   const apiKey = useSelector((state: RootState) => state.auth.apiKey);
@@ -169,28 +177,17 @@ export default function Dashboard() {
   }, []);
   useEffect(() => {
     console.log('apiKey: ', apiKey);
+    if (!apiKey?.length) {
+      setToast(true);
+    }
   }, [apiKey]);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+
   const handleSettingOpen = () => setSettingOpen(true);
   const handleSettingClose = () => setSettingOpen(false);
-  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log('click button');
-  };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setsearch(e.target.value);
-  };
-  const handleKeyPress = () => {
-    console.log('press key: ', search);
-  };
+  const handleToastClose = () => setToast(false);
   const handleLogout = () => {
     dispatch(logoutActions.request());
+    dispatch(endInit());
   };
   useEffect(() => {
     dispatch(usersActions.request());
@@ -241,14 +238,15 @@ export default function Dashboard() {
               variant="h6"
               noWrap
               className={classes.menu}
+              onClick={handleSettingOpen}
             >
               설정
             </Typography>
           </div>
 
-          <IconButton color="inherit" className={classes.loginIcon}>
+          {/* <IconButton color="inherit" className={classes.loginIcon}>
             <AccountCircleIcon />
-          </IconButton>
+          </IconButton> */}
           {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
@@ -271,13 +269,16 @@ export default function Dashboard() {
       >
         <PrivateSetting handleClose={handleSettingClose} />
       </Dialog>
-      {/* {!apiKey?.length && (
-        <Balloon>
-          <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>
-            Private Setting에서 API Key를 등록해야만 진행이 가능합니다.
-          </div>
-        </Balloon>
-      )} */}
+      <Snackbar
+        open={toast}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        autoHideDuration={1000}
+        onClose={handleToastClose}
+        message="설정에서 API Key를 등록해야만 진행이 가능합니다."
+      />
     </div>
   );
 }
