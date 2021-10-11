@@ -47,11 +47,12 @@ const MainBoxWrapper = styled.div`
     position: absolute;
     color: #ffffff;
     top: 5rem;
-    /* left: 30rem; */
+    right: 15rem;
+    /* left: 10rem; */
   }
   .photo {
     width: 100%;
-    height: 63rem;
+    height: 22rem;
   }
 `;
 const TradingWrapper = styled.div`

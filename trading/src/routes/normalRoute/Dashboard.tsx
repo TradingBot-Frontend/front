@@ -244,9 +244,9 @@ export default function Dashboard() {
             </Typography>
           </div>
 
-          <IconButton color="inherit" className={classes.loginIcon}>
+          {/* <IconButton color="inherit" className={classes.loginIcon}>
             <AccountCircleIcon />
-          </IconButton>
+          </IconButton> */}
           {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
