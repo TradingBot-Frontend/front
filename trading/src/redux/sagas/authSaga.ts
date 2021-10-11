@@ -1,12 +1,4 @@
-import {
-  call,
-  put,
-  all,
-  fork,
-  takeEvery,
-  take,
-  race,
-} from 'redux-saga/effects';
+import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
 import {
   loginActions,
   LOGIN_REQUEST,
@@ -23,7 +15,6 @@ import {
   privateKeyActions,
   privateKeyAction,
   KEYCREATE_REQUEST,
-  keyCreateActions,
   keyCreateAction,
   UpdateUsersAction,
   updateusersActions,
@@ -34,11 +25,9 @@ import {
   clearActions,
   ClearAction,
   CLEAR_REQUEST,
+  VALIDATE_TOKEN_REQUEST,
+  ValidateTokenAction,
 } from '@redux/reducers/authReducer';
-import {
-  START_INIT,
-  connectSocketSaga,
-} from '@redux/reducers/websocketReducer';
 import axios from '@utils/axios';
 import { wsSaga } from '@redux/sagas/websocketSaga';
 import { AxiosResponse } from 'axios';
@@ -50,43 +39,29 @@ import { AxiosResponse } from 'axios';
 // fork: 인자로 들어온 함수를 실행시킨다. 비동기적인 함수 호출일 때 사용. (순서 상관 없을 때
 
 const loginAPI = (user: any) => {
-  console.log(user, '@login user');
   return axios.post('user-service/login', user);
 };
-
-// interface ILoginResponse e {
-//   data: {
-//     msg: string;
-//   };
-// }
-
 function* login(action: LoginAction) {
   try {
     const res: AxiosResponse = yield call(loginAPI, action.payload);
-    console.log(res);
     const token = res.headers?.authorization;
-    console.log(token);
     yield put(loginActions.success(token));
   } catch (e) {
     yield put(loginActions.failure(e));
   }
 }
-
 function* watchLogin() {
   yield takeEvery(LOGIN_REQUEST, login);
 }
 
 const signupAPI = (user: any) => {
-  console.log('@signupAPIuser, user: ', user);
   return axios.post('user-service/users', user);
 };
-
 interface ISignUpResponse {
   data: {
     msg: string;
   };
 }
-
 function* signup(action: SignupAction) {
   try {
     const res: ISignUpResponse = yield call(signupAPI, action.payload);
@@ -97,7 +72,6 @@ function* signup(action: SignupAction) {
     yield put(signupActions.failure(e));
   }
 }
-
 function* watchSignup() {
   yield takeEvery(SIGNUP_REQUEST, signup);
 }
@@ -216,6 +190,26 @@ function* watchUserPrivateKey() {
   yield takeEvery(PRIVATEKEY_REQUEST, getUserPrivate);
   yield takeEvery(KEYCREATE_REQUEST, createUserPrivate);
 }
+
+function validateTokenAPI() {
+  return axios.get('user-service/validation/users');
+}
+function* validateToken(action: ValidateTokenAction) {
+  try {
+    const res: AxiosResponse = yield call(validateTokenAPI);
+    if (res.status === 200 && action.payload) {
+      yield put(loginActions.success(action.payload));
+    } else {
+      throw new Error('validate token failed!');
+    }
+  } catch (e) {
+    yield put(loginActions.failure(e));
+  }
+}
+function* watchValidateToken() {
+  yield takeEvery(VALIDATE_TOKEN_REQUEST, validateToken);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLogin),
@@ -224,5 +218,6 @@ export default function* authSaga() {
     fork(watchUser),
     fork(watchUserPrivateKey),
     fork(watchClear),
+    fork(watchValidateToken),
   ]);
 }

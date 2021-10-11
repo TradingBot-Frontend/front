@@ -50,6 +50,9 @@ export const CLEAR_FAILURE = 'auth/CLEAR_FAILURE' as const;
 // const request = (user): ActionCreator<typeof user> => ({type: LOGIN_REQUEST, payload: user});
 // const success = (user): ActionCreator<typeof user> => ({type: LOGIN_SUCCESS, payload: user});
 // const failure = (error): ActionCreator<typeof error> => ({type: LOGIN_FAILURE, payload: error});
+export const VALIDATE_TOKEN_REQUEST = 'auth/VALIDATE_TOKEN_REQUEST' as const;
+export const VALIDATE_TOKEN_SUCCESS = 'auth/VALIDATE_TOKEN_SUCCESS' as const;
+export const VALIDATE_TOKEN_FAILURE = 'auth/VALIDATE_TOKEN_FAILURE' as const;
 
 // action creators
 const loginRequest = (user: any) => ({ type: LOGIN_REQUEST, payload: user });
@@ -142,7 +145,6 @@ const keyCreateRequestFailure = (error: any) => ({
   type: KEYCREATE_FAILURE,
   payload: error,
 });
-
 export const keyCreateActions = {
   request: keyCreateRequest,
   success: keyCreateRequestSuccess,
@@ -184,6 +186,24 @@ export const clearActions = {
   success: clearSuccess,
   failure: clearFailure,
 };
+const validateTokenRequest = (token: string | null) => ({
+  type: VALIDATE_TOKEN_REQUEST,
+  payload: token,
+});
+const validateTokenSuccess = () => ({
+  type: VALIDATE_TOKEN_SUCCESS,
+  payload: null,
+});
+const validateTokenFailure = () => ({
+  type: VALIDATE_TOKEN_FAILURE,
+  payload: null,
+});
+export const validateTokenActions = {
+  request: validateTokenRequest,
+  success: validateTokenSuccess,
+  failure: validateTokenFailure,
+};
+
 export type LoginAction =
   | ReturnType<typeof loginRequest>
   | ReturnType<typeof loginSuccess>
@@ -220,6 +240,10 @@ export type ClearAction =
   | ReturnType<typeof clearRequest>
   | ReturnType<typeof clearSuccess>
   | ReturnType<typeof clearFailure>;
+export type ValidateTokenAction =
+  | ReturnType<typeof validateTokenRequest>
+  | ReturnType<typeof validateTokenSuccess>
+  | ReturnType<typeof validateTokenFailure>;
 export type AuthAction =
   | LoginAction
   | SignupAction
@@ -229,7 +253,8 @@ export type AuthAction =
   | keyCreateAction
   | UpdateUsersAction
   | ValidateKeyAction
-  | ClearAction;
+  | ClearAction
+  | ValidateTokenAction;
 
 interface IAuthState {
   token: string | null;
@@ -267,6 +292,7 @@ export default function authReducer(
     case SIGNUP_REQUEST:
     case LOGIN_REQUEST:
     case USERS_REQUEST:
+    case VALIDATE_TOKEN_REQUEST:
       return {
         ...state,
         errorMsg: '',
@@ -275,13 +301,8 @@ export default function authReducer(
     case LOGIN_SUCCESS: {
       const token = action.payload;
       if (token) {
-        localStorage.setItem('token', token); // localStorage에 token 저장
+        sessionStorage.setItem('trb-token', token); // sessionStorage에 token 저장
         setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
-        // const base64: string = token.split(' ')[1];
-        // const base64payload: string = base64.split('.')[1];
-        // const payload: any = Buffer.from(base64payload, 'base64');
-        // const decoded: any = JSON.parse(payload.toString());
-        // const {email, username} = deocded;
         return {
           ...state,
           isAuthenticated: true,
@@ -298,7 +319,7 @@ export default function authReducer(
     }
     case LOGIN_FAILURE:
       alert('로그인 실패!');
-      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,
@@ -307,7 +328,7 @@ export default function authReducer(
       };
     case LOGOUT_FAILURE:
     case LOGOUT_SUCCESS:
-      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,
@@ -362,6 +383,19 @@ export default function authReducer(
         errorMsg: '',
         responseMsg: '',
         apiKey: '',
+      };
+    case VALIDATE_TOKEN_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case VALIDATE_TOKEN_FAILURE:
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
+      setAuthToken(null);
+      return {
+        ...state,
+        isAuthenticated: false,
+        isLoading: false,
       };
     default:
       return state;

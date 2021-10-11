@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import preLogin from './utils/preLogin';
 
 // Window 타입에  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 정의해줌
 declare global {
@@ -12,6 +13,8 @@ declare global {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
   }
 }
+
+preLogin();
 
 ReactDOM.render(
   <BrowserRouter>
