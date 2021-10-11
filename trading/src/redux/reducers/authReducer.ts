@@ -194,13 +194,8 @@ export default function authReducer(
     case LOGIN_SUCCESS: {
       const token = action.payload;
       if (token) {
-        localStorage.setItem('token', token); // localStorage에 token 저장
+        sessionStorage.setItem('trb-token', token); // sessionStorage에 token 저장
         setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
-        // const base64: string = token.split(' ')[1];
-        // const base64payload: string = base64.split('.')[1];
-        // const payload: any = Buffer.from(base64payload, 'base64');
-        // const decoded: any = JSON.parse(payload.toString());
-        // const {email, username} = deocded;
         return {
           ...state,
           isAuthenticated: true,
@@ -217,7 +212,7 @@ export default function authReducer(
     }
     case LOGIN_FAILURE:
       alert('로그인 실패!');
-      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,
@@ -226,7 +221,7 @@ export default function authReducer(
       };
     case LOGOUT_FAILURE:
     case LOGOUT_SUCCESS:
-      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,

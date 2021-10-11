@@ -95,13 +95,12 @@ export default function Login(): JSX.Element {
     e.preventDefault();
     const { email, password } = form;
     const user = { email, password };
-    console.log(user);
     dispatch(loginActions.request(user));
   };
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      dispatch(loginActions.success(localStorage.getItem('token')));
+    if (sessionStorage.getItem('trb-token')) {
+      dispatch(loginActions.success(sessionStorage.getItem('trb-token')));
     }
   }, []);
 
