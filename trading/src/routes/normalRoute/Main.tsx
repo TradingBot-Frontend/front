@@ -64,7 +64,7 @@ const TradingWrapper = styled.div`
   /* border: 1px solid; */
   .tradingTitle {
     font-size: 30px;
-    margin: 0rem 0rem 1rem 0rem;
+    margin: 0rem 0rem 2rem 0rem;
   }
   .tradingcard {
     display: flex;
@@ -206,6 +206,9 @@ const Main = () => {
           <div className="tradingTitle">트레이딩봇</div>
           <MainCards />
         </TradingWrapper>
+        <div className="tradingTitle" style={{ fontSize: '30px' }}>
+          실시간 코인 시세
+        </div>
         <TableWrapper>
           <DsbCoinList />
         </TableWrapper>

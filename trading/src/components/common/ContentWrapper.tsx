@@ -47,7 +47,7 @@ export default function ContentWrapper({
         sx={{
           display: 'flex',
           height: '80vh',
-          padding: '1rem 0rem 0rem 0rem',
+          padding: '1rem',
           overflow,
         }}
       >
