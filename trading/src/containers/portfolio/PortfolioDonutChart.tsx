@@ -4,52 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@redux/reducers";
 import {getPortfolioActions} from "@redux/reducers/portfolioReducer";
 
-// constructor(props: any) {
-//     super(props);
-//
-//     this.state = {
-//         options: {
-//             chart: {
-//                 id: 'apexchart-example'
-//             },
-//             xaxis: {
-//                 categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-//             }
-//         },
-//         series: [{
-//             name: 'series-1',
-//             data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-//         }]
-//     }
-// }
-export interface IState {
-  options: any;
-  series: any;
-}
 
 const PortfolioDonutChart = () =>  {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getPortfolioActions.request());
-  }, []);
-
-  const portfolioItems= useSelector((state: RootState) => state.portfolio.portfolio);
-
-  const labelsD: any = [];
-  const seriesD: any = [];
-
-  useEffect(() => {
-    if (portfolioItems.tokenAsset) {
-      portfolioItems.tokenAsset.forEach((e: any) => {
-        const value: any = Object.values(e)[0]
-        labelsD.push(Object.keys(e))
-        seriesD.push(value.estimate)
-      })
-    }
-  }, [portfolioItems.tokenAsset]);
-
-  const [state, setState] = useState({
-    series: seriesD,
+  const [states, setStates] = useState<any>({
     options: {
       dataLabels: {
         enabled: true,
@@ -69,13 +26,46 @@ const PortfolioDonutChart = () =>  {
           },
         },
       },
-      labels: labelsD,
+      labels: [],
     },
+    seriesItems: [],
   });
+  const { options, seriesItems } = states;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPortfolioActions.request());
+  }, []);
+
+  const portfolioItems= useSelector((state: RootState) => state.portfolio.portfolio);
+
+  const labelsD: any = [];
+  const seriesD: any = [];
+
+  useEffect(() => {
+    labelsD.push('현금')
+    seriesD.push(Object.values(portfolioItems)[0])
+    if (portfolioItems.tokenAsset) {
+      portfolioItems.tokenAsset.forEach((e: any) => {
+        const value: any = Object.values(e)[0]
+        if (value.quantity) {
+          labelsD.push(Object.keys(e))
+          seriesD.push(value.quantity)
+        }
+      })
+      setStates({
+        ...states,
+        seriesItems: seriesD,
+        options:{
+          labels: labelsD,
+        }
+      });
+    }
+
+  }, [portfolioItems]);
 
   return (
     <div>
-       <Chart options={state.options} series={state.series} type="donut"/>
+       <Chart options={options} series={seriesItems} type="donut"/>
     </div>
   );
 }
