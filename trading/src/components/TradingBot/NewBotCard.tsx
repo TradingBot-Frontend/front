@@ -12,11 +12,6 @@ import icons from '@assets/images';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 
-interface NewBotCardProps {
-  botInfo: Bot;
-  isLoading: boolean;
-}
-
 interface OnOffChipProps {
   on: boolean;
 }
@@ -29,6 +24,30 @@ function OnOffChip({ on }: OnOffChipProps): JSX.Element {
       sx={{ cursor: 'pointer' }}
     />
   );
+}
+
+interface ProfitProps {
+  profit: number;
+}
+
+function Profit({ profit }: ProfitProps): JSX.Element {
+  let profitText = '';
+  let color = 'black';
+  if (profit > 0) {
+    profitText = `${profit} ↑`;
+    color = 'red';
+  } else if (profit < 0) {
+    profitText = `${profit} ↓`;
+    color = 'blue';
+  } else {
+    profitText = `${profit}% ─`;
+  }
+  return <Typography sx={{ color }}>수익률 {profitText}</Typography>;
+}
+
+interface NewBotCardProps {
+  botInfo: Bot;
+  isLoading: boolean;
 }
 
 export default function NewBotCard({
@@ -74,7 +93,7 @@ export default function NewBotCard({
                   <Typography>##########################</Typography>
                 </Skeleton>
               ) : (
-                <Typography>수익률 {`${botInfo?.profit || 0}%`}</Typography>
+                <Profit profit={botInfo?.profit} />
               )}
             </Box>
             <Box sx={flexCenter}>
