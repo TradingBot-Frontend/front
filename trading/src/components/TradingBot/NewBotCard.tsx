@@ -27,10 +27,10 @@ function OnOffChip({ on }: OnOffChipProps): JSX.Element {
 }
 
 interface ProfitProps {
-  profit: number;
+  profit: number | undefined;
 }
 
-function Profit({ profit }: ProfitProps): JSX.Element {
+function Profit({ profit = 0 }: ProfitProps): JSX.Element {
   let profitText = '';
   let color = 'black';
   if (profit > 0) {
