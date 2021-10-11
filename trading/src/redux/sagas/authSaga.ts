@@ -25,6 +25,15 @@ import {
   KEYCREATE_REQUEST,
   keyCreateActions,
   keyCreateAction,
+  UpdateUsersAction,
+  updateusersActions,
+  UPDATEUSERS_REQUEST,
+  ValidateKeyAction,
+  validateKeyActions,
+  VALIDATEKEY_REQUEST,
+  clearActions,
+  ClearAction,
+  CLEAR_REQUEST,
 } from '@redux/reducers/authReducer';
 import {
   START_INIT,
@@ -107,6 +116,17 @@ function* watchLogout() {
 const getUserAPI = () => {
   return axios.get('user-service/users');
 };
+const updateUserAPI = async (user: any) => {
+  const res = await axios.post('user-service/users', user);
+  let resValue;
+  if (res.data === 'success') {
+    resValue = getUserAPI();
+  }
+  return resValue;
+};
+const validateKeyAPI = (info: any) => {
+  return axios.post('trading-service/api-validate', info);
+};
 const getPrivateAPI = () => {
   return axios.get('trading-service/user-api');
 };
@@ -149,8 +169,48 @@ function* createUserPrivate(action: keyCreateAction) {
     yield put(privateKeyActions.failure(e));
   }
 }
+function* updateUser(action: UpdateUsersAction) {
+  try {
+    // const obj = {
+    //   connect_key: action.payload.apiKey,
+    //   secret_key: action.payload.secretKey,
+    // };
+    const res: AxiosResponse = yield call(updateUserAPI, action.payload);
+    if (res) {
+      yield put(updateusersActions.success(res.data));
+    }
+  } catch (e) {
+    yield put(updateusersActions.failure(e));
+  }
+}
+function* validateKey(action: ValidateKeyAction) {
+  const obj = {
+    connect_key: action.payload.apiKey,
+    secret_key: action.payload.secretKey,
+  };
+  const res: AxiosResponse = yield call(validateKeyAPI, obj);
+  try {
+    if (res) {
+      yield put(validateKeyActions.success(res.data));
+    }
+  } catch (e) {
+    yield put(validateKeyActions.failure(e));
+  }
+}
+function* clear() {
+  try {
+    yield put(clearActions.success());
+  } catch (e) {
+    yield put(clearActions.failure(e));
+  }
+}
+function* watchClear() {
+  yield takeEvery(CLEAR_REQUEST, clear);
+}
 function* watchUser() {
   yield takeEvery(USERS_REQUEST, getUser);
+  yield takeEvery(UPDATEUSERS_REQUEST, updateUser);
+  yield takeEvery(VALIDATEKEY_REQUEST, validateKey);
 }
 function* watchUserPrivateKey() {
   yield takeEvery(PRIVATEKEY_REQUEST, getUserPrivate);
@@ -163,5 +223,6 @@ export default function* authSaga() {
     fork(watchLogout),
     fork(watchUser),
     fork(watchUserPrivateKey),
+    fork(watchClear),
   ]);
 }

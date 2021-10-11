@@ -21,10 +21,21 @@ export const USERS_REQUEST = 'auth/USERS_REQUEST' as const;
 export const USERS_SUCCESS = 'auth/USERS_SUCCESS' as const;
 export const USERS_FAILURE = 'auth/USERS_FAILURE' as const;
 
+export const UPDATEUSERS_REQUEST = 'auth/UPDATEUSERS_REQUEST' as const;
+export const UPDATEUSERS_SUCCESS = 'auth/UPDATEUSERS_SUCCESS' as const;
+export const UPDATEUSERS_FAILURE = 'auth/UPDATEUSERS_FAILURE' as const;
+
 export const KEYCREATE_REQUEST = 'auth/KEYCREATE_REQUEST' as const;
 export const KEYCREATE_SUCCESS = 'auth/KEYCREATE_SUCCESS' as const;
 export const KEYCREATE_FAILURE = 'auth/KEYCREATE_FAILURE' as const;
 
+export const VALIDATEKEY_REQUEST = 'auth/VALIDATEKEY_REQUEST' as const;
+export const VALIDATEKEY_SUCCESS = 'auth/VALIDATEKEY_SUCCESS' as const;
+export const VALIDATEKEY_FAILURE = 'auth/VALIDATEKEY_FAILURE' as const;
+
+export const CLEAR_REQUEST = 'auth/CLEAR_REQUEST' as const;
+export const CLEAR_SUCCESS = 'auth/CLEAR_SUCCESS' as const;
+export const CLEAR_FAILURE = 'auth/CLEAR_FAILURE' as const;
 // type LoginAction =
 // | typeof LOGIN_REQUEST
 // | typeof LOGIN_SUCCESS
@@ -83,6 +94,24 @@ export const usersActions = {
   failure: usersFailure,
 };
 
+const updateusersRequest = (res: any) => ({
+  type: UPDATEUSERS_REQUEST,
+  payload: res,
+});
+const updateusersSuccess = (res: any) => ({
+  type: UPDATEUSERS_SUCCESS,
+  payload: res,
+});
+const updateusersFailure = (error: any) => ({
+  type: UPDATEUSERS_FAILURE,
+  payload: error,
+});
+export const updateusersActions = {
+  request: updateusersRequest,
+  success: updateusersSuccess,
+  failure: updateusersFailure,
+};
+
 const privateKeyRequest = () => ({
   type: PRIVATEKEY_REQUEST,
   // payload: form,
@@ -119,7 +148,42 @@ export const keyCreateActions = {
   success: keyCreateRequestSuccess,
   failure: keyCreateRequestFailure,
 };
+const validatekeyRequest = (form: any) => ({
+  type: VALIDATEKEY_REQUEST,
+  payload: form,
+});
+const validatekeySuccess = (res: any) => ({
+  type: VALIDATEKEY_SUCCESS,
+  payload: res,
+});
+const validatekeyFailure = (error: any) => ({
+  type: VALIDATEKEY_FAILURE,
+  payload: error,
+});
 
+export const validateKeyActions = {
+  request: validatekeyRequest,
+  success: validatekeySuccess,
+  failure: validatekeyFailure,
+};
+const clearRequest = () => ({
+  type: CLEAR_REQUEST,
+  payload: null,
+});
+const clearSuccess = () => ({
+  type: CLEAR_SUCCESS,
+  payload: null,
+});
+const clearFailure = (error: any) => ({
+  type: CLEAR_FAILURE,
+  payload: error,
+});
+
+export const clearActions = {
+  request: clearRequest,
+  success: clearSuccess,
+  failure: clearFailure,
+};
 export type LoginAction =
   | ReturnType<typeof loginRequest>
   | ReturnType<typeof loginSuccess>
@@ -144,13 +208,28 @@ export type UsersAction =
   | ReturnType<typeof usersRequest>
   | ReturnType<typeof usersSuccess>
   | ReturnType<typeof usersFailure>;
+export type UpdateUsersAction =
+  | ReturnType<typeof updateusersRequest>
+  | ReturnType<typeof updateusersSuccess>
+  | ReturnType<typeof updateusersFailure>;
+export type ValidateKeyAction =
+  | ReturnType<typeof validatekeyRequest>
+  | ReturnType<typeof validatekeySuccess>
+  | ReturnType<typeof validatekeyFailure>;
+export type ClearAction =
+  | ReturnType<typeof clearRequest>
+  | ReturnType<typeof clearSuccess>
+  | ReturnType<typeof clearFailure>;
 export type AuthAction =
   | LoginAction
   | SignupAction
   | LogoutAction
   | privateKeyAction
   | UsersAction
-  | keyCreateAction;
+  | keyCreateAction
+  | UpdateUsersAction
+  | ValidateKeyAction
+  | ClearAction;
 
 interface IAuthState {
   token: string | null;
@@ -163,6 +242,7 @@ interface IAuthState {
   errorMsg: string;
   apiKey: string | null;
   secretKey: string | null;
+  responseMsg: string;
 }
 
 const initialState: IAuthState = {
@@ -176,6 +256,7 @@ const initialState: IAuthState = {
   errorMsg: '',
   apiKey: '',
   secretKey: '',
+  responseMsg: '',
 };
 
 export default function authReducer(
@@ -249,18 +330,38 @@ export default function authReducer(
       };
 
     case PRIVATEKEY_SUCCESS:
-    case KEYCREATE_SUCCESS:
       return {
         ...state,
         apiKey: action.payload.connect_key,
         secretKey: action.payload.secret_key,
         errorMsg: '',
       };
+    case KEYCREATE_SUCCESS:
+      return {
+        ...state,
+        apiKey: action.payload.connect_key,
+        secretKey: action.payload.secret_key,
+        errorMsg: '',
+        responseMsg: 'success',
+      };
     case USERS_SUCCESS:
+    case UPDATEUSERS_SUCCESS:
       return {
         ...state,
         email: action.payload.email,
         name: action.payload.name,
+      };
+    case VALIDATEKEY_SUCCESS:
+      return {
+        ...state,
+        errorMsg: `${action.payload}`,
+      };
+    case CLEAR_SUCCESS:
+      return {
+        ...state,
+        errorMsg: '',
+        responseMsg: '',
+        apiKey: '',
       };
     default:
       return state;

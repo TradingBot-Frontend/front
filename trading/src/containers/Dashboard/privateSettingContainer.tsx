@@ -12,7 +12,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Alert } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@redux/reducers';
-import { keyCreateActions, signupActions } from '@redux/reducers/authReducer';
+import {
+  clearActions,
+  keyCreateActions,
+  signupActions,
+  updateusersActions,
+  validateKeyActions,
+} from '@redux/reducers/authReducer';
 
 const style = {
   position: 'absolute',
@@ -62,18 +68,21 @@ const BtnWrapper = styled.div`
 `;
 const FooterWrapper = styled.div`
   display: flex;
+  flex: 1;
   .validate {
     display: flex;
     flex-direction: row;
+    border: 1px solid;
   }
   .validateString {
     margin: 0.2rem 0rem 0rem 0.2rem;
+    font-size: 11px;
   }
 `;
 const Buttons = styled(Button)`
   color: #ffffff;
   background-color: #3072eb;
-  width: 7rem;
+  width: 5rem;
 `;
 const ConfirmButton = styled(Button)`
   display: flex;
@@ -139,7 +148,12 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
   const authInfo = useSelector((state: RootState) => state.auth);
   const { pws, api, back } = button;
   const { password, pwConfirm, localMsg, email } = states;
-  const [validate, setValidate] = useState(false);
+  const [validate, setValidate] = useState('');
+  useEffect(() => {
+    return () => {
+      dispatch(clearActions.request());
+    };
+  }, []);
   useEffect(() => {
     setStates({
       ...states,
@@ -160,10 +174,21 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     }
   }, [pwConfirm]);
   useEffect(() => {
-    if (authInfo.apiKey?.length) {
-      setOpen(true);
+    if (authInfo.responseMsg === 'success') {
+      alert('개인 설정이 저장되었습니다.');
+      handleClose();
+      // setOpen(true);
     }
   }, [authInfo.apiKey]);
+  useEffect(() => {
+    if (authInfo.errorMsg === 'true') {
+      setValidate('validate');
+    } else if (authInfo.errorMsg === 'false') {
+      setValidate('notValidate');
+    } else {
+      setValidate('');
+    }
+  }, [authInfo.errorMsg]);
   // TODO: 페이지 나가면 값 사라지게 만들기
   // useEffect(() => {
   //   handleClose();
@@ -172,19 +197,24 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     e.preventDefault();
     console.log('submit:', states);
     if (api) {
-      dispatch(keyCreateActions.request(states));
+      if (validate === 'notValidate') {
+        alert('유효한 API key가 아닙니다.');
+      } else {
+        dispatch(keyCreateActions.request(states));
+      }
     } else {
       const obj = {
         email: authInfo.email,
         name: authInfo.name,
         password,
-        case: 'update',
       };
-      dispatch(signupActions.request(obj));
+      dispatch(updateusersActions.request(obj));
+      // dispatch(signupActions.request(obj));
     }
   };
   const handleValidate = () => {
-    setValidate(!validate);
+    // setValidate(!validate);
+    dispatch(validateKeyActions.request(states));
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -275,11 +305,19 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     onClick={() =>
                       handleSelectBtn(`${btn.key}`, button[`${btn.key}`])
                     }
-                    style={{
-                      background: '#adb6c4',
-                      width: '10rem',
-                      margin: '1rem 0rem 0rem 0rem',
-                    }}
+                    style={
+                      btn.key !== 'pws'
+                        ? {
+                            background: '#adb6c4',
+                            width: '10rem',
+                            margin: '1rem 0rem 0rem 0rem',
+                          }
+                        : {
+                            background: '#adb6c4',
+                            width: '10rem',
+                            margin: '0rem 0rem 0rem 0rem',
+                          }
+                    }
                   >
                     {btn.title}
                   </Button>
@@ -357,21 +395,35 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
                     variant="outlined"
                     onChange={handleChange}
                     className="value"
+                    type="password"
                   />
                 </InputWrapper>
-                <FooterWrapper>
-                  <div className="validate">
-                    <Buttons onClick={handleValidate}>validate</Buttons>
-                    {validate && (
-                      <>
-                        <CheckIcon style={{ color: 'green' }} />
-                        <span className="validateString">
-                          유효한 API Key 입니다.
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </FooterWrapper>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    fontSize: '12px',
+                  }}
+                >
+                  <Buttons onClick={handleValidate}>validate</Buttons>
+                  {validate === 'validate' && (
+                    <>
+                      <CheckIcon style={{ color: 'green' }} />
+                      <span style={{ margin: '0.5rem 0rem 0rem 0.2rem' }}>
+                        유효한 API Key 입니다.
+                      </span>
+                    </>
+                  )}
+                  {validate === 'notValidate' && (
+                    <>
+                      <CheckIcon style={{ color: 'red' }} />
+                      <span style={{ margin: '0.5rem 0rem 0rem 0.2rem' }}>
+                        유효하지 않은 API Key 입니다.
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </Box>
