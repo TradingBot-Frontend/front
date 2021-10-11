@@ -120,7 +120,7 @@ function* getUser(action: UsersAction) {
   try {
     const res: AxiosResponse = yield call(getUserAPI);
     console.log(res);
-    yield put(usersActions.success());
+    yield put(usersActions.success(res.data));
   } catch (e) {
     yield put(usersActions.failure(e));
   }

@@ -75,7 +75,7 @@ export const logoutActions = {
 };
 
 const usersRequest = () => ({ type: USERS_REQUEST, payload: null });
-const usersSuccess = () => ({ type: USERS_SUCCESS, payload: null });
+const usersSuccess = (res: any) => ({ type: USERS_SUCCESS, payload: res });
 const usersFailure = (error: any) => ({ type: USERS_FAILURE, payload: error });
 export const usersActions = {
   request: usersRequest,
@@ -169,8 +169,8 @@ const initialState: IAuthState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  email: 'test2@gmail.com',
-  name: '스폰지밥',
+  email: '',
+  name: '',
   password: '',
   // successMsg: '',
   errorMsg: '',
@@ -256,7 +256,12 @@ export default function authReducer(
         secretKey: action.payload.secret_key,
         errorMsg: '',
       };
-
+    case USERS_SUCCESS:
+      return {
+        ...state,
+        email: action.payload.email,
+        name: action.payload.name,
+      };
     default:
       return state;
   }
