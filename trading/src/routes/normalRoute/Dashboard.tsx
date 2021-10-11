@@ -39,9 +39,11 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    overflow: 'hidden',
+    // overflow: 'hidden',
     position: 'relative',
-    height: '80rem',
+    height: '100vh',
+    flexDirection: 'column',
+    background: '#43335',
   },
   toolbar: {
     // paddingRight: 24, // keep right padding when drawer closed
@@ -80,7 +82,6 @@ const useStyles = makeStyles((theme) => ({
     // flexGrow: 6,
     color: '#170f8b',
     fontFamily: 'sleig',
-
     fontSize: '30px',
   },
   menuWrapper: {
@@ -124,8 +125,9 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
+    height: '100%',
     width: '100%',
+    overflow: 'auto',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -196,70 +198,71 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-        style={{ background: '#FFFFFF' }}
-      >
-        <Toolbar className={classes.toolbar}>
-          <div className={classes.menuWrapper}>
-            <Link to="dashboard" style={{ textDecoration: 'none' }}>
-              <Typography
-                component="h1"
-                variant="h6"
-                noWrap
-                className={classes.title}
-              >
-                tradingbot
-              </Typography>
-            </Link>
-            <Link to="trading-bot" style={{ textDecoration: 'none' }}>
+      <div>
+        <AppBar
+          position="absolute"
+          className={clsx(classes.appBar, open && classes.appBarShift)}
+          style={{ background: '#FFFFFF' }}
+        >
+          <Toolbar className={classes.toolbar}>
+            <div className={classes.menuWrapper}>
+              <Link to="dashboard" style={{ textDecoration: 'none' }}>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  noWrap
+                  className={classes.title}
+                >
+                  Tradingbot
+                </Typography>
+              </Link>
+              <Link to="trading-bot" style={{ textDecoration: 'none' }}>
+                <Typography
+                  component="h3"
+                  variant="h6"
+                  noWrap
+                  className={classes.menu}
+                >
+                  트레이딩 봇
+                </Typography>
+              </Link>
+              <Link to="portfolio" style={{ textDecoration: 'none' }}>
+                <Typography
+                  component="h3"
+                  variant="h6"
+                  noWrap
+                  className={classes.menu}
+                >
+                  포트폴리오
+                </Typography>
+              </Link>
               <Typography
                 component="h3"
                 variant="h6"
                 noWrap
                 className={classes.menu}
+                onClick={handleSettingOpen}
               >
-                트레이딩 봇
+                설정
               </Typography>
-            </Link>
-            <Link to="portfolio" style={{ textDecoration: 'none' }}>
-              <Typography
-                component="h3"
-                variant="h6"
-                noWrap
-                className={classes.menu}
-              >
-                포트폴리오
-              </Typography>
-            </Link>
-            <Typography
-              component="h3"
-              variant="h6"
-              noWrap
-              className={classes.menu}
-              onClick={handleSettingOpen}
-            >
-              설정
-            </Typography>
-          </div>
+            </div>
 
-          {/* <IconButton color="inherit" className={classes.loginIcon}>
+            {/* <IconButton color="inherit" className={classes.loginIcon}>
             <AccountCircleIcon />
           </IconButton> */}
-          {/* <Button variant="contained" color="primary">
+            {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
-          <CommonButtonContainer
-            title="LOGOUT"
-            color="#170F8B"
-            onClick={handleLogout}
-          />
-        </Toolbar>
-      </AppBar>
-
+            <CommonButtonContainer
+              title="LOGOUT"
+              color="#170F8B"
+              onClick={handleLogout}
+            />
+          </Toolbar>
+        </AppBar>
+      </div>
+      <div className={classes.appBarSpacer} />
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <ContentsRouter />
       </main>
       <Dialog

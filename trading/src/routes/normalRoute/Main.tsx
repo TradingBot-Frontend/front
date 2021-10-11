@@ -24,8 +24,8 @@ const MainWapper = styled.div`
   flex-direction: column;
   width: 100%;
   height: 80rem;
+  /* overflow: auto; */
   font-family: 'sleig';
-  background-color: #ffffff;
   .buttons {
     display: flex;
     flex-direction: row-reverse;
