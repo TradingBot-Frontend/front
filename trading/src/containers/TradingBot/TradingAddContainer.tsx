@@ -412,7 +412,9 @@ const TradingBotAdd = ({
                 <Select
                   id="isBidConditionExceed"
                   style={{ width: '7rem', height: '2.5rem' }}
-                  value={values.isBidConditionExceed}
+                  value={
+                    values.isBidConditionExceed === true ? 'true' : 'false'
+                  }
                   onChange={(e) =>
                     handleSelectChange(e, 'isBidConditionExceed')
                   }
