@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Container, Grid, Paper, useMediaQuery } from '@material-ui/core';
+import { Box, Container, useMediaQuery } from '@material-ui/core';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { makeStyles } from '@material-ui/core/styles';
 import bitcoin from '@assets/images/bitcoin.jpg';
@@ -60,35 +59,13 @@ const TradingWrapper = styled.div`
   /* border: 1px solid; */
   .tradingTitle {
     font-size: 30px;
-    margin: 0rem 0rem 2rem 0rem;
+    margin: 0rem 0rem 2.5rem 0rem;
   }
   .tradingcard {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
-`;
-const Papers = styled(Paper)`
-  height: 99%;
-  width: 15rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .title {
-    font-size: 20px;
-  }
-  .content {
-    font-size: 15px;
-    color: #ccc;
-  }
-`;
-const Buttons = styled.button`
-  color: #ffffff;
-  background-color: #353635;
-  width: 5rem;
-  height: 10%;
-  border-radius: 25px;
-  margin: 0.5rem 0rem 0rem 0rem;
 `;
 const TableWrapper = styled.div`
   display: flex;
@@ -98,7 +75,7 @@ const TableWrapper = styled.div`
   /* border: 1px solid; */
   margin: 2rem 0rem 0rem 0rem;
 `;
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   topContainer: {
     margin: '2rem 0rem 0rem 0rem',
     height: '10rem',
@@ -185,10 +162,7 @@ const MainCards = () => {
   );
 };
 
-const Main = () => {
-  const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
-  const classes = useStyles();
+const Main = (): JSX.Element => {
   return (
     <MainWapper>
       <MainBoxWrapper>
