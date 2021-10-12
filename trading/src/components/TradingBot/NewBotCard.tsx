@@ -9,6 +9,8 @@ import Dialog from '@mui/material/Dialog';
 import TradingBotAdd from '@containers/TradingBot/TradingAddContainer';
 import { Bot } from '@redux/reducers/botReducer';
 import icons from '@assets/images';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 
@@ -34,16 +36,24 @@ interface ProfitProps {
 function Profit({ profit = 0 }: ProfitProps): JSX.Element {
   let profitText = '';
   let color = 'black';
+  let arrow = null;
   if (profit > 0) {
-    profitText = `${profit} ↑`;
     color = 'red';
+    arrow = <ArrowUpwardIcon sx={{ mb: 0.4 }} />;
   } else if (profit < 0) {
-    profitText = `${profit} ↓`;
     color = 'blue';
+    arrow = <ArrowDownwardIcon sx={{ mb: 0.4 }} />;
   } else {
-    profitText = `${profit}% ─`;
+    arrow = '─';
   }
-  return <Typography sx={{ color }}>수익률 {profitText}</Typography>;
+  profitText = `${profit}%`;
+  return (
+    <Typography
+      sx={{ color, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}
+    >
+      수익률 {profitText}&nbsp;{arrow}
+    </Typography>
+  );
 }
 
 interface NewBotCardProps {
