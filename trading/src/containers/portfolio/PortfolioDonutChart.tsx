@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import Chart from 'react-apexcharts'
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@redux/reducers";
-import {getPortfolioActions} from "@redux/reducers/portfolioReducer";
+import React, { useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@redux/reducers';
+import { getPortfolioActions } from '@redux/reducers/portfolioReducer';
 
-
-const PortfolioDonutChart = () =>  {
+const PortfolioDonutChart = () => {
   const [states, setStates] = useState<any>({
     options: {
       dataLabels: {
@@ -14,9 +13,9 @@ const PortfolioDonutChart = () =>  {
       plotOptions: {
         chart: {
           toolbar: {
-            show: false
+            show: false,
           },
-          width: '100%'
+          width: '100%',
         },
         pie: {
           size: 200,
@@ -36,37 +35,42 @@ const PortfolioDonutChart = () =>  {
     dispatch(getPortfolioActions.request());
   }, []);
 
-  const portfolioItems= useSelector((state: RootState) => state.portfolio.portfolio);
+  const portfolioItems = useSelector(
+    (state: RootState) => state.portfolio.portfolio,
+  );
 
   const labelsD: any = [];
   const seriesD: any = [];
 
   useEffect(() => {
-    labelsD.push('현금')
-    seriesD.push(Object.values(portfolioItems)[0])
+    labelsD.push('현금');
+    if (!Object.values(portfolioItems)[0]) {
+      seriesD.push(0);
+    } else {
+      seriesD.push(Object.values(portfolioItems)[0]);
+    }
     if (portfolioItems.tokenAsset) {
       portfolioItems.tokenAsset.forEach((e: any) => {
-        const value: any = Object.values(e)[0]
+        const value: any = Object.values(e)[0];
         if (value.quantity) {
-          labelsD.push(Object.keys(e))
-          seriesD.push(value.quantity)
+          labelsD.push(Object.keys(e));
+          seriesD.push(value.quantity);
         }
-      })
+      });
       setStates({
         ...states,
         seriesItems: seriesD,
-        options:{
+        options: {
           labels: labelsD,
-        }
+        },
       });
     }
-
   }, [portfolioItems]);
 
   return (
     <div>
-       <Chart options={options} series={seriesItems} type="donut"/>
+      <Chart options={options} series={seriesItems} type="donut" />
     </div>
   );
-}
+};
 export default PortfolioDonutChart;
