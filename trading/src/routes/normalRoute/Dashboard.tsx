@@ -278,7 +278,7 @@ export default function Dashboard() {
           vertical: 'top',
           horizontal: 'center',
         }}
-        autoHideDuration={1000}
+        autoHideDuration={3000}
         onClose={handleToastClose}
         message="설정에서 API Key를 등록해야만 진행이 가능합니다."
       />
