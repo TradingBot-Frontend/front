@@ -1,28 +1,10 @@
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import { Container, Grid } from '@material-ui/core';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-// import { visuallyHidden } from '@mui/utils';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
 
 export interface Data {
   name: string;
@@ -159,7 +141,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-export default function EnhancedTable({ coindata }: any) {
+export default function EnhancedTable({ coindata }: any): JSX.Element {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('rateOfChange');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -174,10 +156,10 @@ export default function EnhancedTable({ coindata }: any) {
       changeCell: '',
     },
   ]);
-  useEffect(() => {
+  React.useEffect(() => {
     setRows(coindata);
   }, []);
-  useEffect(() => {
+  React.useEffect(() => {
     setRows(coindata);
     setTimeout(() => {
       const newDataColor = coindata.map((data: any) => {
@@ -190,7 +172,7 @@ export default function EnhancedTable({ coindata }: any) {
     }, 500);
   }, [coindata]);
 
-  const handleRequestSort = useCallback(
+  const handleRequestSort = React.useCallback(
     (event: React.MouseEvent<unknown>, property: keyof Data) => {
       const isAsc = orderBy === property && order === 'asc';
       setOrder(isAsc ? 'desc' : 'asc');
@@ -198,7 +180,7 @@ export default function EnhancedTable({ coindata }: any) {
     },
     [selected, orderBy, order],
   );
-  const handleSelectAllClick = useCallback(
+  const handleSelectAllClick = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
         const newSelecteds = rows.map((n) => n.name);
@@ -210,7 +192,7 @@ export default function EnhancedTable({ coindata }: any) {
     [selected],
   );
 
-  const handleClick = useCallback(
+  const handleClick = React.useCallback(
     (event: React.MouseEvent<unknown>, name: string) => {
       const selectedIndex = selected.indexOf(name);
       let newSelected: readonly string[] = [];
@@ -233,7 +215,7 @@ export default function EnhancedTable({ coindata }: any) {
     [selected],
   );
 
-  const isSelected = useCallback(
+  const isSelected = React.useCallback(
     (name: string) => {
       return selected.indexOf(name) !== -1;
     },

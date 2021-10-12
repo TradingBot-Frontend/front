@@ -122,9 +122,7 @@ export default function NewBotCard({
                   <Typography>##########################</Typography>
                 </Skeleton>
               ) : (
-                <Typography>
-                  <OnOffChip on={botInfo.isActive} />
-                </Typography>
+                <OnOffChip on={botInfo.isActive} />
               )}
             </Box>
           </Stack>

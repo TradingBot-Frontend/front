@@ -36,7 +36,7 @@ const TimeWrapper = styled.div`
     float: right;
   }
 `;
-const TimeLineComponent: React.FC<newsProps> = ({ time, content, key }) => {
+const TimeLineComponent: React.FC<newsProps> = ({ time, content }) => {
   //   const classes = useStyles();
   return (
     <TimeWrapper>

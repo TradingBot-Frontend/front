@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Modal from '@mui/material/Modal';
 import { Box, Button } from '@material-ui/core';
-import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import styled from 'styled-components';
 import { Container, Grid, Paper, useMediaQuery } from '@material-ui/core';
 import DsbCoinList from '@containers/Dashboard/DsbCoinListContainer';
 import { makeStyles } from '@material-ui/core/styles';
-import PortfolioDonutChart from '@containers/portfolio/PortfolioDonutChart';
-import btc from '@assets/images/btc.png';
 import bitcoin from '@assets/images/bitcoin.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
@@ -17,7 +13,6 @@ import { green } from '@mui/material/colors';
 import NewBotCard from '@components/TradingBot/NewBotCard';
 import { RootState } from '../../redux/reducers/index';
 import { getBotsActions } from '../../redux/reducers/botReducer';
-import BotCard from '../../components/TradingBot/BotCard';
 
 const MainWapper = styled.div`
   display: flex;
@@ -160,13 +155,13 @@ const MainCards = () => {
     if (i === 2) show = showThirdCard;
     if (i === 3) show = showFourthCard;
     botContainer.push(
-      <>
+      <React.Fragment key={bot.id}>
         {show && (
-          <Box key={bot.id} sx={{ marginRight: '7rem' }}>
+          <Box sx={{ marginRight: '7rem' }}>
             <NewBotCard botInfo={bot} isLoading={isLoading} />
           </Box>
         )}
-      </>,
+      </React.Fragment>,
     );
   }
   const noData = (

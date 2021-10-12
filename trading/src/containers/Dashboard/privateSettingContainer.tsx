@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Paper } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import CheckIcon from '@mui/icons-material/Check';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,22 +14,9 @@ import { RootState } from '@redux/reducers';
 import {
   clearActions,
   keyCreateActions,
-  signupActions,
   updateusersActions,
   validateKeyActions,
 } from '@redux/reducers/authReducer';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: 650,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
 
 const InputWrapper = styled.div`
   display: flex;
@@ -56,29 +42,6 @@ const TextFields = styled(TextField)`
     cursor: not-allowed;
   }
 `;
-
-const BtnWrapper = styled.div`
-  display: flex;
-  /* justify-content: center;
-  align-items: center; */
-  flex: 1;
-  width: 18rem;
-  border: 1px solid;
-  margin: 0.5rem 0rem 0rem 0rem;
-`;
-const FooterWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  .validate {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid;
-  }
-  .validateString {
-    margin: 0.2rem 0rem 0rem 0.2rem;
-    font-size: 11px;
-  }
-`;
 const Buttons = styled(Button)`
   color: #ffffff;
   background-color: #3072eb;
@@ -97,10 +60,6 @@ const CancleButton = styled(Button)`
   color: #000000;
   width: 8rem;
   margin: 0.5rem 0rem 0rem 0.5rem;
-`;
-const DialogBtnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 interface ISettingProps {
   handleClose: () => void;
@@ -128,7 +87,7 @@ const buttonMap = [
     key: 'back',
   },
 ];
-const PrivateSetting = ({ handleClose }: ISettingProps) => {
+const PrivateSetting = ({ handleClose }: ISettingProps): JSX.Element => {
   const [button, setButton] = useState<IButtonProps>({
     pws: false,
     api: false,
@@ -143,7 +102,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     secretKey: '',
     localMsg: '',
   });
-  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const authInfo = useSelector((state: RootState) => state.auth);
   const { pws, api, back } = button;
@@ -195,7 +153,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
   // }, [open]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit:', states);
     if (api) {
       if (validate === 'notValidate') {
         alert('유효한 API key가 아닙니다.');
