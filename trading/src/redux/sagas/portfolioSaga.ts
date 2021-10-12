@@ -34,8 +34,6 @@ interface IPortfolioResponse<T> {
 function* items(action: GetItemsAction) {
   try {
     const res: IItemResponse<any> = yield call(itemsGetAPI);
-    console.log('items');
-    console.log(res);
     yield put(getItemsActions.success(res));
   } catch (e) {
     yield put(getItemsActions.failure(e));
@@ -49,8 +47,6 @@ function* itemsGet() {
 function* portfolio(action: GetPortfolioActions) {
   try {
     const res: IPortfolioResponse<any> = yield call(portfolioGetAPI);
-    console.log('portfolio');
-    console.log(res);
     yield put(getPortfolioActions.success(res));
   } catch (e) {
     yield put(getPortfolioActions.failure(e));

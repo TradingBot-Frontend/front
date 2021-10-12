@@ -1,5 +1,9 @@
 import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
-import { CoinListAction, COINLIST_REQUEST, coinListActions } from '@redux/reducers/coinReducer';
+import {
+  CoinListAction,
+  COINLIST_REQUEST,
+  coinListActions,
+} from '@redux/reducers/coinReducer';
 import axios from '@utils/axios';
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
