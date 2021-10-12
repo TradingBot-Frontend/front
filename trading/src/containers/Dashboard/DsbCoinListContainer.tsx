@@ -8,7 +8,7 @@ import { fetchCoinActions, startInit } from '@redux/reducers/websocketReducer';
 
 export const DsbContWrapper = styled.div``;
 
-const DsbCoinList = () => {
+const DsbCoinList = (): JSX.Element => {
   const dispatch = useDispatch();
   const coinValue = useSelector((state: RootState) => state.coin);
   const [coinData, setCoinData] = useState(coinValue);

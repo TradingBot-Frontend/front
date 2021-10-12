@@ -89,8 +89,8 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
     });
   };
 
-  cellRenderer: TableCellRenderer = ({ cellData, columnIndex }) => {
-    const { columns, classes, rowHeight, onRowClick } = this.props;
+  cellRenderer: TableCellRenderer = ({ cellData }) => {
+    const { classes, rowHeight, onRowClick } = this.props;
     return (
       <TableCell
         component="div"

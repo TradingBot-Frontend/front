@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import TimeLineComponent from '@components/CoinMarket/TimeLine';
 
 const newsData = [
@@ -19,11 +19,19 @@ export interface newsProps {
   content: string;
   key: number;
 }
-export const TimeLine = () => {
+export const TimeLine = (): JSX.Element => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', margin: '6rem 0rem 0rem 3rem' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '6rem 0rem 0rem 3rem',
+      }}
+    >
       {newsData.map((v) => {
-        return <TimeLineComponent time={v.time} content={v.content} key={v.id} />;
+        return (
+          <TimeLineComponent time={v.time} content={v.content} key={v.id} />
+        );
       })}
     </div>
   );

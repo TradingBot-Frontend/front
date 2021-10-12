@@ -42,29 +42,6 @@ const TextFields = styled(TextField)`
     cursor: not-allowed;
   }
 `;
-
-const BtnWrapper = styled.div`
-  display: flex;
-  /* justify-content: center;
-  align-items: center; */
-  flex: 1;
-  width: 18rem;
-  border: 1px solid;
-  margin: 0.5rem 0rem 0rem 0rem;
-`;
-const FooterWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  .validate {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid;
-  }
-  .validateString {
-    margin: 0.2rem 0rem 0rem 0.2rem;
-    font-size: 11px;
-  }
-`;
 const Buttons = styled(Button)`
   color: #ffffff;
   background-color: #3072eb;
@@ -104,7 +81,7 @@ const buttonMap = [
     key: 'back',
   },
 ];
-const PrivateSetting = ({ handleClose }: ISettingProps) => {
+const PrivateSetting = ({ handleClose }: ISettingProps): JSX.Element => {
   const [button, setButton] = useState<IButtonProps>({
     pws: false,
     api: false,
@@ -119,7 +96,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     secretKey: '',
     localMsg: '',
   });
-  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const authInfo = useSelector((state: RootState) => state.auth);
   const { pws, api, back } = button;
