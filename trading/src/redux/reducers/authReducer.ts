@@ -36,20 +36,7 @@ export const VALIDATEKEY_FAILURE = 'auth/VALIDATEKEY_FAILURE' as const;
 export const CLEAR_REQUEST = 'auth/CLEAR_REQUEST' as const;
 export const CLEAR_SUCCESS = 'auth/CLEAR_SUCCESS' as const;
 export const CLEAR_FAILURE = 'auth/CLEAR_FAILURE' as const;
-// type LoginAction =
-// | typeof LOGIN_REQUEST
-// | typeof LOGIN_SUCCESS
-// | typeof LOGIN_FAILURE;
 
-// interface ActionCreator<T> {
-//   type: LoginAction;
-//   payload: T;
-// }
-
-// action creators
-// const request = (user): ActionCreator<typeof user> => ({type: LOGIN_REQUEST, payload: user});
-// const success = (user): ActionCreator<typeof user> => ({type: LOGIN_SUCCESS, payload: user});
-// const failure = (error): ActionCreator<typeof error> => ({type: LOGIN_FAILURE, payload: error});
 export const VALIDATE_TOKEN_REQUEST = 'auth/VALIDATE_TOKEN_REQUEST' as const;
 export const VALIDATE_TOKEN_SUCCESS = 'auth/VALIDATE_TOKEN_SUCCESS' as const;
 export const VALIDATE_TOKEN_FAILURE = 'auth/VALIDATE_TOKEN_FAILURE' as const;

@@ -12,7 +12,7 @@ export interface Data {
   rateOfChange: string;
   money: string;
   id: string;
-  color?: any;
+  color?: string;
   changeCell?: string;
 }
 
