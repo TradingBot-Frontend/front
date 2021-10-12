@@ -160,10 +160,6 @@ const TradingBotAdd = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log('localMsg:', localMsg);
-  }, [localMsg]);
-
   // TODO: validation 추가
   const calculateCurrentPrice = useCallback(
     (cl: ICoinState[]) => {
@@ -189,7 +185,6 @@ const TradingBotAdd = ({
   // TODO: 제대로 작동하는지 확인
   const isBlank = useCallback(() => {
     return Object.entries(values).some(([key, val]) => {
-      // console.log('key:', key, 'val: ', val, 'ret: ', !val);
       if (typeof val === 'boolean') return false;
       if (key === 'profit') return false;
       return !val;

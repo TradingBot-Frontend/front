@@ -33,7 +33,7 @@ const coinDataUtils = {
   },
   update: (data: any, state: any) => {
     const targetCoin = state.coin.conList;
-    console.log('state:', targetCoin, 'data:', data);
+    // console.log('state:', targetCoin, 'data:', data);
   },
   convertData: (data: any) => {
     let newData: any = [];

@@ -23,7 +23,7 @@ interface ICoinResponse {
 function* coinList(action: CoinListAction) {
   try {
     const res: ICoinResponse = yield call(coinListGetAPI, action.payload);
-    console.log(res);
+    // console.log(res);
     yield put(coinListActions.success(res));
   } catch (e) {
     yield put(coinListActions.failure(e));
