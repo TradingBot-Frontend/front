@@ -23,7 +23,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles/';
 
 const loginTitleFont = createTheme({
   typography: {
-    fontFamily: 'Btro_core',
+    fontFamily: 'sleig',
   },
 });
 
@@ -52,13 +52,13 @@ const useStyles = makeStyles((theme) => ({
   appBar: {},
   appBarTitle: {
     flexGrow: 1,
-    fontFamily: 'Btro_core',
+    fontFamily: 'sleig',
   },
   card: {},
   title: {
     paddingTop: '10px',
     paddingBottom: '10px',
-    fontFamily: 'Btro_core',
+    fontFamily: 'sleig',
   },
 }));
 
