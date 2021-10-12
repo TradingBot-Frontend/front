@@ -190,9 +190,10 @@ export default function Login(): JSX.Element {
                       sx={{
                         display: 'flex',
                         justifyContent: 'center',
+                        height: 15,
                       }}
                     >
-                      <FormControlLabel
+                      {/* <FormControlLabel
                         control={
                           <Checkbox
                             value="remember"
@@ -201,7 +202,7 @@ export default function Login(): JSX.Element {
                           />
                         }
                         label="로그인 상태 유지"
-                      />
+                      /> */}
                     </Box>
                     <Button
                       type="submit"
