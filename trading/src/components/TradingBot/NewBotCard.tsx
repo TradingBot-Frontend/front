@@ -14,14 +14,15 @@ import Chip from '@mui/material/Chip';
 
 interface OnOffChipProps {
   on: boolean;
+  main?: boolean;
 }
 
-function OnOffChip({ on }: OnOffChipProps): JSX.Element {
+function OnOffChip({ on, main = false }: OnOffChipProps): JSX.Element {
   return (
     <Chip
       label={on ? 'ON' : 'OFF'}
       color={on ? 'success' : 'error'}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: main ? 'default' : 'pointer' }}
     />
   );
 }
@@ -48,11 +49,13 @@ function Profit({ profit = 0 }: ProfitProps): JSX.Element {
 interface NewBotCardProps {
   botInfo: Bot;
   isLoading: boolean;
+  main?: boolean;
 }
 
 export default function NewBotCard({
   botInfo,
   isLoading = false,
+  main = false,
 }: NewBotCardProps): JSX.Element {
   const [icon, setIcon] = useState('');
   const [open, setOpen] = useState(false);
@@ -66,7 +69,7 @@ export default function NewBotCard({
     <>
       <Card
         sx={{
-          cursor: 'pointer',
+          cursor: main ? 'default' : 'pointer',
           width: '14rem',
           borderRadius: '16px',
           backgroundColor: '#FCFCFC',
@@ -122,15 +125,18 @@ export default function NewBotCard({
                   <Typography>##########################</Typography>
                 </Skeleton>
               ) : (
-                <OnOffChip on={botInfo.isActive} />
+                <OnOffChip on={botInfo.isActive} main={main} />
               )}
             </Box>
           </Stack>
         </CardContent>
       </Card>
-      <Dialog open={open} onClose={handleClose}>
-        <TradingBotAdd botInfo={botInfo} handleClose={handleClose} />
-      </Dialog>
+
+      {!main && (
+        <Dialog open={open} onClose={handleClose}>
+          <TradingBotAdd botInfo={botInfo} handleClose={handleClose} />
+        </Dialog>
+      )}
     </>
   );
 }

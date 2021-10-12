@@ -158,7 +158,7 @@ const MainCards = () => {
       <React.Fragment key={bot.id}>
         {show && (
           <Box sx={{ marginRight: '7rem' }}>
-            <NewBotCard botInfo={bot} isLoading={isLoading} />
+            <NewBotCard botInfo={bot} isLoading={isLoading} main />
           </Box>
         )}
       </React.Fragment>,
