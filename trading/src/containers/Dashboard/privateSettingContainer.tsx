@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Paper } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import CheckIcon from '@mui/icons-material/Check';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,22 +14,9 @@ import { RootState } from '@redux/reducers';
 import {
   clearActions,
   keyCreateActions,
-  signupActions,
   updateusersActions,
   validateKeyActions,
 } from '@redux/reducers/authReducer';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: 650,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
 
 const InputWrapper = styled.div`
   display: flex;
@@ -98,22 +84,12 @@ const CancleButton = styled(Button)`
   width: 8rem;
   margin: 0.5rem 0rem 0rem 0.5rem;
 `;
-const DialogBtnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 interface ISettingProps {
   handleClose: () => void;
 }
 interface IButtonProps {
   [k: string]: boolean;
 }
-// const InitButton = () =>{
-
-//   return(
-
-//   )
-// }
 const buttonMap = [
   {
     title: 'Password setting',
@@ -177,7 +153,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     if (authInfo.responseMsg === 'success') {
       alert('개인 설정이 저장되었습니다.');
       handleClose();
-      // setOpen(true);
     }
   }, [authInfo.apiKey]);
   useEffect(() => {
@@ -189,13 +164,8 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
       setValidate('');
     }
   }, [authInfo.errorMsg]);
-  // TODO: 페이지 나가면 값 사라지게 만들기
-  // useEffect(() => {
-  //   handleClose();
-  // }, [open]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit:', states);
     if (api) {
       if (validate === 'notValidate') {
         alert('유효한 API key가 아닙니다.');
@@ -209,11 +179,9 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
         password,
       };
       dispatch(updateusersActions.request(obj));
-      // dispatch(signupActions.request(obj));
     }
   };
   const handleValidate = () => {
-    // setValidate(!validate);
     dispatch(validateKeyActions.request(states));
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -230,7 +198,6 @@ const PrivateSetting = ({ handleClose }: ISettingProps) => {
     });
   };
   const handleButtonClick = () => {
-    // handleClose();
     Object.entries(button).forEach((btn) => {
       if (btn[1]) {
         setButton({

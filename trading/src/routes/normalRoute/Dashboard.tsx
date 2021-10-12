@@ -178,7 +178,6 @@ export default function Dashboard() {
     dispatch(privateKeyActions.request());
   }, []);
   useEffect(() => {
-    console.log('apiKey: ', apiKey);
     if (!apiKey?.length) {
       setToast(true);
     }

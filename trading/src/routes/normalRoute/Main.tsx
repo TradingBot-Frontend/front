@@ -39,6 +39,7 @@ const MainBoxWrapper = styled.div`
   width: 100%;
   height: 20%;
   overflow: hidden;
+
   .mainTitle {
     font-size: 30px;
     position: relative;
@@ -199,7 +200,7 @@ const Main = () => {
       <MainBoxWrapper>
         <div className="mainTitle">
           <img src={bitcoin} alt="" className="photo" />
-          <div className="text">당신의 트레이딩을 맡기세요</div>
+          <div className="text">자고 있는 당신의 지갑을 채워줍니다.</div>
         </div>
       </MainBoxWrapper>
       <Container style={{ height: '70%' }}>

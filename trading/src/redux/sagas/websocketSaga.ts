@@ -1,13 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { buffers, eventChannel, END } from 'redux-saga';
-import {
-  call,
-  put,
-  take,
-  takeEvery,
-  fork,
-  all,
-} from '@redux-saga/core/effects';
+import { buffers, eventChannel } from 'redux-saga';
+import { call, put, take, takeEvery } from '@redux-saga/core/effects';
 import { flush, select, delay } from 'redux-saga/effects';
 import {
   ICoinState,
@@ -19,7 +12,6 @@ import { connectSocketSaga } from '@redux/reducers/websocketReducer';
 import axios from 'axios';
 import {
   fetchCoinActions,
-  fetchCoinAction,
   FETCH_COIN_REQUEST,
 } from '@redux/reducers/websocketReducer';
 
@@ -33,7 +25,7 @@ const createSocket = () => {
 const connectSocket = (socket: any, action: any, buffer: any) => {
   return eventChannel((emit) => {
     socket.open = () => {
-      console.log('opening websocket');
+      // console.log('connect websocket')
     };
     socket.onmessage = (event: any) => {
       // const arr = new Uint8Array(evt.data);
@@ -42,7 +34,6 @@ const connectSocket = (socket: any, action: any, buffer: any) => {
       emit(data);
     };
     socket.onerror = (error: any) => {
-      console.log('ERROR:', error);
       console.dir(error);
     };
     const unsubscribe = () => {
