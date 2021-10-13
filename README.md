@@ -18,3 +18,9 @@
    - Front3: 포트폴리오 UI 개발
       - 도넛 차트 UI 개발
       - 거래 내역 UI 개발
+
+![dashboard](https://user-images.githubusercontent.com/58619104/137162666-7c3555e8-fb15-448b-9b7c-c4525a3402ac.png)
+![coin](https://user-images.githubusercontent.com/58619104/137162677-56a72ff0-e658-4682-97b5-535f93897f1c.png)
+![tradingbots](https://user-images.githubusercontent.com/58619104/137162686-a50474ce-ee62-4942-8bff-c784e6e02b10.png)
+![addBot](https://user-images.githubusercontent.com/58619104/137162698-b234fea5-433a-4f36-a447-e8da4f5b301a.png)
+![portfolio](https://user-images.githubusercontent.com/58619104/137162724-591a0af2-413b-4a09-9cff-5db27acf3036.png)
