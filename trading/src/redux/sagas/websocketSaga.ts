@@ -2,25 +2,30 @@
 import { buffers, eventChannel } from 'redux-saga';
 import { call, put, take, takeEvery } from '@redux-saga/core/effects';
 import { flush, select, delay } from 'redux-saga/effects';
-import { ICoinState, START_INIT } from '@redux/reducers/websocketReducer';
+import {
+  ICoinState,
+  START_INIT,
+  END_INIT,
+} from '@redux/reducers/websocketReducer';
 import { connectSocketSaga } from '@redux/reducers/websocketReducer';
 // import axios from '@utils/coinAxios';
 import axios from 'axios';
 import {
   fetchCoinActions,
-  fetchCoinAction,
   FETCH_COIN_REQUEST,
 } from '@redux/reducers/websocketReducer';
 
+let wsConnection: any = null;
 const createSocket = () => {
   const client = new WebSocket('ws://3.36.52.243:8081/ws/coins');
   client.binaryType = 'arraybuffer';
+  wsConnection = client;
   return client;
 };
 const connectSocket = (socket: any, action: any, buffer: any) => {
   return eventChannel((emit) => {
     socket.open = () => {
-      console.log('opening websocket');
+      // console.log('connect websocket')
     };
     socket.onmessage = (event: any) => {
       // const arr = new Uint8Array(evt.data);
@@ -29,7 +34,6 @@ const connectSocket = (socket: any, action: any, buffer: any) => {
       emit(data);
     };
     socket.onerror = (error: any) => {
-      console.log('ERROR:', error);
       console.dir(error);
     };
     const unsubscribe = () => {
@@ -43,8 +47,7 @@ const connectSocket = (socket: any, action: any, buffer: any) => {
 export const createConnectSocketSaga = (type: any, dataMapper: any) => {
   const SUCCESS = `${type}_SUCCESS`;
   const ERROR = `${type}_ERROR`;
-  return function* (action = {}): any {
-    // console.log('action:', action); action.payload:'coin'
+  return function* (action = { payload: '' }): any {
     const client = yield call(createSocket);
     const clientChannel = yield call(
       connectSocket,
@@ -57,6 +60,8 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
         // 약 200ms동안 메세지 모으는중...
         const datas = yield flush(clientChannel);
         const state = yield select();
+        const res = take(END_INIT);
+
         if (datas.length) {
           // 이 문구 없으면 메시지를 받았든 받지 않았든 200ms 마다 항상 dispatch 작업을 해서 혼란 야기할 수 도 있음
           // newCoinList: 기존값 data: 새로 들어온 값
@@ -80,7 +85,10 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
             );
             if (targetIdx !== -1) {
               // 버퍼에 있는 데이터중 시간이 가장 최근인 데이터만 남김
-              if (newCoinList[targetIdx].chgAmt !== data.chgAmt) {
+              if (
+                newCoinList[targetIdx].closePrice !==
+                `${parseInt(data.closePrice, 10).toLocaleString()}원`
+              ) {
                 changeFlag = 'currentPrice';
               } else if (
                 newCoinList[targetIdx].money !==
@@ -111,6 +119,7 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
     }
   };
 };
+
 const coinAPI = () => {
   return axios.get('http://3.36.52.243:8081/coins');
 };
@@ -122,15 +131,19 @@ function* fetchCoin(): any {
     yield put(fetchCoinActions.failure(e));
   }
 }
-function* wsSaga(): any {
-  // const channel = yield call(initWebsocket);
-  // while (true) {
-  //   const action = yield take(channel);
-  //   yield put(action);
-  // }
+export function* wsEndSaga(): any {
+  const clientChannel = yield call(
+    connectSocket,
+    wsConnection,
+    '',
+    buffers.expanding(500),
+  );
+  clientChannel.unsubscribe();
+}
+export function* wsSaga(): any {
   yield connectSocketSaga({ payload: 'coinList' });
 }
 export function* watchLivePricesSaga() {
-  yield takeEvery(FETCH_COIN_REQUEST, fetchCoin);
   yield takeEvery(START_INIT, wsSaga);
+  yield takeEvery(FETCH_COIN_REQUEST, fetchCoin);
 }

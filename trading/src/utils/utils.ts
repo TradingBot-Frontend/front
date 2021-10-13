@@ -33,7 +33,7 @@ const coinDataUtils = {
   },
   update: (data: any, state: any) => {
     const targetCoin = state.coin.conList;
-    console.log('state:', targetCoin, 'data:', data);
+    // console.log('state:', targetCoin, 'data:', data);
   },
   convertData: (data: any) => {
     let newData: any = [];
@@ -42,7 +42,7 @@ const coinDataUtils = {
         return {
           id: coin.symbol,
           name: coin.symbol,
-          currentPrice: coin.chgAmt,
+          currentPrice: `${parseInt(coin.closePrice, 10).toLocaleString()}원`,
           rateOfChange: coin.chgRate,
           money: `${parseInt(coin.value, 10).toLocaleString()}원`,
           color: coin.color,

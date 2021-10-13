@@ -24,9 +24,13 @@ import ContentsRouter from '@routes/ContentsRouter';
 import Modal from '@mui/material/Modal';
 import { logoutActions, privateKeyActions } from '@redux/reducers/authReducer';
 import { RootState } from '@redux/reducers';
+import { Link, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Snackbar from '@mui/material/Snackbar';
 import PrivateSetting from '@containers/Dashboard/privateSettingContainer';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
+import { endInit } from '@redux/reducers/websocketReducer';
+
 import { CommonButtonContainer } from '../../containers/common/ButtonContainer';
 import 'animate.css';
 import { usersActions } from '../../redux/reducers/authReducer';
@@ -35,12 +39,16 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    overflow: 'hidden',
+    // overflow: 'hidden',
     position: 'relative',
+    height: '100vh',
+    flexDirection: 'column',
+    background: '#43335',
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    // paddingRight: 24, // keep right padding when drawer closed
     color: '#170f8b',
+    // height: '5rem',
   },
   toolbarIcon: {
     display: 'flex',
@@ -58,11 +66,11 @@ const useStyles = makeStyles((theme) => ({
   },
   appBarShift: {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    width: `100%`,
+    // transition: theme.transitions.create(['width', 'margin'], {
+    //   easing: theme.transitions.easing.sharp,
+    //   duration: theme.transitions.duration.enteringScreen,
+    // }),
   },
   menuButton: {
     marginRight: 36,
@@ -71,9 +79,24 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   },
   title: {
-    flexGrow: 1,
+    // flexGrow: 6,
     color: '#170f8b',
-    fontFamily: 'Btro_core',
+    fontFamily: 'sleig',
+    fontSize: '30px',
+  },
+  menuWrapper: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menu: {
+    margin: '0rem 0rem 0rem 1rem',
+    color: '#000000',
+    fontFamily: 'sleig',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
   loginIcon: {
     // flexGrow: 1,
@@ -102,9 +125,9 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
+    height: '100%',
     width: '100%',
-    background: '#f7f2f2',
+    overflow: 'auto',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -123,15 +146,16 @@ const useStyles = makeStyles((theme) => ({
 export const Balloon = styled.div`
   position: absolute;
   top: 14.5rem;
-  left: 14rem;
+  left: calc(100%-50px);
   z-index: 4;
-  width: 26rem;
-  height: 3rem;
-  background: #c1c6ce;
+  width: 15rem;
+  height: 6rem;
+  background: #ffffff;
   border-radius: 15px;
   animation: 'bounce';
   animation-duration: 3s;
-  :after {
+  font-family: 'sleig';
+  /* :after {
     border-top: 15px solid #c1c6ce;
     border-left: 15px solid transparent;
     border-right: 0px solid transparent;
@@ -140,12 +164,13 @@ export const Balloon = styled.div`
     position: absolute;
     top: 7px;
     left: -13px;
-  }
+  } */
 `;
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [settingOpen, setSettingOpen] = useState(false);
+  const [toast, setToast] = useState(false);
   const [search, setsearch] = useState('');
   const dispatch = useDispatch();
   const apiKey = useSelector((state: RootState) => state.auth.apiKey);
@@ -153,31 +178,18 @@ export default function Dashboard() {
     dispatch(privateKeyActions.request());
   }, []);
   useEffect(() => {
-    console.log('apiKey: ', apiKey);
+    if (!apiKey?.length) {
+      setToast(true);
+    }
   }, [apiKey]);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+
   const handleSettingOpen = () => setSettingOpen(true);
   const handleSettingClose = () => setSettingOpen(false);
-  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log('click button');
-  };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setsearch(e.target.value);
-  };
-  const handleKeyPress = () => {
-    console.log('press key: ', search);
-  };
+  const handleToastClose = () => setToast(false);
   const handleLogout = () => {
     dispatch(logoutActions.request());
+    dispatch(endInit());
   };
-
   useEffect(() => {
     dispatch(usersActions.request());
   }, []);
@@ -185,65 +197,71 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-        style={{ background: '#FFFFFF' }}
-      >
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden,
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            // color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            tradingbot
-          </Typography>
-          <IconButton color="inherit" className={classes.loginIcon}>
+      <div>
+        <AppBar
+          position="absolute"
+          className={clsx(classes.appBar, open && classes.appBarShift)}
+          style={{ background: '#FFFFFF' }}
+        >
+          <Toolbar className={classes.toolbar}>
+            <div className={classes.menuWrapper}>
+              <Link to="dashboard" style={{ textDecoration: 'none' }}>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  noWrap
+                  className={classes.title}
+                >
+                  Tradingbot
+                </Typography>
+              </Link>
+              <Link to="trading-bot" style={{ textDecoration: 'none' }}>
+                <Typography
+                  component="h3"
+                  variant="h6"
+                  noWrap
+                  className={classes.menu}
+                >
+                  트레이딩 봇
+                </Typography>
+              </Link>
+              <Link to="portfolio" style={{ textDecoration: 'none' }}>
+                <Typography
+                  component="h3"
+                  variant="h6"
+                  noWrap
+                  className={classes.menu}
+                >
+                  포트폴리오
+                </Typography>
+              </Link>
+              <Typography
+                component="h3"
+                variant="h6"
+                noWrap
+                className={classes.menu}
+                onClick={handleSettingOpen}
+              >
+                설정
+              </Typography>
+            </div>
+
+            {/* <IconButton color="inherit" className={classes.loginIcon}>
             <AccountCircleIcon />
-          </IconButton>
-          {/* <Button variant="contained" color="primary">
+          </IconButton> */}
+            {/* <Button variant="contained" color="primary">
             Login
           </Button> */}
-          <CommonButtonContainer
-            title="LOGOUT"
-            color="#170F8B"
-            onClick={handleLogout}
-          />
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          <MainListItems handleSettingOpen={handleSettingOpen} />
-        </List>
-      </Drawer>
+            <CommonButtonContainer
+              title="LOGOUT"
+              color="#170F8B"
+              onClick={handleLogout}
+            />
+          </Toolbar>
+        </AppBar>
+      </div>
+      <div className={classes.appBarSpacer} />
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <ContentsRouter />
       </main>
       <Dialog
@@ -253,13 +271,16 @@ export default function Dashboard() {
       >
         <PrivateSetting handleClose={handleSettingClose} />
       </Dialog>
-      {!apiKey?.length && (
-        <Balloon>
-          <div style={{ margin: '1rem 0rem 0rem 0.5rem' }}>
-            Private Setting에서 API Key를 등록해야만 진행이 가능합니다.
-          </div>
-        </Balloon>
-      )}
+      <Snackbar
+        open={toast}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        autoHideDuration={3000}
+        onClose={handleToastClose}
+        message="설정에서 API Key를 등록해야만 진행이 가능합니다."
+      />
     </div>
   );
 }

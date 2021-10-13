@@ -13,7 +13,6 @@ import {
   getPortfolioActions,
 } from '@redux/reducers/portfolioReducer';
 
-
 const Portfolio = () => {
   const [states, setStates] = useState<any>({
     orderList: [],
@@ -24,10 +23,12 @@ const Portfolio = () => {
   useEffect(() => {
     dispatch(getItemsActions.request());
   }, []);
-  let cardItems: any = useSelector((state: RootState) => state.portfolio.items.data);
+  let cardItems: any = useSelector(
+    (state: RootState) => state.portfolio.items.data,
+  );
 
   useEffect(() => {
-    if (!cardItems) cardItems = []
+    if (!cardItems) cardItems = [];
     setStates({
       ...states,
       orderList: cardItems,
@@ -35,7 +36,7 @@ const Portfolio = () => {
   }, [cardItems]);
 
   return (
-    <ContentWrapper title="Portfolio" padding="2rem 200px 2rem 200px">
+    <ContentWrapper title="포트폴리오" padding="2rem 200px 2rem 200px">
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={8}>

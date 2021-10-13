@@ -28,14 +28,16 @@ export default function ContentWrapper({
       sx={{
         flex: 1,
         padding,
+        background: '#ffffff',
+        fontFamily: 'sleig',
       }}
     >
-      <Typography variant="h4" component="div">
+      <Typography variant="h4" component="div" sx={{ fontFamily: 'sleig' }}>
         {title}
         {addButton ? (
           <IconButton
             aria-label="add"
-            sx={{ marginLeft: '0.8rem' }}
+            sx={{ marginLeft: '0.8rem', fontFamily: 'sleig' }}
             onClick={handleOpen}
           >
             <AddCircleIcon sx={{ color: green[500] }} />
@@ -47,7 +49,7 @@ export default function ContentWrapper({
         sx={{
           display: 'flex',
           height: '80vh',
-          padding: '1rem 0rem 0rem 0rem',
+          padding: '1rem',
           overflow,
         }}
       >

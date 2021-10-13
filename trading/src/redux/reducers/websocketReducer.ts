@@ -1,7 +1,9 @@
 import { createConnectSocketSaga } from '@redux/sagas/websocketSaga';
 import { coinDataUtils } from '@utils/utils';
 
-export const START_INIT = 'coin/START_INIT';
+export const START_INIT = 'coin/START_INIT' as const;
+
+export const END_INIT = 'coin/END_INIT' as const;
 
 const CONNECT_SOCKET = 'coin/CONNECT_SOCKET' as const;
 const CONNECT_SOCKET_SUCCESS = 'coin/CONNECT_SOCKET_SUCCESS' as const;
@@ -31,7 +33,7 @@ export type fetchCoinAction =
   | ReturnType<typeof fetchCoinFailure>;
 export type websocketAction = fetchCoinAction;
 export const startInit = () => ({ type: START_INIT });
-
+export const endInit = () => ({ type: END_INIT });
 export const postLivePriceData = (livePriceData: any) => {
   return {
     type: 'POST_LIVE_PRICE_DATA',
@@ -65,7 +67,6 @@ const initialState: ICoinInit = {
 // TODO: init 초기 함수 key 갖고 있도록 바꾸기
 const reducerUtils = {
   success: (state: any, payload: any, key: any) => {
-    console.log('reducerUtils state:', state, 'payload:', payload);
     return {
       ...state,
       [key]: [...payload],
@@ -110,6 +111,11 @@ export default function websocketReducer(
     case CONNECT_SOCKET_ERROR:
       return requestActions(CONNECT_SOCKET, 'coinList')(state, action);
     case FETCH_COIN_SUCCESS:
+      return {
+        ...state,
+        coinList: action.payload,
+      };
+    case END_INIT:
       return {
         ...state,
         coinList: action.payload,

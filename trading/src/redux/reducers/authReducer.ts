@@ -21,24 +21,25 @@ export const USERS_REQUEST = 'auth/USERS_REQUEST' as const;
 export const USERS_SUCCESS = 'auth/USERS_SUCCESS' as const;
 export const USERS_FAILURE = 'auth/USERS_FAILURE' as const;
 
+export const UPDATEUSERS_REQUEST = 'auth/UPDATEUSERS_REQUEST' as const;
+export const UPDATEUSERS_SUCCESS = 'auth/UPDATEUSERS_SUCCESS' as const;
+export const UPDATEUSERS_FAILURE = 'auth/UPDATEUSERS_FAILURE' as const;
+
 export const KEYCREATE_REQUEST = 'auth/KEYCREATE_REQUEST' as const;
 export const KEYCREATE_SUCCESS = 'auth/KEYCREATE_SUCCESS' as const;
 export const KEYCREATE_FAILURE = 'auth/KEYCREATE_FAILURE' as const;
 
-// type LoginAction =
-// | typeof LOGIN_REQUEST
-// | typeof LOGIN_SUCCESS
-// | typeof LOGIN_FAILURE;
+export const VALIDATEKEY_REQUEST = 'auth/VALIDATEKEY_REQUEST' as const;
+export const VALIDATEKEY_SUCCESS = 'auth/VALIDATEKEY_SUCCESS' as const;
+export const VALIDATEKEY_FAILURE = 'auth/VALIDATEKEY_FAILURE' as const;
 
-// interface ActionCreator<T> {
-//   type: LoginAction;
-//   payload: T;
-// }
+export const CLEAR_REQUEST = 'auth/CLEAR_REQUEST' as const;
+export const CLEAR_SUCCESS = 'auth/CLEAR_SUCCESS' as const;
+export const CLEAR_FAILURE = 'auth/CLEAR_FAILURE' as const;
 
-// action creators
-// const request = (user): ActionCreator<typeof user> => ({type: LOGIN_REQUEST, payload: user});
-// const success = (user): ActionCreator<typeof user> => ({type: LOGIN_SUCCESS, payload: user});
-// const failure = (error): ActionCreator<typeof error> => ({type: LOGIN_FAILURE, payload: error});
+export const VALIDATE_TOKEN_REQUEST = 'auth/VALIDATE_TOKEN_REQUEST' as const;
+export const VALIDATE_TOKEN_SUCCESS = 'auth/VALIDATE_TOKEN_SUCCESS' as const;
+export const VALIDATE_TOKEN_FAILURE = 'auth/VALIDATE_TOKEN_FAILURE' as const;
 
 // action creators
 const loginRequest = (user: any) => ({ type: LOGIN_REQUEST, payload: user });
@@ -75,12 +76,30 @@ export const logoutActions = {
 };
 
 const usersRequest = () => ({ type: USERS_REQUEST, payload: null });
-const usersSuccess = () => ({ type: USERS_SUCCESS, payload: null });
+const usersSuccess = (res: any) => ({ type: USERS_SUCCESS, payload: res });
 const usersFailure = (error: any) => ({ type: USERS_FAILURE, payload: error });
 export const usersActions = {
   request: usersRequest,
   success: usersSuccess,
   failure: usersFailure,
+};
+
+const updateusersRequest = (res: any) => ({
+  type: UPDATEUSERS_REQUEST,
+  payload: res,
+});
+const updateusersSuccess = (res: any) => ({
+  type: UPDATEUSERS_SUCCESS,
+  payload: res,
+});
+const updateusersFailure = (error: any) => ({
+  type: UPDATEUSERS_FAILURE,
+  payload: error,
+});
+export const updateusersActions = {
+  request: updateusersRequest,
+  success: updateusersSuccess,
+  failure: updateusersFailure,
 };
 
 const privateKeyRequest = () => ({
@@ -113,11 +132,63 @@ const keyCreateRequestFailure = (error: any) => ({
   type: KEYCREATE_FAILURE,
   payload: error,
 });
-
 export const keyCreateActions = {
   request: keyCreateRequest,
   success: keyCreateRequestSuccess,
   failure: keyCreateRequestFailure,
+};
+const validatekeyRequest = (form: any) => ({
+  type: VALIDATEKEY_REQUEST,
+  payload: form,
+});
+const validatekeySuccess = (res: any) => ({
+  type: VALIDATEKEY_SUCCESS,
+  payload: res,
+});
+const validatekeyFailure = (error: any) => ({
+  type: VALIDATEKEY_FAILURE,
+  payload: error,
+});
+
+export const validateKeyActions = {
+  request: validatekeyRequest,
+  success: validatekeySuccess,
+  failure: validatekeyFailure,
+};
+const clearRequest = () => ({
+  type: CLEAR_REQUEST,
+  payload: null,
+});
+const clearSuccess = () => ({
+  type: CLEAR_SUCCESS,
+  payload: null,
+});
+const clearFailure = (error: any) => ({
+  type: CLEAR_FAILURE,
+  payload: error,
+});
+
+export const clearActions = {
+  request: clearRequest,
+  success: clearSuccess,
+  failure: clearFailure,
+};
+const validateTokenRequest = (token: string | null) => ({
+  type: VALIDATE_TOKEN_REQUEST,
+  payload: token,
+});
+const validateTokenSuccess = () => ({
+  type: VALIDATE_TOKEN_SUCCESS,
+  payload: null,
+});
+const validateTokenFailure = () => ({
+  type: VALIDATE_TOKEN_FAILURE,
+  payload: null,
+});
+export const validateTokenActions = {
+  request: validateTokenRequest,
+  success: validateTokenSuccess,
+  failure: validateTokenFailure,
 };
 
 export type LoginAction =
@@ -144,13 +215,33 @@ export type UsersAction =
   | ReturnType<typeof usersRequest>
   | ReturnType<typeof usersSuccess>
   | ReturnType<typeof usersFailure>;
+export type UpdateUsersAction =
+  | ReturnType<typeof updateusersRequest>
+  | ReturnType<typeof updateusersSuccess>
+  | ReturnType<typeof updateusersFailure>;
+export type ValidateKeyAction =
+  | ReturnType<typeof validatekeyRequest>
+  | ReturnType<typeof validatekeySuccess>
+  | ReturnType<typeof validatekeyFailure>;
+export type ClearAction =
+  | ReturnType<typeof clearRequest>
+  | ReturnType<typeof clearSuccess>
+  | ReturnType<typeof clearFailure>;
+export type ValidateTokenAction =
+  | ReturnType<typeof validateTokenRequest>
+  | ReturnType<typeof validateTokenSuccess>
+  | ReturnType<typeof validateTokenFailure>;
 export type AuthAction =
   | LoginAction
   | SignupAction
   | LogoutAction
   | privateKeyAction
   | UsersAction
-  | keyCreateAction;
+  | keyCreateAction
+  | UpdateUsersAction
+  | ValidateKeyAction
+  | ClearAction
+  | ValidateTokenAction;
 
 interface IAuthState {
   token: string | null;
@@ -163,19 +254,21 @@ interface IAuthState {
   errorMsg: string;
   apiKey: string | null;
   secretKey: string | null;
+  responseMsg: string;
 }
 
 const initialState: IAuthState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  email: 'test2@gmail.com',
-  name: '스폰지밥',
+  email: '',
+  name: '',
   password: '',
   // successMsg: '',
   errorMsg: '',
   apiKey: '',
   secretKey: '',
+  responseMsg: '',
 };
 
 export default function authReducer(
@@ -186,6 +279,7 @@ export default function authReducer(
     case SIGNUP_REQUEST:
     case LOGIN_REQUEST:
     case USERS_REQUEST:
+    case VALIDATE_TOKEN_REQUEST:
       return {
         ...state,
         errorMsg: '',
@@ -194,13 +288,8 @@ export default function authReducer(
     case LOGIN_SUCCESS: {
       const token = action.payload;
       if (token) {
-        localStorage.setItem('token', token); // localStorage에 token 저장
+        sessionStorage.setItem('trb-token', token); // sessionStorage에 token 저장
         setAuthToken(token); // 모든 axios 요청 헤더에 token이 들어가게 설정
-        // const base64: string = token.split(' ')[1];
-        // const base64payload: string = base64.split('.')[1];
-        // const payload: any = Buffer.from(base64payload, 'base64');
-        // const decoded: any = JSON.parse(payload.toString());
-        // const {email, username} = deocded;
         return {
           ...state,
           isAuthenticated: true,
@@ -217,7 +306,7 @@ export default function authReducer(
     }
     case LOGIN_FAILURE:
       alert('로그인 실패!');
-      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,
@@ -226,7 +315,7 @@ export default function authReducer(
       };
     case LOGOUT_FAILURE:
     case LOGOUT_SUCCESS:
-      localStorage.removeItem('token'); // 로그인 실패시 token 삭제
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
       setAuthToken(null);
       return {
         ...state,
@@ -235,7 +324,7 @@ export default function authReducer(
         // errorMsg: action.payload,
       };
     case SIGNUP_SUCCESS:
-      alert('가입 되었습니다!');
+      if (action.payload !== 'update') alert('가입 되었습니다!');
       return {
         ...state,
         isLoading: false,
@@ -249,14 +338,52 @@ export default function authReducer(
       };
 
     case PRIVATEKEY_SUCCESS:
-    case KEYCREATE_SUCCESS:
       return {
         ...state,
         apiKey: action.payload.connect_key,
         secretKey: action.payload.secret_key,
         errorMsg: '',
       };
-
+    case KEYCREATE_SUCCESS:
+      return {
+        ...state,
+        apiKey: action.payload.connect_key,
+        secretKey: action.payload.secret_key,
+        errorMsg: '',
+        responseMsg: 'success',
+      };
+    case USERS_SUCCESS:
+    case UPDATEUSERS_SUCCESS:
+      return {
+        ...state,
+        email: action.payload.email,
+        name: action.payload.name,
+      };
+    case VALIDATEKEY_SUCCESS:
+      return {
+        ...state,
+        errorMsg: `${action.payload}`,
+      };
+    case CLEAR_SUCCESS:
+      return {
+        ...state,
+        errorMsg: '',
+        responseMsg: '',
+        apiKey: '',
+      };
+    case VALIDATE_TOKEN_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case VALIDATE_TOKEN_FAILURE:
+      sessionStorage.removeItem('trb-token'); // 로그인 실패시 token 삭제
+      setAuthToken(null);
+      return {
+        ...state,
+        isAuthenticated: false,
+        isLoading: false,
+      };
     default:
       return state;
   }

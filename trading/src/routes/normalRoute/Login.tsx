@@ -10,20 +10,22 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import { TextField, InputAdornment } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import MenuIcon from '@mui/icons-material/Menu';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import SignUpContainer from '@containers/AuthContainer/SignUpContainer';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory } from 'react-router';
 import { RootState } from '@redux/reducers';
+import { createTheme, ThemeProvider } from '@mui/material/styles/';
+
+const loginTitleFont = createTheme({
+  typography: {
+    fontFamily: 'sleig',
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   realRoot: {
@@ -50,12 +52,13 @@ const useStyles = makeStyles((theme) => ({
   appBar: {},
   appBarTitle: {
     flexGrow: 1,
-    fontFamily: 'Btro_core',
+    fontFamily: 'sleig',
   },
   card: {},
   title: {
     paddingTop: '10px',
     paddingBottom: '10px',
+    fontFamily: 'sleig',
   },
 }));
 
@@ -71,6 +74,7 @@ export default function Login(): JSX.Element {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   const handleClickSignUp = () => {
     setOpen(true);
   };
@@ -87,21 +91,29 @@ export default function Login(): JSX.Element {
     e.preventDefault();
     const { email, password } = form;
     const user = { email, password };
-    console.log(user);
     dispatch(loginActions.request(user));
   };
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      dispatch(loginActions.success(localStorage.getItem('token')));
-    }
-  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
       history.push('/main/dashboard');
     }
   }, [isAuthenticated]);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          height: '100vh',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress size={80} />
+      </Box>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -112,47 +124,35 @@ export default function Login(): JSX.Element {
           <Grid item xs={12}>
             <Container component="main" maxWidth="xs">
               <Card
-                sx={{ minWidth: 275, borderRadius: '20PX', width: '400px' }}
+                sx={{
+                  minWidth: 275,
+                  borderRadius: '20PX',
+                  width: '400px',
+                  boxShadow: 4,
+                }}
                 className={classes.card}
               >
                 <CardContent>
-                  <Typography
-                    variant="h4"
-                    align="center"
-                    color="text.primary"
-                    className={classes.title}
-                    gutterBottom
-                  >
-                    TradingBot
-                  </Typography>
+                  <ThemeProvider theme={loginTitleFont}>
+                    <Typography
+                      variant="h4"
+                      align="center"
+                      color="text.primary"
+                      className={classes.title}
+                      gutterBottom
+                    >
+                      TradingBot
+                    </Typography>
+                  </ThemeProvider>
                   <Box
                     component="form"
                     onSubmit={handleSubmit}
                     noValidate
                     sx={{ mt: 1 }}
-                    // className={classes.formBox}
                   >
-                    {/*        <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                      autoFocus
-                      onChange={handleChange}
-                      InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchIcon />
-                            </InputAdornment>
-                        ),
-                      }}
-                    /> */}
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                       <MailOutlineIcon
-                        sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                        sx={{ color: 'action.active', mr: 1, mb: 1.5 }}
                       />
                       <TextField
                         margin="normal"
@@ -171,7 +171,7 @@ export default function Login(): JSX.Element {
                       sx={{ display: 'flex', alignItems: 'flex-end', mb: 1 }}
                     >
                       <LockIcon
-                        sx={{ color: 'action.active', mr: 1, my: 0.5 }}
+                        sx={{ color: 'action.active', mr: 1, mb: 1.5 }}
                       />
                       <TextField
                         margin="normal"
@@ -186,28 +186,24 @@ export default function Login(): JSX.Element {
                         onChange={handleChange}
                       />
                     </Box>
-                    {/*               <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="current-password"
-                      onChange={handleChange}
-                    /> */}
-
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          value="remember"
-                          color="primary"
-                          size="small"
-                        />
-                      }
-                      label="로그인 상태 유지"
-                    />
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        height: 15,
+                      }}
+                    >
+                      {/* <FormControlLabel
+                        control={
+                          <Checkbox
+                            value="remember"
+                            color="primary"
+                            size="small"
+                          />
+                        }
+                        label="로그인 상태 유지"
+                      /> */}
+                    </Box>
                     <Button
                       type="submit"
                       fullWidth
@@ -232,15 +228,3 @@ export default function Login(): JSX.Element {
     </div>
   );
 }
-
-//  <AppBar position="static" style={{ background: '#2E3B55' }} className={classes.appBar}>
-//   <Toolbar>
-//     <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-//       <MenuIcon />
-//     </IconButton>
-//     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className={classes.appBarTitle}>
-//       TradingBot
-//     </Typography>
-//     <Button color="inherit">Login</Button>
-//   </Toolbar>
-// </AppBar>

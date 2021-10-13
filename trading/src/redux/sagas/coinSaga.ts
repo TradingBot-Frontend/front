@@ -1,5 +1,9 @@
 import { call, put, all, fork, takeEvery } from 'redux-saga/effects';
-import { CoinListAction, COINLIST_REQUEST, coinListActions } from '@redux/reducers/coinReducer';
+import {
+  CoinListAction,
+  COINLIST_REQUEST,
+  coinListActions,
+} from '@redux/reducers/coinReducer';
 import axios from '@utils/axios';
 // put: action을 dispatch 한다.
 // call: 인자로 들어온 함수를 실행시킨다. 동기적인 함수 호출일 때 사용.
@@ -19,7 +23,7 @@ interface ICoinResponse {
 function* coinList(action: CoinListAction) {
   try {
     const res: ICoinResponse = yield call(coinListGetAPI, action.payload);
-    console.log(res);
+    // console.log(res);
     yield put(coinListActions.success(res));
   } catch (e) {
     yield put(coinListActions.failure(e));

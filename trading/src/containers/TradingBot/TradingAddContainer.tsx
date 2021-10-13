@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { Box, Button, Paper } from '@material-ui/core';
+import { Box, Button, TextFieldProps } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -22,28 +22,10 @@ import { RootState } from '@redux/reducers';
 import { ICoinState } from '@redux/reducers/websocketReducer';
 import DialogActions from '@mui/material/DialogActions';
 
-const SmallTextField = ({ ...rest }: any) => {
+const SmallTextField = ({ ...rest }: TextFieldProps) => {
   return <TextField size="small" {...rest} />;
 };
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  height: '90%',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  overflow: 'auto',
-  // borderRadius: 25,
-  p: 4,
-};
-const contentStyle = {
-  width: '100%',
-  height: '100%',
-  overflow: 'auto',
-};
 const InputWrapper = styled.div`
   display: flex;
   margin: 0rem 0rem 2rem 0rem;
@@ -68,24 +50,6 @@ const TextFields = styled(TextField)`
     cursor: not-allowed;
   }
 `;
-
-const BtnWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* margin: 4rem 0rem 0rem 0rem; */
-`;
-const FooterWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  .validate {
-    display: flex;
-    flex-direction: row;
-  }
-  .validateString {
-    margin: 0.2rem 0rem 0rem 0.2rem;
-  }
-`;
 const Buttons = styled(Button)`
   display: flex;
   color: #000000;
@@ -100,12 +64,12 @@ const CancleButton = styled(Buttons)`
   border: 1px solid #bdb8b8;
 `;
 const DeleteButton = styled(Buttons)`
-  width: 5rem;
-  background-color: #d00000;
-  color: #ffffff;
-  position: absolute;
-  right: 15px;
-  top: 6px;
+  width: 5rem !important;
+  background-color: #d00000 !important;
+  color: #ffffff !important;
+  position: absolute !important;
+  right: 15px !important;
+  top: 16px !important;
 `;
 
 const IOSSwitch = muiStyled((props: SwitchProps) => (
@@ -191,21 +155,12 @@ const TradingBotAdd = ({
   const hasDefaultBotInfo = !!botInfo;
 
   useEffect(() => {
-    console.log('values:', values);
-  }, [values]);
-
-  useEffect(() => {
     if (botInfo) {
       setValues(botInfo);
     }
   }, []);
 
-  useEffect(() => {
-    console.log('localMsg:', localMsg);
-  }, [localMsg]);
-
   // TODO: validation 추가
-
   const calculateCurrentPrice = useCallback(
     (cl: ICoinState[]) => {
       if (values.coinName && values.bidQuantity) {
@@ -230,7 +185,6 @@ const TradingBotAdd = ({
   // TODO: 제대로 작동하는지 확인
   const isBlank = useCallback(() => {
     return Object.entries(values).some(([key, val]) => {
-      console.log('key:', key, 'val: ', val, 'ret: ', !val);
       if (typeof val === 'boolean') return false;
       if (key === 'profit') return false;
       return !val;
@@ -240,31 +194,24 @@ const TradingBotAdd = ({
   const handleSubmit = () => {
     if (isBlank()) {
       setLocalMsg('정보를 다 채워주세요.');
-      console.log(values);
     } else {
       setLocalMsg('');
       if (hasDefaultBotInfo) {
         dispatch(updateBotActions.request(values));
-        console.log('update');
       } else {
         dispatch(addBotActions.request(values));
-        console.log('add');
       }
       handleClose();
     }
   };
 
   const handleDelete = useCallback(() => {
-    console.log('click delete');
-    console.log('values.id', values.id);
-    console.log('values', values);
     if (values.id) dispatch(deleteBotActions.request(values.id));
   }, [values, dispatch]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = e.target;
-      console.log('id:', id, 'value:', value);
       if (id === 'botName') {
         setValues({
           ...values,
@@ -412,7 +359,9 @@ const TradingBotAdd = ({
                 <Select
                   id="isBidConditionExceed"
                   style={{ width: '7rem', height: '2.5rem' }}
-                  defaultValue="true"
+                  value={
+                    values.isBidConditionExceed === true ? 'true' : 'false'
+                  }
                   onChange={(e) =>
                     handleSelectChange(e, 'isBidConditionExceed')
                   }
