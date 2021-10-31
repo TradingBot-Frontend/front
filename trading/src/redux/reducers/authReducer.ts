@@ -340,15 +340,15 @@ export default function authReducer(
     case PRIVATEKEY_SUCCESS:
       return {
         ...state,
-        apiKey: action.payload.connect_key,
-        secretKey: action.payload.secret_key,
+        apiKey: action.payload.connectKey,
+        secretKey: action.payload.secretKey,
         errorMsg: '',
       };
     case KEYCREATE_SUCCESS:
       return {
         ...state,
-        apiKey: action.payload.connect_key,
-        secretKey: action.payload.secret_key,
+        apiKey: action.payload.connectKey,
+        secretKey: action.payload.secretKey,
         errorMsg: '',
         responseMsg: 'success',
       };
@@ -383,6 +383,13 @@ export default function authReducer(
         ...state,
         isAuthenticated: false,
         isLoading: false,
+      };
+    case PRIVATEKEY_FAILURE:
+      console.log(`PRIVATEKEY_FAILURE: ${action.payload}`);
+      return {
+        ...state,
+        apiKey: null,
+        secretKey: null,
       };
     default:
       return state;

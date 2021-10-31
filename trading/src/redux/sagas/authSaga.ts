@@ -108,7 +108,7 @@ const createPrivateAPI = async (user: any) => {
   const res = await axios.post('trading-service/user-api', user);
   let resValue;
   if (res.data === 'success') {
-    resValue = getPrivateAPI();
+    resValue = await getPrivateAPI();
   }
   return resValue;
 };
@@ -131,8 +131,8 @@ function* getUserPrivate(action: privateKeyAction) {
 function* createUserPrivate(action: keyCreateAction) {
   try {
     const obj = {
-      connect_key: action.payload.apiKey,
-      secret_key: action.payload.secretKey,
+      connectKey: action.payload.apiKey,
+      secretKey: action.payload.secretKey,
     };
     const res: AxiosResponse = yield call(createPrivateAPI, obj);
     if (res) {
