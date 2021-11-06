@@ -135,7 +135,9 @@ function* createUserPrivate(action: keyCreateAction) {
       secretKey: action.payload.secretKey,
     };
     const res: AxiosResponse = yield call(createPrivateAPI, obj);
-    if (res) {
+    if (res.data === 'already registered') {
+      yield put(privateKeyActions.failure(e));
+    } else if (res) {
       yield put(privateKeyActions.success(res.data));
     }
   } catch (e) {
@@ -158,8 +160,8 @@ function* updateUser(action: UpdateUsersAction) {
 }
 function* validateKey(action: ValidateKeyAction) {
   const obj = {
-    connect_key: action.payload.apiKey,
-    secret_key: action.payload.secretKey,
+    connectKey: action.payload.apiKey,
+    secretKey: action.payload.secretKey,
   };
   const res: AxiosResponse = yield call(validateKeyAPI, obj);
   try {
