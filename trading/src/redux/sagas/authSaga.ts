@@ -109,6 +109,8 @@ const createPrivateAPI = async (user: any) => {
   let resValue;
   if (res.data === 'success') {
     resValue = await getPrivateAPI();
+  } else if (res.data === 'already registered') {
+    resValue = res;
   }
   return resValue;
 };
@@ -136,7 +138,7 @@ function* createUserPrivate(action: keyCreateAction) {
     };
     const res: AxiosResponse = yield call(createPrivateAPI, obj);
     if (res.data === 'already registered') {
-      yield put(privateKeyActions.failure(e));
+      yield put(privateKeyActions.failure('already registered'));
     } else if (res) {
       yield put(privateKeyActions.success(res.data));
     }

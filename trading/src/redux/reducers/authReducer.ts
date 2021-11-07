@@ -386,6 +386,8 @@ export default function authReducer(
       };
     case PRIVATEKEY_FAILURE:
       console.log(`PRIVATEKEY_FAILURE: ${action.payload}`);
+      if (action.payload === 'already registered')
+        alert('이미 등록된 키입니다.');
       return {
         ...state,
         apiKey: null,
