@@ -17,7 +17,7 @@ import {
 
 let wsConnection: any = null;
 const createSocket = () => {
-  const client = new WebSocket('ws://3.36.52.243:8081/ws/coins');
+  const client = new WebSocket('ws://118.32.227.130:8086/ws/coins');
   client.binaryType = 'arraybuffer';
   wsConnection = client;
   return client;
@@ -121,7 +121,7 @@ export const createConnectSocketSaga = (type: any, dataMapper: any) => {
 };
 
 const coinAPI = () => {
-  return axios.get('http://3.36.52.243:8081/coins');
+  return axios.get('http://118.32.227.130:8086/coins');
 };
 function* fetchCoin(): any {
   try {

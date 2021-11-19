@@ -72,7 +72,7 @@
       }
     ]
   },
-  "proxy": "http://3.34.47.32:8000",
+  "proxy": "http://118.32.227.130:28000",
   "browserslist": {
     "production": [
       ">0.2%",
